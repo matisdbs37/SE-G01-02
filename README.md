@@ -1,64 +1,84 @@
-# Programsko inženjerstvo
+# Software Engineering
 
-> Ime projekta u naslovu ima cilj opisati namjenu projekta te pomoći u podizanju početnog interesa za projekt prezentirajući osnovnu svrhu projekta.
-> Isključivo ovisi o Vama!
+> The project name in the title aims to describe the purpose of the project and help generate initial interest by presenting the core goal of the project. It entirely depends on you!
 > 
-> Naravno, nijedan predložak nije idealan za sve projekte jer su potrebe i ciljevi različiti. Ne bojte se naglasiti Vaš cilj u ovoj početnoj stranici projekta, podržat ćemo ga bez obzira usredotočili se Vi više na tenologiju ili marketing.
+> Of course, no template is ideal for all projects because the needs and goals are different. Don’t hesitate to emphasize your goal on this project’s introductory page; we’ll support it, whether you focus more on technology or marketing.
 > 
-> Zašto ovaj dokument? Samo manji dio timova je do sada propoznao potrebu (a i meni je lakše pratiti Vaš rad).  
+> Why This Document? 
+This document serves as both a template and a resource for tracking the progress and structure of your project. It is a de facto standard for ensuring clear documentation of key aspects of your work. By providing essential information, you make it easier to follow your development process and assess the quality of your project.
+> 
+> Maintaining a well-organized document reflects good project management practices and promotes transparency, collaboration, and accountability within your team. It simplifies the understanding of your project’s scope, goals, and challenges, benefiting not only your team but also anyone who reviews your work.
 
-# Opis projekta
-Ovaj projekt je reultat timskog rada u sklopu projeknog zadatka kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu. 
+## Project Description
 
-Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije »Zato što je to bio zadatak i nismo imali ideje za drugo.«). Koji problem rješavate?
-> Obzirom da je ovo zadani projekt navedite i što želite/jeste novo  naučili.
+This project is the result of teamwork as part of the project assignment for the [Software Engineering](https://www.fer.unizg.hr/predmet/proinz) course at the Faculty of Electrical Engineering and Computing, University of Zagreb.
 
-> Dobro izrađen opis omogućuje vam da pokažete svoj rad drugim programerima, kao i potencijalnim poslodavcima. Ne samo da prvi dojam na stranici opisa često razlikuje dobar projekt od lošeg projekta već i predstavlja dobru praksu koju morate savladati.
+Briefly describe the goal of your project. What motivated you? What problem are you solving?
 
-# Funkcijski zahtjevi
-> Navedite ključne zahtjeve Vašeg projekta.
+> Since this is a part of course assigment, also mention what new things you want/have learned.
+> 
+> A well-written description allows you to showcase your work to other developers, as well as potential employers. Not only does the first impression on the description page often distinguish a good project from a bad one, but it also represents good practice that you must master.
+
+## Functional Requirements
+
+Highlight key features and functionalities.
+
+## Deployment
+This section provides information on how to access and evaluate the deployed demo version of the application, allowing users to interact with the app and test its functionality in a limited scope before running it locally.
+
+For a demonstration of the application's functionality, a demo version is available at *[link to deployment]*. This version allows users to explore key features and interact with the app in a limited scope.
+
+### Accessing the Test Application
+> - **Visit the Demo Link**: Navigate to the provided URL to access the live demo version of the application.
+> - **Test Features**: You can explore the core functionalities, such as [list key features].
+> - **Limited Scope?**: Please note that this demo version may have limited features or data for testing purposes.
+
+For detailed instructions on installation and running the application in a local environment, please refer to the documentation in the [link to Wiki].
+
+## Installation
+
+> - Provide clear instructions on how to install and run the project or [link to Wiki].
+> - Include dependencies (if any) and installation commands.
+> - Consider offering pre-built binaries or Docker images (if applicable).
+
+## Technologies
+
+> List the programming languages, frameworks, and libraries used in the project.
+> Briefly explain the role of each technology for context.
+
+## Team Members
+
+List team members/links/main contributions.
+
+## Contributions (Optional)
+> Rules depend on the team’s organization and are often outlined in `CONTRIBUTING.md`.
 
 
-# Tehnologije
-
-#Instalcija
-# Članovi tima 
-> Popis članova tima/linkovi/ glavni doprinos
->
-
-# Kontribucije
->Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md
 
 
-
-# 📝 Kodeks ponašanja [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
-Kao studenti sigurno ste upoznati s minimumom prihvatljivog ponašanja definiran u [KODEKS PONAŠANJA STUDENATA FAKULTETA ELEKTROTEHNIKE I RAČUNARSTVA SVEUČILIŠTA U ZAGREBU](https://www.fer.hr/_download/repository/Kodeks_ponasanja_studenata_FER-a_procisceni_tekst_2016%5B1%5D.pdf), te dodatnim naputcima za timski rad na predmetu [Programsko inženjerstvo](https://wwww.fer.hr).
-Očekujemo da ćete poštovati [etički kodeks IEEE-a](https://www.ieee.org/about/corporate/governance/p7-8.html) koji ima važnu obrazovnu funkciju sa svrhom postavljanja najviših standarda integriteta, odgovornog ponašanja i etičkog ponašanja u profesionalnim aktivnosti. Time profesionalna zajednica programskih inženjera definira opća načela koja definiranju  moralni karakter, donošenje važnih poslovnih odluka i uspostavljanje jasnih moralnih očekivanja za sve pripadnike zajenice.
-
-Kodeks ponašanja skup je provedivih pravila koja služe za jasnu komunikaciju očekivanja i zahtjeva za rad zajednice/tima. Njime se jasno definiraju obaveze, prava, neprihvatljiva ponašanja te  odgovarajuće posljedice (za razliku od etičkog kodeksa). U ovom repozitoriju dan je jedan od široko prihvačenih kodeks ponašanja za rad u zajednici otvorenog koda.
->### Poboljšajte funkcioniranje tima:
->* definirajte načina na koji će rad biti podijeljen među članovima grupe
->* dogovorite kako će grupa međusobno komunicirati.
->* ne gubite vrijeme na dogovore na koji će grupa rješavati sporove primjenite standarde!
->* implicitno podrazmijevamo da će svi članovi grupe slijediti kodeks ponašanja.
- 
->###  Prijava problema
->Najgore što se može dogoditi je da netko šuti kad postoje problemi. Postoji nekoliko stvari koje možete učiniti kako biste najbolje riješili sukobe i probleme:
->* Obratite mi se izravno [e-pošta](mailto:vlado.sruk@fer.hr) i  učinit ćemo sve što je u našoj moći da u punom povjerenju saznamo koje korake trebamo poduzeti kako bismo riješili problem.
->* Razgovarajte s vašim asistentom jer ima najbolji uvid u dinamiku tima. Zajedno ćete saznati kako riješiti sukob i kako izbjeći daljnje utjecanje u vašem radu.
->* Ako se osjećate ugodno neposredno razgovarajte o problemu. Manje incidente trebalo bi rješavati izravno. Odvojite vrijeme i privatno razgovarajte s pogođenim članom tima te vjerujte u iskrenost.
-
-# 📝 Licenca
+# 📝 Licence
 Važeča (1)
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
-Ovaj repozitorij sadrži otvoreni obrazovni sadržaji (eng. Open Educational Resources)  i licenciran je prema pravilima Creative Commons licencije koja omogućava da preuzmete djelo, podijelite ga s drugima uz 
-uvjet da navođenja autora, ne upotrebljavate ga u komercijalne svrhe te dijelite pod istim uvjetima [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License HR][cc-by-nc-sa].
->
-> ### Napomena:
->
-> Svi paketi distribuiraju se pod vlastitim licencama.
-> Svi upotrijebleni materijali  (slike, modeli, animacije, ...) distribuiraju se pod vlastitim licencama.
+This repository contains open educational resources and is licensed under the Creative Commons license, which allows you to download, share, and use the work as long as you attribute the author, do not use it for commercial purposes, and share it under the same conditions Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License HR.
+
+**Note**:  
+> All packages are distributed under their own licenses.  
+> All used materials (images, models, animations, etc.) are distributed under their own licenses.
+
+> **Important Note for Students**: When contributing to this project or using open-source code, ensure that you respect the licensing terms of any third-party libraries or dependencies. All contributions to the project should be licensed under an open-source license, such as the one provided by GitHub or similar platforms. Please refer to the licensing details of the project repository for more information.
+
+Additionally, any used materials (images, models, animations, etc.) must be in compliance with their respective licenses.
+
+> ## AI Usage
+
+> When AI technologies, models, or services were used in this project, it is essential to clearly state and reference them in the documentation. This includes any machine learning models, AI frameworks, or third-party services integrated into the application. Be transparent about the AI components, their functionality, sources, and ensure compliance with relevant usage and licensing terms.
+> 
+> Additionally, consider the ethical implications of using AI in your project, particularly in terms of user privacy, data security, and fairness. Ensure that the AI models or services respect user confidentiality and do not introduce bias or discrimination.
+> 
+> For example, if AI services such as natural language processing, image recognition, or recommendation algorithms were utilized, provide appropriate citations or links to the resources used, along with any relevant documentation or guidelines for their usage.
+> 
+> If you are using third-party AI models, libraries, or services, ensure proper credit is given, and comply with their licensing conditions. Always strive to integrate AI functionalities responsibly, aligning them with the project's overall ethical standards and ensuring that they contribute positively to the user experience and societal values.
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
 
@@ -77,3 +97,24 @@ Orginal [![cc0-1.0][cc0-1.0-shield]][cc0-1.0]
 [cc0-1.0-shield]: https://img.shields.io/badge/License-CC0--1.0-lightgrey.svg
 
 ### Reference na licenciranje repozitorija
+
+# 📝 Code of Conduct [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+As students, you are surely familiar with the minimum acceptable behavior defined in the **STUDENT CODE OF CONDUCT** of the Faculty of Electrical Engineering and Computing, University of Zagreb, as well as additional guidelines for teamwork in the Software Engineering course.
+
+We expect you to follow the **[IEEE Code of Ethics](https://www.ieee.org/about/corporate/governance/p7-8.html)**, which plays an important educational role in setting the highest standards of integrity, responsible behavior, and ethical conduct in professional activities. By doing so, the professional community of software engineers defines general principles that establish moral character, guide important business decisions, and set clear moral expectations for all members of the community.
+
+The Code of Conduct is a set of enforceable rules that serve to clearly communicate expectations and requirements for the community/team's work. It defines obligations, rights, unacceptable behaviors, and appropriate consequences (unlike the ethical code). In this repository, one of the widely accepted codes of conduct for working in open-source communities is provided.
+
+> ### Improve Team Functionality:
+> - Define how work will be distributed among team members.
+> - Agree on how the team will communicate.
+> - Don’t waste time on deciding how the group will resolve disputes—apply the standards!
+> - It is implicitly assumed that all team members will follow the code of conduct.
+> 
+> ## Issue Reporting
+> 
+> The worst thing that can happen is for someone to remain silent when there are problems. There are several things you can do to best resolve conflicts and issues:
+> 
+> - Contact me directly via [e-mail](mailto:vlado.sruk@fer.hr), and we will do everything we can to confidentially understand what steps we need to take to resolve the problem.
+> - Talk to your assistant, as they have the best insight into the team dynamics. Together, you’ll figure out how to resolve the conflict and how to avoid further impact on your work.
+> - If you feel comfortable, discuss the problem directly. Minor incidents should be resolved directly. Take time and privately speak with the affected team member and trust in their sincerity.
