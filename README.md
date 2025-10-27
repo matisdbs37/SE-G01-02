@@ -56,6 +56,21 @@ Briefly describe the goal of your project. What motivated you? What problem are 
 | F31 | Allow users to mark content as favorite                                                                                               | 3                       | Users                                                 |
 | F32 | Display recently played sessions                                                                                                      | 2                       | Users                                                 |
 
+## Non-functional Requirements
+
+| ID   | Category        | Description                                                                                                                         |
+| ---- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| NF1  | Performance     | The system must support at least 1000 concurrent users without any problems                                                         |
+| NF2  | Performance     | All user interactions on the page (loading sessions, submitting forms, ...) should respond within 3 seconds under normal conditions |
+| NF3  | Usability       | The interface of the website must be responsive and easy to understand                                                              |
+| NF4  | Security        | The system must comply with GDPR                                                                                                    |
+| NF5  | Security        | User data, including passwords, must be encrypted                                                                                   |
+| NF6  | Security        | Authentication must follow OAuth 2.0 standards                                                                                      |
+| NF7  | Maintainability | Clear technical documentation should exist for API, deployment, etc. to facilitate future development                               |
+| NF8  | Compatibility   | The system must be compatible with all major browsers, such as Chrome, Firefox, ...                                                 |
+| NF9  | Reliability     | Notifications must be delivered with a maximum delay of 60 seconds                                                                  |
+| NF10 | Maintainability | The system must be designed using a modular architecture, allowing independents updates of components                               |
+
 ## Deployment
 This section provides information on how to access and evaluate the deployed demo version of the application, allowing users to interact with the app and test its functionality in a limited scope before running it locally.
 
