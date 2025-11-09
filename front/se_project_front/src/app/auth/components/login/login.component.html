@@ -1,0 +1,54 @@
+<div class="auth-shell">
+  <div class="art-panel">
+    <img class="logo" src="assets/mindcraft-head.png" alt="Mind Craft logo" />
+    <p class="quote">Take a deep breath.<br />You’re one step closer to calm.</p>
+  </div>
+
+  <div class="form-panel">
+    <h1 class="title">Mind Craft</h1>
+    <p class="subtitle">Mindfulness & Mental Health Platform</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <label>Email address</label>
+      <input type="email" formControlName="email" placeholder="Email address" />
+      <div class="error" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+      Please enter a valid email.
+      </div>
+
+      <label>Password</label>
+      <input type="password" formControlName="password" placeholder="Password" />
+      <div class="error" *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+      Minimum 6 characters.
+      </div>
+
+      <div class="row between">
+        <label class="remember">
+          <input type="checkbox" formControlName="remember" /> Remember me
+        </label>
+        <a class="link" href="#">Forgot your password</a>
+      </div>
+
+      <button class="btn primary" [disabled]="loading">
+        {{ loading ? 'Logging in…' : 'Log in' }}
+      </button>
+
+      <div class="muted center small">New here? <a routerLink="/auth/register">Create an account</a></div>
+
+      <div class="divider"><span>or continue with</span></div>
+
+      <div class="oauth">
+        <button type="button" class="btn oauth-btn" (click)="oauth('google')">
+          <img src="assets/icons/google.svg" alt="" /> Continue with Google
+        </button>
+        <button type="button" class="btn oauth-btn" (click)="oauth('apple')">
+          <img src="assets/icons/apple.svg" alt="" /> Continue with Apple
+        </button>
+        <button type="button" class="btn oauth-btn" (click)="oauth('microsoft')">
+          <img src="assets/icons/microsoft.svg" alt="" /> Continue with Microsoft
+        </button>
+      </div>
+
+      <p class="tos">By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+    </form>
+  </div>
+</div>
