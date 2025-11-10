@@ -7,32 +7,67 @@
     <h2>Welcome to Mind Craft !</h2>
     <br>
     <h2>Let's get to know you better !</h2>
-    <button (click)="startQuestionnaire()">Commencer</button>
+    <button (click)="startQuestionnaire()">Start</button>
   </div>
 
   <div *ngIf="currentQuestionIndex >= 0 && currentQuestionIndex < this.questions.length" class="question-box">
     <h2>{{ questions[currentQuestionIndex].text }}</h2>
 
     <!-- Champ texte -->
-    <input *ngIf="questions[currentQuestionIndex].type === 'text'" type="text" placeholder="Votre réponse">
+    <input
+      *ngIf="questions[currentQuestionIndex].type == 'text'"
+      type="text"
+      [placeholder]="questions[currentQuestionIndex].placeholder"
+      [(ngModel)]="answers[currentQuestionIndex]"
+    >
 
     <!-- Oui / Non -->
-    <div *ngIf="questions[currentQuestionIndex].type === 'yes_no'">
-      <button>Oui</button>
-      <button>Non</button>
+    <div *ngIf="questions[currentQuestionIndex].type == 'yes_no'" class="yes-no-group">
+      <button 
+        class="yes_button" 
+        [class.selected]="answers[currentQuestionIndex] === 'Yes'"
+        (click)="answers[currentQuestionIndex] = 'Yes'">
+        Yes
+      </button>
+      <button 
+        class="no_button" 
+        [class.selected]="answers[currentQuestionIndex] === 'No'"
+        (click)="answers[currentQuestionIndex] = 'No'">
+        No
+      </button>
     </div>
 
     <!-- Slider -->
-    <div *ngIf="questions[currentQuestionIndex].type === 'slider'">
-      <input type="range" [min]="questions[currentQuestionIndex].min" 
-                         [max]="questions[currentQuestionIndex].max" 
-                         value="0">
+    <div *ngIf="questions[currentQuestionIndex].type == 'slider'">
+      <input type="range"
+            [min]="questions[currentQuestionIndex].min"
+            [max]="questions[currentQuestionIndex].max"
+            [(ngModel)]="answers[currentQuestionIndex]">
     </div>
-    <button (click)="nextQuestion()">Suivant</button>
+
+    <!-- Liste déroulante -->
+    <div *ngIf="questions[currentQuestionIndex].type == 'select'">
+      <select [(ngModel)]="answers[currentQuestionIndex]">
+        <option value="" disabled> {{questions[currentQuestionIndex].placeholder}} </option>
+        <option *ngFor="let opt of questions[currentQuestionIndex].options" [value]="opt">
+          {{ opt }}
+        </option>
+      </select>
+    </div>
+
+    <div class="button-group">
+      <button *ngIf="currentQuestionIndex != 0" (click)="previousQuestion()">Back</button>
+      <button (click)="nextQuestion()">Next</button>
+    </div>
   </div>
 
   <div *ngIf="currentQuestionIndex == (this.questions.length)" class="question-box">
-        <h2>The end</h2>
-        <button>Continue</button>
-    </div>
+        <h2>Thanks for your answers !</h2>
+        <br>
+        <h2>You can now enter the application !</h2>
+        <div class="button-group">
+          <button *ngIf="currentQuestionIndex != 0" (click)="previousQuestion()">Back</button>
+          <button>Save and continue</button>
+        </div>
+  </div>
 </div>
