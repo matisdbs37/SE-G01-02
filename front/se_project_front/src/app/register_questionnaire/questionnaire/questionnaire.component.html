@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="progress-bar">
+    <div class="progress" [style.width.%]="getProgress()"></div>
+  </div>
+
+  <div *ngIf="currentQuestionIndex == -1" class="question-box">
+    <h2>Welcome to Mind Craft !</h2>
+    <br>
+    <h2>Let's get to know you better !</h2>
+    <button (click)="startQuestionnaire()">Commencer</button>
+  </div>
+
+  <div *ngIf="currentQuestionIndex >= 0 && currentQuestionIndex < this.questions.length" class="question-box">
+    <h2>{{ questions[currentQuestionIndex].text }}</h2>
+
+    <!-- Champ texte -->
+    <input *ngIf="questions[currentQuestionIndex].type === 'text'" type="text" placeholder="Votre réponse">
+
+    <!-- Oui / Non -->
+    <div *ngIf="questions[currentQuestionIndex].type === 'yes_no'">
+      <button>Oui</button>
+      <button>Non</button>
+    </div>
+
+    <!-- Slider -->
+    <div *ngIf="questions[currentQuestionIndex].type === 'slider'">
+      <input type="range" [min]="questions[currentQuestionIndex].min" 
+                         [max]="questions[currentQuestionIndex].max" 
+                         value="0">
+    </div>
+    <button (click)="nextQuestion()">Suivant</button>
+  </div>
+
+  <div *ngIf="currentQuestionIndex == (this.questions.length)" class="question-box">
+        <h2>The end</h2>
+        <button>Continue</button>
+    </div>
+</div>

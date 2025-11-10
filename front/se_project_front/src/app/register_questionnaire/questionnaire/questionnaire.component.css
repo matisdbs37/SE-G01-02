@@ -1,0 +1,80 @@
+:host {
+  display: block;
+  height: 100vh;
+  background: linear-gradient(180deg, #A8C5E2 0%, #D7C7E9 100%);
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.progress-bar {
+  width: 50%;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px auto 40px auto;
+}
+
+.progress {
+  height: 100%;
+  background-color: #85F1FF;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.question-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.question-box h2 {
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  width: 250px;
+  margin-bottom: 20px;
+}
+
+input[type="range"] {
+  width: 250px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 25px;
+  font-size: 16px;
+  background-color: #85F1FF;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #85F1FF;
+}
+
+div[ng-reflect-ng-if="true"] button {
+  margin: 5px;
+}
