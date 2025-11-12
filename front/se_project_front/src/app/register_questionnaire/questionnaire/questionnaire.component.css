@@ -86,6 +86,7 @@ button {
   transition: background-color 0.2s, transform 0.2s ease;
   border: 1px solid black;
   margin: 10px;
+  margin-top: 50px;
 }
 
 button:hover {
@@ -96,6 +97,7 @@ button:hover {
 .yes_button {
   background-color: #A8E6CF;
   color: black;
+  margin-top: 10px;
 }
 
 .yes_button:hover {
@@ -105,6 +107,7 @@ button:hover {
 .no_button {
   background-color: #FF8B94;
   color: black;
+  margin-top: 10px;
 }
 
 .no_button:hover {

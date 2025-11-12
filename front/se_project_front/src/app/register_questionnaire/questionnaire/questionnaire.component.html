@@ -13,7 +13,6 @@
   <div *ngIf="currentQuestionIndex >= 0 && currentQuestionIndex < this.questions.length" class="question-box">
     <h2>{{ questions[currentQuestionIndex].text }}</h2>
 
-    <!-- Champ texte -->
     <input
       *ngIf="questions[currentQuestionIndex].type == 'text'"
       type="text"
@@ -21,7 +20,6 @@
       [(ngModel)]="answers[currentQuestionIndex]"
     >
 
-    <!-- Oui / Non -->
     <div *ngIf="questions[currentQuestionIndex].type == 'yes_no'" class="yes-no-group">
       <button 
         class="yes_button" 
@@ -37,7 +35,6 @@
       </button>
     </div>
 
-    <!-- Slider -->
     <div *ngIf="questions[currentQuestionIndex].type == 'slider'">
       <input type="range"
             [min]="questions[currentQuestionIndex].min"
@@ -45,7 +42,6 @@
             [(ngModel)]="answers[currentQuestionIndex]">
     </div>
 
-    <!-- Liste déroulante -->
     <div *ngIf="questions[currentQuestionIndex].type == 'select'">
       <select [(ngModel)]="answers[currentQuestionIndex]">
         <option value="" disabled> {{questions[currentQuestionIndex].placeholder}} </option>
