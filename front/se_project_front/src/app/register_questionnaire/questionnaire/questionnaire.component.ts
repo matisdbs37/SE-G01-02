@@ -17,6 +17,8 @@ export class QuestionnaireComponent {
   questions: Question[] = QUESTIONS;
   answers: any[] = [];
 
+  errorMessage: string = '';
+
   constructor(private countryService: CountryService) {}
 
   ngOnInit() {
@@ -36,12 +38,21 @@ export class QuestionnaireComponent {
   }
 
   previousQuestion() {
+    this.errorMessage = '';
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
     }
   }
 
   nextQuestion() {
+    const currentAnswer = this.answers[this.currentQuestionIndex];
+
+    if (currentAnswer == '' || currentAnswer == undefined || currentAnswer == null) {
+      this.errorMessage = "Please provide an answer before proceeding.";
+      return;
+    }
+
+    this.errorMessage = '';
     if (this.currentQuestionIndex < this.questions.length) {
       this.currentQuestionIndex++;
       if (this.answers[this.currentQuestionIndex] === undefined) {

@@ -143,3 +143,9 @@ button:hover {
 .yes-no-group button.selected.no_button {
   background-color: #F75764;
 }
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}

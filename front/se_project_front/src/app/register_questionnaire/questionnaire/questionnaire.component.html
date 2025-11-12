@@ -51,6 +51,10 @@
       </select>
     </div>
 
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
     <div class="button-group">
       <button *ngIf="currentQuestionIndex != 0" (click)="previousQuestion()">Back</button>
       <button (click)="nextQuestion()">Next</button>
