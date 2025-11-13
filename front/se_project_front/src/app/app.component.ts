@@ -5,7 +5,7 @@ import { EditProfileComponent } from "./profile/edit-profile/edit-profile.compon
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [EditProfileComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

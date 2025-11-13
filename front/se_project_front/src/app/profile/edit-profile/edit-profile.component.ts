@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CountryService } from '../services/country.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-profile',
@@ -27,7 +28,7 @@ export class EditProfileComponent {
 
   countries: string[] = [];
 
-  constructor(private countryService: CountryService) {}
+  constructor(private countryService: CountryService, private router: Router) {}
 
   ngOnInit() {
     this.countryService.getCountries().subscribe(countries => {
@@ -44,5 +45,9 @@ export class EditProfileComponent {
     this.is_editing = false;
     this.user = { ...this.editableUser };
     console.log("User updated : ", this.user);
+  }
+
+  resetPassword() {
+    this.router.navigate(['/reset-password']);
   }
 }
