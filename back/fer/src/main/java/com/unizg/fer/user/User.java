@@ -28,6 +28,9 @@ public class User {
     @Indexed(unique = true)
     private String email;
 
+    @Field("password")
+    private String password;
+
     @Field("first_name")
     private String firstName;
 
