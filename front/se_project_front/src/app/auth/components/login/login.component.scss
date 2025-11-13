@@ -32,8 +32,8 @@ $border: #e0e0e0;
   text-align: center;
 
   .logo {
-    width: 120px;
-    margin-bottom: 24px;
+    width: 200px;
+    height: auto;
   }
 
   .quote {
@@ -134,6 +134,7 @@ $border: #e0e0e0;
   .link {
     color: $brand;
     font-size: 14px;
+    text-decoration: none;
 
     &:hover {
       text-decoration: underline;
@@ -193,6 +194,12 @@ $border: #e0e0e0;
     border: 1px solid $border;
     border-radius: 8px;
     height: 44px;
+  }
+
+  .oauth-btn img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
   }
 
   .tos {

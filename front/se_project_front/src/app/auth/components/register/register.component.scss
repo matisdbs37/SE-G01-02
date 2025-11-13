@@ -1,13 +1,3 @@
-/* -------------------------------------
-   GLOBAL & ANTI-SCROLL FIX
--------------------------------------- */
-html, body {
-  margin: 0;
-  padding: 0;
-  overscroll-behavior: none;
-  overflow-x: hidden;
-}
-
 /* Colors */
 $brand: #65C3A3;
 $brand-hover: #56B092;
@@ -42,8 +32,8 @@ $bg-form: #ffffff;
   text-align: center;
 
   .logo {
-    width: 120px;
-    margin-bottom: 24px;
+    width: 200px;
+    height: auto;
   }
 
   .quote {
@@ -164,10 +154,12 @@ $bg-form: #ffffff;
     justify-content: center;
     align-items: center;
     gap: 10px;
+  }
 
-    img {
-      width: 18px;
-    }
+  .oauth-btn img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
   }
 
   .tos {
