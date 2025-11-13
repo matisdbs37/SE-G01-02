@@ -28,6 +28,8 @@ export class EditProfileComponent {
 
   countries: string[] = [];
 
+  errorMessage: string = '';
+
   constructor(private countryService: CountryService, private router: Router) {}
 
   ngOnInit() {
@@ -42,6 +44,11 @@ export class EditProfileComponent {
   }
 
   saveChanges() {
+    if (!this.editableUser.firstName || !this.editableUser.lastName || !this.editableUser.email || !this.editableUser.country || !this.editableUser.notifications) {
+      this.errorMessage = "Fields can't be empty.";
+      return;
+    }
+    this.errorMessage = '';
     this.is_editing = false;
     this.user = { ...this.editableUser };
     console.log("User updated : ", this.user);

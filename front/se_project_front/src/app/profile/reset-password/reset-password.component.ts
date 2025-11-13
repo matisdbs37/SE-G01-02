@@ -23,19 +23,24 @@ export class ResetPasswordComponent {
   newPassword = '';
   confirmNewPassword = '';
 
+  errorMessage: string = '';
+  successMessage: string = '';
+
   constructor(private router: Router) {}
 
   submitResetPassword() {
     if (this.newPassword != this.confirmNewPassword) {
-      alert('New password and confirmation do not match!');
+      this.successMessage = '';
+      this.errorMessage = 'New password and confirmation do not match!';
       return;
     }
     if (this.currentPassword == this.newPassword) {
-      alert('New password can\'t be the same as the current password!');
+      this.successMessage = '';
+      this.errorMessage = 'New password can\'t be the same as the current password!';
       return;
     }
-    alert('Password successfully changed!');
-    this.router.navigate(['/edit-profile']);
+    this.errorMessage = '';
+    this.successMessage = 'Password successfully changed!';
   }
 
   goBackToProfile() {

@@ -9,6 +9,7 @@
 
   <div class="profile-container">
     <div class="form-section">
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       <h3>Account Information</h3>
       <form>
         <div class="form-grid">

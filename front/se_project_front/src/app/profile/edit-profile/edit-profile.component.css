@@ -156,6 +156,13 @@ button:hover {
   transform: scale(1.05);
 }
 
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .profile-container {
     width: 90%;
