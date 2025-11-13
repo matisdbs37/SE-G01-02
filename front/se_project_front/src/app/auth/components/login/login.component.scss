@@ -1,0 +1,263 @@
+$brand: #65C3A3;
+$brand-hover: #56B092;
+$text: #333;
+$muted: #666;
+$border: #e0e0e0;
+
+/* ------------------------------
+   GLOBAL RESPONSIVE LAYOUT
+------------------------------ */
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------
+   LEFT PANEL (gradient)
+------------------------------ */
+.art-panel {
+  background: linear-gradient(180deg, #A8C5E2 0%, #D7C7E9 100%);
+  height: 100%;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  .logo {
+    width: 200px;
+    height: auto;
+  }
+
+  .quote {
+    color: #2a3441;
+    font-size: 20px;
+    max-width: 420px;
+  }
+
+  @media (max-width: 960px) {
+    padding: 32px;
+    .logo {
+      width: 90px;
+    }
+  }
+}
+
+/* ------------------------------
+   RIGHT PANEL (form)
+------------------------------ */
+.form-panel {
+  padding: 64px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 960px) {
+    padding: 40px 24px;
+  }
+
+  .title {
+    font: 700 40px Poppins, system-ui;
+    color: $text;
+
+    @media (max-width: 960px) {
+      font-size: 32px;
+    }
+  }
+
+  .subtitle {
+    font: 400 16px Lato, system-ui;
+    color: $muted;
+    margin-bottom: 32px;
+  }
+
+  .form {
+    width: 100%;
+    max-width: 480px;
+
+    * {
+      pointer-events: auto;
+    }
+  }
+
+  label {
+    margin: 12px 0 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: $muted;
+  }
+
+  input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid $border;
+    border-radius: 8px;
+    font-size: 16px;
+    color: $text;
+    background: #fff;
+
+    &:focus {
+      border-color: $brand;
+      box-shadow: 0 0 0 3px rgba(101,195,163,.2);
+    }
+  }
+
+  .small-remember input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .row.between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 16px;
+  }
+
+  .remember {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  .link {
+    color: $brand;
+    font-size: 14px;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .btn {
+    width: 100%;
+    height: 44px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+
+    &.primary {
+      background: $brand;
+      color: white;
+      margin: 8px 0 12px;
+
+      &:hover {
+        background: $brand-hover;
+      }
+    }
+  }
+
+  .muted {
+    color: $muted;
+  }
+
+  .divider {
+    margin: 18px 0;
+    color: $muted;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &::before,
+    &::after {
+      content: "";
+      height: 1px;
+      background: $border;
+      flex: 1;
+    }
+  }
+
+  .oauth {
+    display: grid;
+    gap: 10px;
+  }
+
+  .oauth-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    border: 1px solid $border;
+    border-radius: 8px;
+    height: 44px;
+  }
+
+  .oauth-btn img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+  }
+
+  .tos {
+    font-size: 12px;
+    color: $muted;
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  .error {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE
+   ============================================================ */
+@media (max-width: 959px) {
+
+  .auth-shell {
+    background: linear-gradient(180deg, #A8C5E2 0%, #D7C7E9 100%);
+    min-height: 100vh;
+  }
+
+  .art-panel {
+    background: transparent;
+    padding: 32px 20px;
+
+    .logo {
+      width: 70px;
+    }
+
+    .quote {
+      max-width: 280px;
+      margin: 0 auto;
+      font-size: 15px;
+    }
+  }
+
+  .form-panel {
+    padding: 24px 16px !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form {
+    max-width: 100% !important;
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .oauth-btn {
+    width: 100%;
+  }
+}

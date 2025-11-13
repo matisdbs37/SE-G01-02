@@ -4,10 +4,9 @@ import { QuestionnaireComponent } from "./register_questionnaire/questionnaire/q
 
 @Component({
   selector: 'app-root',
-  imports: [QuestionnaireComponent],
+  standalone: true,
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'se_project_front';
-}
+export class AppComponent {}
