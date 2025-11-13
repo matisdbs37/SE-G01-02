@@ -1,0 +1,64 @@
+<div class="auth-shell">
+
+  <!-- Form panel -->
+  <div class="form-panel">
+    <h1 class="title">Mind Craft</h1>
+    <p class="subtitle">Mindfulness & Mental Health Platform</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+
+      <label>Email address</label>
+      <input type="email" formControlName="email" placeholder="Email address" />
+      <div class="error" *ngIf="email?.touched && email?.invalid">
+        Please enter a valid email.
+      </div>
+
+      <label>Password</label>
+      <input type="password" formControlName="password" placeholder="Password" />
+      <div class="error" *ngIf="password?.touched && password?.invalid">
+        Minimum 6 characters.
+      </div>
+
+      <label>Confirm password</label>
+      <input type="password" formControlName="confirm" placeholder="Confirm password" />
+      <div class="error" *ngIf="confirm?.touched && form.errors?.['mismatch']">
+        Passwords don’t match.
+      </div>
+
+      <button class="btn primary" [disabled]="loading">
+        {{ loading ? 'Creating…' : 'Sign up' }}
+      </button>
+
+      <div class="muted center small">
+        Already have an account?
+        <a class="link" href="/auth/login" class="link">Log in</a>
+      </div>
+
+      <div class="divider"><span>or continue with</span></div>
+
+      <div class="oauth">
+        <button type="button" class="btn oauth-btn" (click)="oauth('google')">
+          <img src="assets/icons/google.png" alt="" /> Continue with Google
+        </button>
+        <button type="button" class="btn oauth-btn" (click)="oauth('apple')">
+          <img src="assets/icons/apple.png" alt="" /> Continue with Apple
+        </button>
+        <button type="button" class="btn oauth-btn" (click)="oauth('microsoft')">
+          <img src="assets/icons/microsoft.png" alt="" /> Continue with Microsoft
+        </button>
+      </div>
+
+      <p class="tos">
+        By continuing, you agree to our
+        <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+      </p>
+    </form>
+  </div>
+
+  <!-- Art panel -->
+  <div class="art-panel">
+    <img class="logo" src="assets/mindcraft-head.png" alt="Mind Craft logo" />
+    <p class="quote">Take a deep breath.<br />You’re one step closer to calm.</p>
+  </div>
+
+</div>
