@@ -1,19 +1,28 @@
-:host {
-  display: block;
-  background: linear-gradient(180deg, #A8C5E2 0%, #D7C7E9 100%);
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.edit-profile-page {
   min-height: 100vh;
-  font-family: 'Lato', sans-serif;
-  color: #2F2E2E;
+  width: 100%;
+  background: linear-gradient(180deg, #A8C5E2 0%, #D7C7E9 100%);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .profile-header {
   text-align: center;
-  margin-top: 60px;
+  padding-top: 50px;
 }
 
-.profile-header h2 {
+h2 {
   font-size: 28px;
   margin-bottom: 10px;
+  margin-top: 0;
 }
 
 .profile-header button {
@@ -35,13 +44,17 @@
 
 .profile-container {
   max-width: 720px;
-  margin: 30px auto 100px;
+  margin: 30px auto 0;
   padding: 45px;
   background-color: #F3FAFF;
   border-radius: 10px;
   border: 1px solid black;
   text-align: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
+
 
 .form-section {
   text-align: left;
@@ -84,7 +97,6 @@ input, select, .secondary {
 select, .secondary {
   padding-right: 12px;
 }
-
 
 input:disabled, select:disabled {
   background-color: #e9e9e9;
@@ -141,4 +153,41 @@ button:hover {
 .secondary:hover {
   background-color: #e6ac47;
   transform: scale(1.05);
+}
+
+/* --------------------------- */
+/* 📱 Responsive adjustments   */
+/* --------------------------- */
+@media (max-width: 768px) {
+  .profile-container {
+    width: 90%;
+    padding: 30px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    row-gap: 25px;
+    column-gap: 0;
+  }
+
+  .form-group {
+    width: 100%;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .progress {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
 }
