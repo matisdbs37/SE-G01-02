@@ -3,6 +3,7 @@ import { Question, QUESTIONS } from '../data/questions';
 import { CommonModule } from '@angular/common';
 import { CountryService } from '../services/country.service';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-questionnaire',
@@ -19,7 +20,7 @@ export class QuestionnaireComponent {
 
   errorMessage: string = '';
 
-  constructor(private countryService: CountryService) {}
+  constructor(private countryService: CountryService, private router: Router) {}
 
   ngOnInit() {
     this.countryService.getCountries().subscribe(countries => {
@@ -66,5 +67,9 @@ export class QuestionnaireComponent {
       return 0;
     }
     else return (this.currentQuestionIndex / (this.questions.length)) * 100;
+  }
+
+  save() {
+    this.router.navigate(['/profile/edit_profile']);
   }
 }

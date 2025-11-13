@@ -1,0 +1,31 @@
+<div class="edit-profile-page">
+  <div class="profile-header">
+    <h2>{{user.firstName}} {{user.lastName}}</h2>
+    <p>{{ user.email }}</p>
+    <button type="button" class="back" (click)="goBackToProfile()">Back to Profile</button>
+    <button type="button" class="back" (click)="logout()">Log Out</button>
+  </div>
+
+  <div class="profile-container">
+    <div class="form-section">
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+      <h3>Delete account</h3>
+      <form (ngSubmit)="submitDeleteAccount()">
+        <div class="form-grid-vertical">
+          <div class="form-group">
+            <label>Type your password</label>
+            <input type="password" [(ngModel)]="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <label>Type "I want to delete my account."</label>
+            <input type="text" [(ngModel)]="confirmationText" name="confirmationText" required>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="submit">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

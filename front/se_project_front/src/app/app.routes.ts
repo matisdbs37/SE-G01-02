@@ -13,5 +13,17 @@ export const routes: Routes = [
     path: 'questionnaire',
     loadComponent: () => import('./register_questionnaire/questionnaire/questionnaire.component').then(m => m.QuestionnaireComponent)
   },
+  {
+    path: 'profile/edit_profile',
+    loadComponent: () => import('./profile/edit-profile/edit-profile.component').then(m => m.EditProfileComponent)
+  },
+  {
+    path: 'profile/reset_password',
+    loadComponent: () => import('./profile/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
+  },
+  {
+    path: 'profile/delete_account',
+    loadComponent: () => import('./profile/delete-account/delete-account.component').then(m => m.DeleteAccountComponent)
+  },
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' }
 ];

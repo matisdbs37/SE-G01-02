@@ -67,7 +67,7 @@
         <h2>You can now enter the application !</h2>
         <div class="button-group">
           <button *ngIf="currentQuestionIndex != 0" (click)="previousQuestion()">Back</button>
-          <button>Save and continue</button>
+          <button (click)="save()">Save and continue</button>
         </div>
   </div>
 </div>

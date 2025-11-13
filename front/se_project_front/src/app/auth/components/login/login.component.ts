@@ -42,7 +42,7 @@ export class LoginComponent {
     this.loading = true;
 
     this.auth.login(email!, password!, !!remember).subscribe({
-      next: () => this.router.navigateByUrl('/'),
+      next: () => this.router.navigateByUrl('/profile/edit_profile'),
       error: (e) => {
         this.loading = false;
         alert(e.message ?? 'Login failed');
