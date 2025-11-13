@@ -1,0 +1,151 @@
+:host {
+  display: block;
+  height: 100vh;
+  background: linear-gradient(180deg, #A8C5E2 0%, #D7C7E9 100%);
+  color: #2F2E2E;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.progress-bar {
+  width: 50%;
+  height: 10px;
+  background-color: #F3FAFF;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 30px auto 50px auto;
+  border: 1px solid black;
+}
+
+.progress {
+  height: 100%;
+  background-color: #85F1FF;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.question-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  margin-top: 175px;
+}
+
+.question-box h2 {
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+input[type="text"] {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  width: 300px;
+  margin-bottom: 25px;
+  background-color: #F3FAFF;
+  border: 1px solid black;
+}
+
+input[type="range"] {
+  width: 300px;
+  margin-bottom: 25px;
+}
+
+select {
+  width: 320px;
+  padding: 10px;
+  margin-bottom: 25px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid black;
+  background-color: #F3FAFF;
+  cursor: pointer;
+}
+
+button {
+  padding: 10px 25px;
+  font-size: 16px;
+  background-color: #85F1FF;
+  border: none;
+  border-radius: 5px;
+  color: #1A1A1A;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s ease;
+  border: 1px solid black;
+  margin: 10px;
+  margin-top: 50px;
+}
+
+button:hover {
+  background-color: #62D5E5;
+  transform: scale(1.05);
+}
+
+.yes_button {
+  background-color: #A8E6CF;
+  color: black;
+  margin-top: 10px;
+}
+
+.yes_button:hover {
+  background-color: #6ED4AE;
+}
+
+.no_button {
+  background-color: #FF8B94;
+  color: black;
+  margin-top: 10px;
+}
+
+.no_button:hover {
+  background-color: #F75764;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.yes-no-group {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.yes-no-group button {
+  min-width: 80px;
+  transition: background-color 0.2s, transform 0.2s ease;
+}
+
+.yes-no-group button.selected {
+  transform: scale(1.05);
+}
+
+.yes-no-group button.selected.yes_button {
+  background-color: #6ED4AE;
+}
+
+.yes-no-group button.selected.no_button {
+  background-color: #F75764;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}

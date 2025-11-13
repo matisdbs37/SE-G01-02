@@ -144,6 +144,16 @@ button:hover {
   background-color: #ccc;
 }
 
+.delete {
+  border-radius: 20px;
+  background-color: #FF8B94;
+  width: 50%;
+}
+
+.delete:hover {
+  background-color: #F75764;
+}
+
 .secondary {
   background-color: #FFD580;
   margin: 0;

@@ -55,6 +55,14 @@ export class EditProfileComponent {
   }
 
   resetPassword() {
-    this.router.navigate(['/reset-password']);
+    this.router.navigate(['/profile/reset_password']);
+  }
+
+  goToDelete() {
+    this.router.navigate(['/profile/delete_account']);
+  }
+
+  logout() {
+    this.router.navigate(['/auth/login']);
   }
 }

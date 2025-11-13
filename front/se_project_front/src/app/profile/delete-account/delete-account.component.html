@@ -10,20 +10,16 @@
     <div class="form-section">
       <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
-      <h3>Reset Password</h3>
-      <form (ngSubmit)="submitResetPassword()">
+      <h3>Delete account</h3>
+      <form (ngSubmit)="submitDeleteAccount()">
         <div class="form-grid-vertical">
           <div class="form-group">
-            <label>Current Password</label>
-            <input type="password" [(ngModel)]="currentPassword" name="currentPassword" required>
+            <label>Type your password</label>
+            <input type="password" [(ngModel)]="password" name="password" required>
           </div>
           <div class="form-group">
-            <label>New Password</label>
-            <input type="password" [(ngModel)]="newPassword" name="newPassword" required>
-          </div>
-          <div class="form-group">
-            <label>Confirm New Password</label>
-            <input type="password" [(ngModel)]="confirmNewPassword" name="confirmNewPassword" required>
+            <label>Type "I want to delete my account."</label>
+            <input type="text" [(ngModel)]="confirmationText" name="confirmationText" required>
           </div>
           <div class="form-group">
             <button type="submit" class="submit">Submit</button>

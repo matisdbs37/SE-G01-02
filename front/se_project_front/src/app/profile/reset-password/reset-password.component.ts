@@ -44,6 +44,10 @@ export class ResetPasswordComponent {
   }
 
   goBackToProfile() {
-    this.router.navigate(['/edit-profile']);
+    this.router.navigate(['/profile/edit_profile']);
+  }
+
+  logout() {
+    this.router.navigate(['/auth/login']);
   }
 }
