@@ -1,17 +1,25 @@
-# Software Engineering
+# Mind Craft - Mental Health Platform
 
-> The project name in the title aims to describe the purpose of the project and help generate initial interest by presenting the core goal of the project. It entirely depends on you!
-> 
-> Of course, no template is ideal for all projects because the needs and goals are different. Don’t hesitate to emphasize your goal on this project’s introductory page; we’ll support it, whether you focus more on technology or marketing.
-> 
-> Why This Document? 
-This document serves as both a template and a resource for tracking the progress and structure of your project. It is a de facto standard for ensuring clear documentation of key aspects of your work. By providing essential information, you make it easier to follow your development process and assess the quality of your project.
-> 
-> Maintaining a well-organized document reflects good project management practices and promotes transparency, collaboration, and accountability within your team. It simplifies the understanding of your project’s scope, goals, and challenges, benefiting not only your team but also anyone who reviews your work.
 
 ## Project Description
 
-Mind Craft is a digital platform designed to support wellbeing through guided audio/video meditations, short mindfulness drills, and tools for tracking mood, sleep, stress, and other habits. After a brief onboarding, users receive a personalized practice plan aligned with their goals. The app offers daily challenges, streak tracking, and a diverse content catalog including structured programs and educational material. Login is handled through major OAuth providers or email, with optional two-factor security. Trainers and admins can curate content and oversee user activity with permission. Mind Craft also connects to calendars, wearable-based sleep data, and notification services to keep users engaged and informed.
+Mind Craft is a digital platform designed to support wellbeing through guided audio/video meditations, short mindfulness drills, and tools for tracking mood, sleep, stress, and other habits. After a brief onboarding, users receive a personalized practice plan aligned with their goals. The app offers daily challenges, streak tracking, and a diverse content catalog including structured programs and educational material.
+
+## Motivation
+
+Mind Craft aims to offer a calm, simple, and intuitive experience. The motivation behind the project is to make mindfulness easy to access and effortless to practice, with a clean interface and straightforward features that help users stay consistent without feeling overwhelmed.
+
+## What we learn with this project
+
+- Building a full digital platform from design to deployment
+
+- Using modern web technologies and frameworks (Angular, Spring, MongoDB)
+
+- Managing authentication, security, and data handling
+
+- Working collaboratively with team members
+
+- Integrating external services (APIs, notifications, calendars)
 
 ## Functional Requirements
 
