@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CountryService } from '../services/country.service';
 import { Router } from '@angular/router';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-edit-profile',
@@ -15,9 +16,9 @@ export class EditProfileComponent {
   is_editing: boolean = false;
 
   user = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
+    firstName: localStorage.getItem('firstName'),
+    lastName: localStorage.getItem('lastName'),
+    email: localStorage.getItem('email'),
     country: 'France',
     notifications: 'Yes'
   };
@@ -30,7 +31,7 @@ export class EditProfileComponent {
 
   errorMessage: string = '';
 
-  constructor(private countryService: CountryService, private router: Router) {}
+  constructor(private countryService: CountryService, private router: Router) { }
 
   ngOnInit() {
     this.countryService.getCountries().subscribe(countries => {
@@ -63,6 +64,10 @@ export class EditProfileComponent {
   }
 
   logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    localStorage.removeItem('firstName');
+    localStorage.removeItem('lastName');
     this.router.navigate(['/auth/login']);
   }
 }

@@ -24,9 +24,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     // Authorized public end points
+    private final static String BASE_URL = "api/auth";
     private final static String OAUTH2_MATCHER = "/oauth2/**";
-    private final static String LOGIN_MATCHER = "/login/**";
-    private final static String REGISTER_MATCHER = "/register/**";
+    private final static String LOGIN_MATCHER = "api/auth/login/**";
+    private final static String REGISTER_MATCHER = "api/auth/register/**";
     private final static String LOGOUT_MATCHER = "/logout/**";
 
     private final String[] allowedOrigins = { "http://localhost:3000", "http://localhost:5173", "http://localhost:4200",

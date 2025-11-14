@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, MinValidator } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -31,18 +31,24 @@ export class LoginComponent {
   get email() { return this.form.get('email'); }
   get password() { return this.form.get('password'); }
 
+
   submit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    const { email, password, remember } = this.form.value;
+    const { email, password } = this.form.value;
 
     this.loading = true;
-
-    this.auth.login(email!, password!, !!remember).subscribe({
-      next: () => this.router.navigateByUrl('/profile/edit_profile'),
+    this.auth.login(email!, password!).subscribe({
+      next: (response) => {
+        this.router.navigateByUrl('/profile/edit_profile');
+        localStorage.setItem('token',response.token);
+        localStorage.setItem('email', response.email);
+        localStorage.setItem('firstName', response.firstName);
+        localStorage.setItem('lastName', response.lastName);
+      },
       error: (e) => {
         this.loading = false;
         alert(e.message ?? 'Login failed');
@@ -52,6 +58,6 @@ export class LoginComponent {
   }
 
   oauth(provider: 'google' | 'apple' | 'microsoft') {
-    this.auth.oauth(provider);
+    //this.auth.oauth(provider);
   }
 }

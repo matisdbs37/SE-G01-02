@@ -61,6 +61,6 @@ export class RegisterComponent {
   }
 
   oauth(provider: 'google' | 'apple' | 'microsoft') {
-    this.auth.oauth(provider);
+    //this.auth.oauth(provider);
   }
 }
