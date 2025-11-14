@@ -1,8 +1,6 @@
 package com.unizg.fer.user;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -42,4 +40,5 @@ public class User {
 
     @Field("createdAt")
     private LocalDate createdAt;
+    
 }
