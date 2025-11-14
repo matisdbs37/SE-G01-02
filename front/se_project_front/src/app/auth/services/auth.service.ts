@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError, delay, timeout } from 'rxjs';
+import { Observable, of, throwError, delay, timeout, last } from 'rxjs';
 
 
 
@@ -43,6 +43,12 @@ export class AuthService {
 
   getUser():Observable<any>{
     return this.http.get<{ body: JSON }>(this.API_URL + this.USER_MATCHER)
+  }
+
+  updateUser(email:string, firstName:string, lastName:string):Observable<any>{
+    const body = {firstName, lastName}
+    console.log(this.API_URL + `users/${email}`)
+    return this.http.put<any>(this.API_URL + `users/${email}`, body);
   }
 
 }

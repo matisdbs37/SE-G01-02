@@ -38,7 +38,6 @@ export class EditProfileComponent {
 
   loadUserData(data: any) {
     console.log(data)
-    console.log("test1")
     console.log(localStorage)
     const cachedFirstName = localStorage.getItem('firstName');
     const cachedLastName = localStorage.getItem('lastName');
@@ -51,8 +50,6 @@ export class EditProfileComponent {
       this.user.email = cachedEmail;
       this.editableUser = { ...this.user }
     } else {
-      console.log("ici")
-      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", data)
       this.user.firstName = data.attributes.given_name
       this.user.lastName = data.attributes.family_name;
       this.user.email = data.attributes.email;
@@ -87,6 +84,7 @@ export class EditProfileComponent {
     this.is_editing = false;
     this.user = { ...this.editableUser };
     console.log("User updated : ", this.user);
+    this.authService.updateUser(this.user.email, this.user.firstName, this.user.lastName).subscribe()
   }
 
   resetPassword() {

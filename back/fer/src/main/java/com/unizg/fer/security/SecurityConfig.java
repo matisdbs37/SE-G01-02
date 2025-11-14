@@ -29,6 +29,7 @@ public class SecurityConfig {
     private final static String LOGIN_MATCHER = "api/auth/login/**";
     private final static String REGISTER_MATCHER = "api/auth/register/**";
     private final static String LOGOUT_MATCHER = "/logout/**";
+    private final static String EDIT_MATCHER = "/users/**";
     private final static String HOME_PAGE = "http://localhost:4200/profile/edit_profile";
 
     private final String[] allowedOrigins = { "http://localhost:3000", "http://localhost:5173", "http://localhost:4200",
@@ -46,7 +47,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable()) // no need for rest API
                 .authorizeHttpRequests((authz) -> authz // auth config
-                        .requestMatchers(LOGIN_MATCHER, OAUTH2_MATCHER, REGISTER_MATCHER, LOGOUT_MATCHER, "/login").permitAll()
+                        .requestMatchers(LOGIN_MATCHER, OAUTH2_MATCHER, REGISTER_MATCHER, LOGOUT_MATCHER, EDIT_MATCHER, "/login").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .defaultSuccessUrl(HOME_PAGE, true))
@@ -65,6 +66,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

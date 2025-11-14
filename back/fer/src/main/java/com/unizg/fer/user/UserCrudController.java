@@ -1,14 +1,23 @@
 package com.unizg.fer.user;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST Controller for User CRUD operations
@@ -26,6 +35,7 @@ public class UserCrudController {
     /**
      * Get all users
      * Requires admin role
+     * 
      * @return List of all users
      */
     @GetMapping
@@ -37,6 +47,7 @@ public class UserCrudController {
 
     /**
      * Get user by ID
+     * 
      * @param id User ID
      * @return User entity
      */
@@ -50,6 +61,7 @@ public class UserCrudController {
     /**
      * Get user by email
      * Requires admin role
+     * 
      * @param email User email
      * @return User entity
      */
@@ -63,6 +75,7 @@ public class UserCrudController {
     /**
      * Create a new user
      * Requires admin role
+     * 
      * @param user User entity to create
      * @return Created user with HTTP 201 status
      */
@@ -74,26 +87,28 @@ public class UserCrudController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-
     /**
      * Update an existing user
-     * @param id User ID
-     * @param user Updated user details
+     * 
+     * @param email User email
+     * @param user  Updated user details
      * @return Updated user
      */
-    @PutMapping("/{id}")
+    @PutMapping("/{email}")
     public ResponseEntity<User> updateUser(
-            @PathVariable String id,
+            @PathVariable String email,
             @RequestBody User user) {
-        LOGGER.info("PUT request to update user with id: {}", id);
-        User updatedUser = userService.updateUser(id, user);
+        LOGGER.info("PUT request to update user with id: {}", email);
+        User updatedUser = userService.updateUser(email, user);
+        LOGGER.info("User updated");
         return ResponseEntity.ok(updatedUser);
     }
 
     /**
      * Update user roles
      * Requires admin role
-     * @param id User ID
+     * 
+     * @param id    User ID
      * @param roles New roles list
      * @return Updated user
      */
@@ -110,6 +125,7 @@ public class UserCrudController {
     /**
      * Delete a user
      * Requires admin role
+     * 
      * @param id User ID
      * @return HTTP 204 No Content
      */
@@ -123,6 +139,7 @@ public class UserCrudController {
 
     /**
      * Check if user exists by email
+     * 
      * @param email User email
      * @return true if exists, false otherwise
      */

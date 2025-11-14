@@ -1,14 +1,15 @@
 package com.unizg.fer.user;
 
-import com.unizg.fer.config.ResourceNotFoundException;
-import com.unizg.fer.config.DuplicateResourceException;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
+import com.unizg.fer.config.DuplicateResourceException;
+import com.unizg.fer.config.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -79,15 +80,15 @@ public class UserService {
 
     /**
      * Update an existing user
-     * @param id User ID
+     * @param email User email(PK)
      * @param userDetails Updated user details
      * @return Updated user
      * @throws ResourceNotFoundException if user not found
      */
-    public User updateUser(String id, User userDetails) {
-        LOGGER.info("Updating user with id: {}", id);
+    public User updateUser(String email, User userDetails) {
+        LOGGER.info("Updating user with email: {}", email);
 
-        User user = getUserById(id);
+        User user = getUserByEmail(email);
 
         if (userDetails.getFirstName() != null) {
             user.setFirstName(userDetails.getFirstName());
