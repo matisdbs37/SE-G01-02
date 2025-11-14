@@ -1,10 +1,15 @@
 package com.unizg.fer.auth;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,10 +36,10 @@ public class AuthenticationController {
      *
      * Request body example:
      * {
-     *   "email": "user@example.com",
-     *   "password": "securePassword123",
-     *   "firstName": "John",
-     *   "lastName": "Doe"
+     * "email": "user@example.com",
+     * "password": "securePassword123",
+     * "firstName": "John",
+     * "lastName": "Doe"
      * }
      *
      * @param request Registration request
@@ -55,8 +60,8 @@ public class AuthenticationController {
      *
      * Request body example:
      * {
-     *   "email": "user@example.com",
-     *   "password": "securePassword123"
+     * "email": "user@example.com",
+     * "password": "securePassword123"
      * }
      *
      * @param request Login request
@@ -94,4 +99,16 @@ public class AuthenticationController {
         return ResponseEntity.ok(new AuthResponse("Token is valid"));
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<?> getAuthStatus(@AuthenticationPrincipal OAuth2User principal) {
+        Map<String, Object> response = new HashMap<>();
+        if (principal != null) {
+            response.put("authenticated", true);
+            response.put("name", principal.getAttribute("name"));
+            response.put("email", principal.getAttribute("email"));
+        } else {
+            response.put("authenticated", false);
+        }
+        return ResponseEntity.ok(response);
+    }
 }

@@ -51,7 +51,13 @@ export class RegisterComponent {
     this.loading = true;
 
     this.auth.register(email!, password!).subscribe({
-      next: () => this.router.navigateByUrl('/questionnaire'),
+       next: (response) => {
+        this.router.navigateByUrl('/profile/edit_profile');
+        localStorage.setItem('token',response.token);
+        localStorage.setItem('email', response.email);
+        localStorage.setItem('firstName', response.firstName);
+        localStorage.setItem('lastName', response.lastName);
+      },
       error: (e) => {
         this.loading = false;
         alert(e.message ?? 'Register failed');

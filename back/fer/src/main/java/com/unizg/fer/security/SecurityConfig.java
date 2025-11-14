@@ -29,9 +29,12 @@ public class SecurityConfig {
     private final static String LOGIN_MATCHER = "api/auth/login/**";
     private final static String REGISTER_MATCHER = "api/auth/register/**";
     private final static String LOGOUT_MATCHER = "/logout/**";
+    private final static String HOME_PAGE = "http://localhost:4200/profile/edit_profile";
 
     private final String[] allowedOrigins = { "http://localhost:3000", "http://localhost:5173", "http://localhost:4200",
-            "https://votre-domaine.com" };
+            "https://votre-domaine.com",
+           // "http://localhost:8080/oauth2/authorization/google" 
+        };
 
     @Bean
     /**
@@ -43,10 +46,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable()) // no need for rest API
                 .authorizeHttpRequests((authz) -> authz // auth config
-                        .requestMatchers(LOGIN_MATCHER, OAUTH2_MATCHER, REGISTER_MATCHER, LOGOUT_MATCHER).permitAll()
+                        .requestMatchers(LOGIN_MATCHER, OAUTH2_MATCHER, REGISTER_MATCHER, LOGOUT_MATCHER, "/login").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/user/me", true))
+                        .defaultSuccessUrl(HOME_PAGE, true))
                 .logout(logout -> logout
                         .logoutUrl("/logout") // Logout URL
                         .logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository))

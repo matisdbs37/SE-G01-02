@@ -1,8 +1,6 @@
 package com.unizg.fer.user;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,8 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.unizg.fer.authfacade.AuthFacade;
 import com.unizg.fer.config.NotAuthticatedException;
+
+
 
 /**
  * @author Martin NERON test user Controller
@@ -50,16 +51,11 @@ public class UserController {
      * @throws NotAuthticatedException
      */
     @GetMapping("/me")
-    public ResponseEntity<OAuth2User> getCurrentUser(@AuthenticationPrincipal OAuth2User principal) throws NotAuthticatedException {
+    public ResponseEntity<JsonNode> getCurrentUser(@AuthenticationPrincipal OAuth2User principal) throws NotAuthticatedException {
         // Check if principal is null and throw NotAuthticatedException if so
         if (principal == null) {
             throw new NotAuthticatedException("User is not authenticated");
         }
-
-        //FIXME : get rid of this once the rest of the user controller is done 
-        System.out.println("=== OAuth2 User ===");
-        System.out.println("Email: " + principal.getAttribute(EMAIL_ATTRIBUTE));
-        System.out.println("Name: " + principal.getAttribute(NAME_ATTRIBUTE));
 
         System.out.println("=== AuthFacade Interface ===");
         System.out.println(auth.getAuthentication().toPrettyString());
@@ -83,7 +79,8 @@ public class UserController {
                 throw e;
             }
         }
-        return ResponseEntity.ok(principal);
+        System.out.print("principal" + principal);
+        return ResponseEntity.ok(auth.getAuthentication());
     }
 
 }

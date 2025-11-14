@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError, delay } from 'rxjs';
+import { Observable, of, throwError, delay, timeout } from 'rxjs';
 
 
 
@@ -13,6 +13,7 @@ export class AuthService {
   LOGIN_MATCHER: string = "api/auth/login"
   REGISTER_MATCHER: string = "api/auth/register"
   LOGOUT_MATCHER: string = "logout"
+  USER_MATCHER: String = "user/me"
 
   constructor(private readonly http: HttpClient) { }
 
@@ -22,8 +23,8 @@ export class AuthService {
 
   }
 
-  register(email: String, pwd: String, firstName: String = "Jhon", lastName: String = "DOE"): Observable<any> {
-    const body = { email, pwd, firstName, lastName }
+  register(email: String, password: String, firstName: String = "Jhon", lastName: String = "DOE"): Observable<any> {
+    const body = { email, password, firstName, lastName }
     return this.http.post<{ message: String }>(this.API_URL + this.REGISTER_MATCHER, body)
   }
 
@@ -34,4 +35,16 @@ export class AuthService {
     localStorage.removeItem('userLastName');
     return this.http.get<{ message: String }>(this.API_URL + this.LOGOUT_MATCHER)
   }
+
+  oauth(): void {
+     window.location.href = 'http://localhost:8080/login';
+
+  }
+
+  getUser():Observable<any>{
+    return this.http.get<{ body: JSON }>(this.API_URL + this.USER_MATCHER)
+  }
+
 }
+
+

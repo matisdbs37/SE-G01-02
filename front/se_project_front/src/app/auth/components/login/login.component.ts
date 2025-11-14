@@ -44,7 +44,7 @@ export class LoginComponent {
     this.auth.login(email!, password!).subscribe({
       next: (response) => {
         this.router.navigateByUrl('/profile/edit_profile');
-        localStorage.setItem('token',response.token);
+        localStorage.setItem('token', response.token);
         localStorage.setItem('email', response.email);
         localStorage.setItem('firstName', response.firstName);
         localStorage.setItem('lastName', response.lastName);
@@ -57,7 +57,8 @@ export class LoginComponent {
     });
   }
 
-  oauth(provider: 'google' | 'apple' | 'microsoft') {
-    //this.auth.oauth(provider);
+  oauth(): void {
+    this.auth.oauth();
+    
   }
 }
