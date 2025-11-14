@@ -11,13 +11,7 @@ This document serves as both a template and a resource for tracking the progress
 
 ## Project Description
 
-This project is the result of teamwork as part of the project assignment for the [Software Engineering](https://www.fer.unizg.hr/predmet/proinz) course at the Faculty of Electrical Engineering and Computing, University of Zagreb.
-
-Briefly describe the goal of your project. What motivated you? What problem are you solving?
-
-> Since this is a part of course assigment, also mention what new things you want/have learned.
-> 
-> A well-written description allows you to showcase your work to other developers, as well as potential employers. Not only does the first impression on the description page often distinguish a good project from a bad one, but it also represents good practice that you must master.
+Mind Craft is a digital platform designed to support wellbeing through guided audio/video meditations, short mindfulness drills, and tools for tracking mood, sleep, stress, and other habits. After a brief onboarding, users receive a personalized practice plan aligned with their goals. The app offers daily challenges, streak tracking, and a diverse content catalog including structured programs and educational material. Login is handled through major OAuth providers or email, with optional two-factor security. Trainers and admins can curate content and oversee user activity with permission. Mind Craft also connects to calendars, wearable-based sleep data, and notification services to keep users engaged and informed.
 
 ## Functional Requirements
 
