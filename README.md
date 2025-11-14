@@ -21,7 +21,55 @@ Briefly describe the goal of your project. What motivated you? What problem are 
 
 ## Functional Requirements
 
-Highlight key features and functionalities.
+| ID  | Description                                                                                                                           | Priority Level (1 to 5) | Target role(s) : Users, Unauthenticated users, Admins |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------------- |
+| F1  | Allow new users to create an account by using OAuth 2.0 providers such as Google, Apple, and Microsoft                                | 5                       | Unauthenticated users                                 |
+| F2  | Allow users who already have an account to access it using OAuth 2.0 providers such as Google, Apple and Microsoft                    | 5                       | Unauthenticated users                                 |
+| F3  | Allow users to delete their account and all associated data                                                                           | 3                       | Users                                                 |
+| F4  | Allow new users who just created their account to fill in a short onboarding questionnaire covering stress level, sleep quality, ...  | 5                       | Users                                                 |
+| F5  | Generate a personalized seven-day practice plan for new users based on their responses in the onboarding questionnaire (see F4)       | 3                       | Users                                                 |
+| F6  | Allow users to update their personal information, preferences and account settings                                                    | 5                       | Users                                                 |
+| F7  | Allow users to participate in a meditation session by accessing guided audio or video content                                         | 5                       | Users                                                 |
+| F8  | Allow users to search content by keywords / search bar                                                                                | 4                       | Users                                                 |
+| F9  | Allow users to filter content by duration, category, ...                                                                              | 4                       | Users                                                 |
+| F10 | Provide a map of the nearest psychologists                                                                                            | 1                       | Users                                                 |
+| F11 | Allow users to rate the services (from 1 to 5) and provide a comment after each session                                               | 3                       | Users                                                 |
+| F12 | Moderate the inappropriate content                                                                                                    | 2                       | Admins                                                |
+| F13 | Allow users to use their own calendar like Google Calendar or other CalDAV-<br>compatible services                                    | 4                       | Users                                                 |
+| F14 | Manage roles/permissions with RBAC                                                                                                    | 5                       | Users/Admins                                          |
+| F15 | Recommendation system based on the user's goals, preferences, history, mood, and time of day.                                         | 3                       | Users                                                 |
+| F16 | Notifications for upcoming sessions                                                                                                   | 2                       | Users                                                 |
+| F17 | Log useful information about authentication and RBAC and users/admin actions                                                          | 4                       | Users/Admins                                          |
+| F18 | Store guided meditations in audio and video formats by fetching them using an API, with duration, language, difficulty level and tags | 4                       | Admins                                                |
+| F19 | Organize meditations by categories (focus, sleep, ...)                                                                                | 3                       | Admins                                                |
+| F20 | Allow users to do a daily challenge with a meditation and a short exercise                                                            | 4                       | Users                                                 |
+| F21 | Allow users to get badges if they do streaks for their daily challenges (see F17)                                                     | 2                       | Users                                                 |
+| F22 | Display average ratings and user reviews for each session                                                                             | 3                       | Admins                                                |
+| F23 | Allow users to perform daily mood check-ins with a 1–10 scale, emotion tags, and optional notes                                       | 4                       | Users                                                 |
+| F24 | Track habits such as sleep quality, stress, focus, caffeine/alcohol intake, and physical activity                                     | 3                       | Users                                                 |
+| F25 | Integrate with external sleep tracking services and display sleep score data (0–100)                                                  | 1                       | Users                                                 |
+| F26 | Allow trainers/therapists to publish training plans and track user progress with consent                                              | 2                       | Trainers                                              |
+| F27 | Display user progress and weekly summaries (mood trends, streaks, time spent)                                                         | 3                       | Users                                                 |
+| F28 | Ensure compliance with GDPR (user consent, right to deletion/export, data minimization)                                               | 4                       | Users/Admins                                          |
+| F29 | Send weekly motivational or progress emails/push notifications                                                                        | 2                       | Users                                                 |
+| F30 | Provide analytics dashboard to admins (active users, content engagement, ...)                                                         | 2                       | Admins                                                |
+| F31 | Allow users to mark content as favorite                                                                                               | 3                       | Users                                                 |
+| F32 | Display recently played sessions                                                                                                      | 2                       | Users                                                 |
+
+## Non-functional Requirements
+
+| ID   | Category        | Description                                                                                                                         |
+| ---- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| NF1  | Performance     | The system must support at least 1000 concurrent users without any problems                                                         |
+| NF2  | Performance     | All user interactions on the page (loading sessions, submitting forms, ...) should respond within 3 seconds under normal conditions |
+| NF3  | Usability       | The interface of the website must be responsive and easy to understand                                                              |
+| NF4  | Security        | The system must comply with GDPR                                                                                                    |
+| NF5  | Security        | User data, including passwords, must be encrypted                                                                                   |
+| NF6  | Security        | Authentication must follow OAuth 2.0 standards                                                                                      |
+| NF7  | Maintainability | Clear technical documentation should exist for API, deployment, etc. to facilitate future development                               |
+| NF8  | Compatibility   | The system must be compatible with all major browsers, such as Chrome, Firefox, ...                                                 |
+| NF9  | Reliability     | Notifications must be delivered with a maximum delay of 60 seconds                                                                  |
+| NF10 | Maintainability | The system must be designed using a modular architecture, allowing independents updates of components                               |
 
 ## Deployment
 This section provides information on how to access and evaluate the deployed demo version of the application, allowing users to interact with the app and test its functionality in a limited scope before running it locally.
@@ -43,12 +91,19 @@ For detailed instructions on installation and running the application in a local
 
 ## Technologies
 
-> List the programming languages, frameworks, and libraries used in the project.
-> Briefly explain the role of each technology for context.
+- Backend / API : Spring
+- Frontend : Angular
+- SQL Database
+- Firebase for authentication and notifications
 
 ## Team Members
 
-List team members/links/main contributions.
+- Matis DUBOIS (team leader)
+- Matthieu CHARTON
+- Evan LEMONNIER
+- Martin NERON
+- Lucas MAGRET
+- Melissa GHAOUI
 
 ## Contributions (Optional)
 > Rules depend on the team’s organization and are often outlined in `CONTRIBUTING.md`.

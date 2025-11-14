@@ -1,0 +1,300 @@
+2025-11-14 11:40:53 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 11:40:53 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 11:40:53 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 11:40:54 - org.mongodb.driver.cluster - INFO - Monitor thread successfully connected to server with description ServerDescription{address=ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017, type=REPLICA_SET_PRIMARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=180947475, minRoundTripTimeNanos=0, setName='atlas-pukxba-shard-0', canonicalAddress=ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017, hosts=[ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017], passives=[], arbiters=[], primary='ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='euc1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='EU_CENTRAL_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff00000000000000a8, setVersion=154, topologyVersion=TopologyVersion{processId=6914a64746a2745f7c28c818, counter=6}, lastWriteDate=Fri Nov 14 11:40:54 CET 2025, lastUpdateTimeNanos=89601824906310}
+2025-11-14 11:40:54 - org.mongodb.driver.cluster - INFO - Discovered replica set primary ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017 with max election id 7fffffff00000000000000a8 and max set version 154
+2025-11-14 11:40:54 - org.mongodb.driver.cluster - INFO - Monitor thread successfully connected to server with description ServerDescription{address=ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=113828103, minRoundTripTimeNanos=0, setName='atlas-pukxba-shard-0', canonicalAddress=ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, hosts=[ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017], passives=[], arbiters=[], primary='ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='euc1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='EU_CENTRAL_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=154, topologyVersion=TopologyVersion{processId=6914a8c6b399240b56644f6c, counter=3}, lastWriteDate=Fri Nov 14 11:40:54 CET 2025, lastUpdateTimeNanos=89601860434159}
+2025-11-14 11:40:54 - org.mongodb.driver.cluster - INFO - Monitor thread successfully connected to server with description ServerDescription{address=ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=113987623, minRoundTripTimeNanos=0, setName='atlas-pukxba-shard-0', canonicalAddress=ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, hosts=[ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017], passives=[], arbiters=[], primary='ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='euc1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='EU_CENTRAL_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=154, topologyVersion=TopologyVersion{processId=6914a413bc58a97503076c92, counter=4}, lastWriteDate=Fri Nov 14 11:40:54 CET 2025, lastUpdateTimeNanos=89601860592282}
+2025-11-14 12:48:40 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 12:48:40 - org.mongodb.driver.cluster - INFO - Monitor thread successfully connected to server with description ServerDescription{address=ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017, type=REPLICA_SET_PRIMARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=342336140, minRoundTripTimeNanos=0, setName='atlas-pukxba-shard-0', canonicalAddress=ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017, hosts=[ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017], passives=[], arbiters=[], primary='ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='euc1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='EU_CENTRAL_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff00000000000000a8, setVersion=154, topologyVersion=TopologyVersion{processId=6914a64746a2745f7c28c818, counter=6}, lastWriteDate=Fri Nov 14 12:48:41 CET 2025, lastUpdateTimeNanos=93666376385745}
+2025-11-14 12:48:40 - org.mongodb.driver.cluster - INFO - Discovered replica set primary ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017 with max election id 7fffffff00000000000000a8 and max set version 154
+2025-11-14 13:25:10 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 13:25:10 - org.mongodb.driver.cluster - INFO - Monitor thread successfully connected to server with description ServerDescription{address=ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017, type=REPLICA_SET_PRIMARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=108928533, minRoundTripTimeNanos=0, setName='atlas-pukxba-shard-0', canonicalAddress=ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017, hosts=[ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017], passives=[], arbiters=[], primary='ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='euc1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='EU_CENTRAL_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff00000000000000a8, setVersion=154, topologyVersion=TopologyVersion{processId=6914a64746a2745f7c28c818, counter=6}, lastWriteDate=Fri Nov 14 13:25:10 CET 2025, lastUpdateTimeNanos=93733592291734}
+2025-11-14 13:25:10 - org.mongodb.driver.cluster - INFO - Discovered replica set primary ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017 with max election id 7fffffff00000000000000a8 and max set version 154
+2025-11-14 13:25:15 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 13:25:15 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 13:25:16 - org.mongodb.driver.cluster - INFO - Monitor thread successfully connected to server with description ServerDescription{address=ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=239974538, minRoundTripTimeNanos=0, setName='atlas-pukxba-shard-0', canonicalAddress=ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, hosts=[ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017], passives=[], arbiters=[], primary='ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='euc1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='EU_CENTRAL_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=154, topologyVersion=TopologyVersion{processId=6914a413bc58a97503076c92, counter=4}, lastWriteDate=Fri Nov 14 13:25:16 CET 2025, lastUpdateTimeNanos=93739528577109}
+2025-11-14 13:25:16 - org.mongodb.driver.cluster - INFO - Monitor thread successfully connected to server with description ServerDescription{address=ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=246434599, minRoundTripTimeNanos=0, setName='atlas-pukxba-shard-0', canonicalAddress=ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, hosts=[ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017, ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017], passives=[], arbiters=[], primary='ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='euc1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='EU_CENTRAL_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=154, topologyVersion=TopologyVersion{processId=6914a8c6b399240b56644f6c, counter=3}, lastWriteDate=Fri Nov 14 13:25:16 CET 2025, lastUpdateTimeNanos=93739528561952}
+2025-11-14 14:02:35 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 14:02:36 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-02.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:85)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:85)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:233)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:219)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:549)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76)
+	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:104)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:79)
+	... 3 common frames omitted
+2025-11-14 14:02:41 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 14:02:41 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819)
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517)
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:249)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182)
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824)
+	... 4 common frames omitted
+2025-11-14 14:02:41 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-00.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:85)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:85)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:233)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:219)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:549)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76)
+	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:104)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:79)
+	... 3 common frames omitted
+2025-11-14 14:02:41 - org.mongodb.driver.cluster - INFO - Exception in monitor thread while connecting to server ac-5fk9kzu-shard-00-01.x8n7dex.mongodb.net:27017
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:85)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:85)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:233)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:219)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:176)
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:549)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304)
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76)
+	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:104)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:79)
+	... 3 common frames omitted
