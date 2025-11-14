@@ -74,15 +74,33 @@ For detailed instructions on installation and running the application in a local
 
 ## Installation
 
-> - Provide clear instructions on how to install and run the project or [link to Wiki].
-> - Include dependencies (if any) and installation commands.
-> - Consider offering pre-built binaries or Docker images (if applicable).
+To run the project, you have to install **Java**, **Maven** and **Node.js / npm**.
+
+Once Node.js and npm are installed :
+
+`npm install -g @angular/cli`
+
+### To launch the API :
+
+- `cd back/fer`
+- `mvn clean install`
+- `mvn spring-boot:run`
+
+API runs at : **http://localhost:8080**
+
+### To launch the front :
+
+- `cd front/se_project_front`
+- `npm install`
+- `ng serve`
+
+Frontend runs at : **http://localhost:4200**
 
 ## Technologies
 
 - Backend / API : Spring
 - Frontend : Angular
-- SQL Database
+- MongoDB Database
 - Firebase for authentication and notifications
 
 ## Team Members
@@ -95,9 +113,14 @@ For detailed instructions on installation and running the application in a local
 - Melissa GHAOUI
 
 ## Contributions (Optional)
-> Rules depend on the team’s organization and are often outlined in `CONTRIBUTING.md`.
 
-
+- Functional and Non-functional Requirements : Everyone
+- Matis DUBOIS : Mockups for the interface, frontend
+- Matthieu CHARTON : Mockups for the interface, frontend
+- Evan LEMMONIER : use cases, backend
+- Martin NERON : use cases, backend
+- Lucas MAGRET : database model, MongoDB management
+- Melissa GHAOUI : database model, MongoDB management
 
 
 # 📝 Licence
