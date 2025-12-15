@@ -22,7 +22,6 @@ public class SecurityConfig {
     private final String[] PUBLIC_END_POINTS = {
             "/api/v2/actuator/health",
             "/api/v2/error",
-            "/api/v2/login",
             "/api/v2/logout"
     };
 

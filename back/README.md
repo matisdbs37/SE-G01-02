@@ -23,7 +23,7 @@ To acces the protected resources/endpoint you need to follow these steps
         ```
     
 ## Public end points
-
+### HEALTH
 ```bash
 ~ ❯ curl 'http://localhost:8080/api/v2/actuator/health'  -X GET -H 'Accept: application/json' | jq
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -62,5 +62,31 @@ Should give you this
       }
     }
   }
+}
+```
+### ERROR 
+```bash
+curl 'http://localhost:8080/api/v2/error' -X GET -H 'Accept: application/json' | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    32   0    32   0     0  5282     0  --:--:-- --:--:-- --:--:--  5333
+```
+Should give you this
+```JSON
+{
+  "error": "Something went wrong"
+}
+```
+### LOGOUT
+```bash
+~ ❯ curl 'http://localhost:8080/api/v2/logout' -X GET -H 'Accept: application/json' | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    49   0    49   0     0  3671     0  --:--:-- --:--:-- --:--:--  3769
+```
+Should give you this
+```JSON
+{
+  "logout": "TODO: do something with the tokens ?"
 }
 ```
