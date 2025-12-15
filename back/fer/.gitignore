@@ -37,4 +37,5 @@ build/
 
 
 ### Logs Files ###
-/logs* 
+**/logs/
+**/*.log
