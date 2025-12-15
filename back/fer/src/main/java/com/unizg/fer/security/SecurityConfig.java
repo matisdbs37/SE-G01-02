@@ -20,10 +20,10 @@ public class SecurityConfig {
     private final String baseUrl = "http://localhost:8080";
 
     private final String[] PUBLIC_END_POINTS = {
-            this.baseUrl + "/api/v2/health",
-            this.baseUrl + "/api/v2/error",
-            this.baseUrl + "/api/v2/login",
-            this.baseUrl + "/api/v2/logout"
+            "/api/v2/actuator/health",
+            "/api/v2/error",
+            "/api/v2/login",
+            "/api/v2/logout"
     };
 
     @Bean
@@ -33,7 +33,11 @@ public class SecurityConfig {
      */
     public SecurityFilterChain filterChain(HttpSecurity http)
             throws Exception {
-        http.authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
+                
+        http
+
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
                                                              .permitAll()
                                                              .anyRequest()
                                                              .authenticated())

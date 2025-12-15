@@ -22,3 +22,45 @@ To acces the protected resources/endpoint you need to follow these steps
         curl -Headers @{ Authorization = "Bearer <ID_TOKEN>" } http://localhost:8080/api/v2/<END_POINT>
         ```
     
+## Public end points
+
+```bash
+~ ❯ curl 'http://localhost:8080/api/v2/actuator/health'  -X GET -H 'Accept: application/json' | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   347   0   347   0     0   412     0  --:--:-- --:--:-- --:--:--   412
+```
+Should give you this
+```JSON
+{
+  "status": "UP",
+  "components": {
+    "diskSpace": {
+      "status": "UP",
+      "details": {
+        "total": 511017222144,
+        "free": 477076635648,
+        "threshold": 10485760,
+        "path": "/home/shrek/workspace/SE-G01-02/back/fer/.",
+        "exists": true
+      }
+    },
+    "mongo": {
+      "status": "UP",
+      "details": {
+        "maxWireVersion": 25
+      }
+    },
+    "ping": {
+      "status": "UP"
+    },
+    "ssl": {
+      "status": "UP",
+      "details": {
+        "validChains": [],
+        "invalidChains": []
+      }
+    }
+  }
+}
+```
