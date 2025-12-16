@@ -77,7 +77,7 @@ Should give you this
   "error": "Something went wrong"
 }
 ```
-### LOGOUT
+### LOGOUTé
 ```bash
 ~ ❯ curl 'http://localhost:8080/api/v2/logout' -X GET -H 'Accept: application/json' | jq
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
