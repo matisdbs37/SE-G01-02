@@ -10,7 +10,7 @@ To acces the protected resources/endpoint you need to follow these steps
         Authorization endpoint: https://accounts.google.com/o/oauth2/v2/auth
         Token endpoint: https://oauth2.googleapis.com/token
         ```
- - 3. Click on step 1 on the left and add openid,profile,email and click Authorize api
+ - 3. Click on step 1 on the left and add **openid,profile,email** and click Authorize api
  - 4. Click on step 2 and click on Exchange authorization code for token
  - 5. **Linux** use this command 
         ```bash

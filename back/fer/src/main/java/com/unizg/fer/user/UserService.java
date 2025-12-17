@@ -9,12 +9,20 @@ import com.unizg.fer.config.ResourceNotFoundException;
 public class UserService {
 
     private static final String RESOURCE_NOT_FOUND = "user not found";
+    private static final String ID_CANNOT_BE_NULL = "id cannot be null";
 
     @Autowired
     public UserRepository repo;
 
-    public User getInfo(String email){
-        System.out.println(repo.findAll());
+    public User getInfoByEmail(String email) {
         return repo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NOT_FOUND));
+    }
+
+    public User getInfoById(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException(ID_CANNOT_BE_NULL);
+        }
+
+        return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NOT_FOUND));
     }
 }
