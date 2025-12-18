@@ -1,8 +1,14 @@
 package com.unizg.fer.user;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import com.unizg.fer.stats.StatUpdater;
+import com.unizg.fer.stats.StatsService;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +22,9 @@ public class UserController {
 
     @Autowired
     private UserService service;
+    
+    @Autowired
+    public StatsService statsService;
 
     /**
      * Retrieves the user details based on the email extracted from the JWT token.
@@ -29,7 +38,6 @@ public class UserController {
         var user = service.getUserByEmail(email);
         return ResponseEntity.ok(user);
     }
-
     /**
      * Updates the user details based on the email extracted from the JWT token.
      *
@@ -44,6 +52,15 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("user/{id}")
+    public ResponseEntity<User> logUser(@PathVariable String id) {
+        //first update stats
+        LocalDateTime now = LocalDateTime.now();
+        statsService.updateStats(id, StatUpdater.login(statsService, id, now));
+        // second get user
+        var user = service.getInfoById(id);
+        return ResponseEntity.ok(user);
+    }
     /**
      * Deletes the user based on the email extracted from the JWT token.
      *

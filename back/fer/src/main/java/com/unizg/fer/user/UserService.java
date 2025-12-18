@@ -14,11 +14,13 @@ import java.time.LocalDateTime;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepo;
-
+    private static final String RESOURCE_NOT_FOUND = "user not found";
+    private static final String ID_CANNOT_BE_NULL = "id cannot be null";
     private static final String NO_USER = "No user found with the email address : ";
     private static final String USER_EXIST = "A user with this email address already exists.";
+
+    @Autowired
+    private UserRepository userRepo;
 
     /**
      * Retrieves a user by their email address.
@@ -31,7 +33,6 @@ public class UserService {
         return userRepo.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(NO_USER + email));
     }
-
     /**
      * Creates a new user with the provided details.
      *
@@ -47,7 +48,6 @@ public class UserService {
         if (userRepo.existsByEmail(email)) {
             throw new UserAlreadyExistsException(USER_EXIST);
         }
-
         var user = User.builder()
                 .email(email)
                 .firstName(firstName)
@@ -59,6 +59,15 @@ public class UserService {
                 .build();
         return userRepo.save(user);
     }
+
+
+    public User getInfoById(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException(ID_CANNOT_BE_NULL);
+        }
+        return userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NOT_FOUND));
+    }
+
 
     /**
      * Updates an existing user's details.
