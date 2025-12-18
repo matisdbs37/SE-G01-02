@@ -15,7 +15,6 @@ public class ContentController {
 
     @Autowired
     ContentService service;
-    
 
     @GetMapping("/type/{text}")
     public ResponseEntity<List<Content>> getContentByType(@PathVariable String text) {
