@@ -34,7 +34,6 @@ public class GlobalExceptionHandler {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
 
-        // Tu peux ajouter d'autres handlers
         @ExceptionHandler(IllegalArgumentException.class)
         public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
                 LOGGER.warn("Invalid argument: {}", ex.getMessage());
@@ -46,7 +45,17 @@ public class GlobalExceptionHandler {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
-        // Handler pour toutes les autres exceptions non gérées
+        @ExceptionHandler(UserAlreadyExistsException.class)
+        public ResponseEntity<Map<String, Object>> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("timestamp", LocalDateTime.now());
+                errorResponse.put("status", HttpStatus.CONFLICT.value());
+                errorResponse.put("error", "Conflict");
+                errorResponse.put("message", ex.getMessage());
+
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        }
+
         @ExceptionHandler(Exception.class)
         public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
                 LOGGER.error("Unexpected error occurred: {}", ex.getMessage(), ex);
