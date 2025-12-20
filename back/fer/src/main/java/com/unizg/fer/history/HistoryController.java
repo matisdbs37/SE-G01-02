@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.unizg.fer.user.UserService;
 
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -36,6 +37,7 @@ public class HistoryController {
      * @param size  size of a page default=20
      * @return
      */
+    @GetMapping
     public ResponseEntity<Page<HistoryEntry>> getPaginatedHistory(@AuthenticationPrincipal Jwt jwt,
             @RequestParam(defaultValue = "0") int pages,
             @RequestParam(defaultValue = "20") int size) {
@@ -54,7 +56,8 @@ public class HistoryController {
      * Update watchTime from an entry with user and videoId
      * Create a new entry if entry does not exists
      * Need to be called at the start of the video and regulary during the video
-     * set watchedAt at now 
+     * set watchedAt at now
+     * 
      * @param videoId
      * @param Jwt
      * @param watchdTime watched time of the video in s
@@ -70,9 +73,10 @@ public class HistoryController {
 
     /***
      * Update the rating in the historyEntry
+     * 
      * @param videoId
      * @param jwt
-     * @param stars must be >= 0 and <= 10 
+     * @param stars   must be >= 0 and <= 10
      * @return
      */
     @PatchMapping("/{videoId}/rating")
