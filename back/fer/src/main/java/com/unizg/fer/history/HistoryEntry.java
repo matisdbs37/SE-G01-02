@@ -2,6 +2,7 @@ package com.unizg.fer.history;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,6 @@ import lombok.NoArgsConstructor;
 @CompoundIndex(name = "user_video", def = "{'userId': 1, 'videoId': 1}", unique = true)
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class HistoryEntry {
 
@@ -48,7 +48,7 @@ public class HistoryEntry {
     private Integer watchedDuration; // in seconds
 
     @Field("rating")
-    private Integer rating;         // 1-5 to five stars
+    private Integer rating; // 1-10 to five stars
 
     @Field("comments")
     private List<CommentsEntry> comments;
@@ -61,7 +61,11 @@ public class HistoryEntry {
     @Field("updatedAt")
     private LocalDateTime updatedAt;
 
-    public void addComment(String text, LocalDate now){
+    public void addComment(String text, LocalDate now) {
         comments.add(new CommentsEntry(text, now));
+    }
+
+    public HistoryEntry() {
+        this.comments = new ArrayList<CommentsEntry>();
     }
 }

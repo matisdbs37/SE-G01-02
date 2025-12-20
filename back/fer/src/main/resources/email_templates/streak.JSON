@@ -1,0 +1,6 @@
+{
+    "from": "mon-app-notifications@gmail.com",
+    "subject": "Hi {userName}, You have logged in to our site in the last {actualStreak} days, don't miss the {extendedStreak}",
+    "isHtml": true,
+    "body": "<!DOCTYPE html><html><head><meta charset='UTF-8'><style>body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px}.header{background:#667eea;color:white;padding:30px;text-align:center;border-radius:10px 10px 0 0}.content{background:#f9f9f9;padding:30px}.button{display:inline-block;background:#667eea;color:white;padding:12px 30px;text-decoration:none;border-radius:5px}</style></head><body><div class='header'><h1>Bienvenue !</h1></div><div class='content'><h2>Bonjour {nomUtilisateur} !</h2><p>Nous sommes ravis de t'accueillir.</p><p>Ton inscription a été effectuée le <strong>{dateInscription}</strong>.</p><a href='https://mon-app.com/dashboard' class='button'>Accéder à mon compte</a><p>Cordialement,<br>L'équipe Mon Application</p></div></body></html>"
+}
