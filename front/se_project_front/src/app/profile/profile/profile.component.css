@@ -1,0 +1,217 @@
+.profile-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #A8C5E2, #D7C7E9);
+  font-family: 'Lato', sans-serif;
+}
+
+.sidebar {
+  width: 260px;
+  background: rgba(255,255,255,0.9);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar button {
+  background: none;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.sidebar button:hover {
+  background: rgba(69,160,73,0.15);
+}
+
+.sidebar .danger {
+  color: #d33;
+}
+
+.sidebar .logout {
+  margin-top: auto;
+  opacity: 0.7;
+}
+
+.content {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+
+.back {
+  background: none;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  opacity: 0.7;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.back:hover {
+  opacity: 1;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 26px;
+}
+
+p {
+  opacity: 0.8;
+}
+
+form {
+  margin-top: 20px;
+}
+
+label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+
+input,
+select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  background: white;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input {
+  width: 97%;
+}
+
+select {
+  width: 99.5%;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #3EAC87;
+  box-shadow: 0 0 0 2px rgba(69,160,73,0.2);
+}
+
+input:disabled,
+select:disabled {
+  background: #f2f2f2;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.form-grid-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+  max-width: 500px;
+  margin: 40px auto 0;
+}
+
+section:has(.form-grid-vertical) {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  max-width: 500px;
+  margin: 40px auto 0;
+}
+
+
+button {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button.submit {
+  background: #3EAC87;
+  color: white;
+}
+
+button.submit:hover {
+  background: #329674;
+}
+
+.header-row button {
+  background: #3EAC87;
+  color: white;
+}
+
+.header-row button:hover {
+  background: #329674;
+}
+
+button.danger {
+  background: #d33;
+  color: white;
+}
+
+button.danger:hover {
+  background: #b22;
+}
+
+section {
+  width: 100%;
+  max-width: 1000px;
+  background: rgba(255,255,255,0.85);
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.success-message {
+  color: green;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}

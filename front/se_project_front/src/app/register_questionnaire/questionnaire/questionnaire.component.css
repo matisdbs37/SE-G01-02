@@ -17,13 +17,13 @@
 }
 
 .progress-bar {
-  width: 50%;
-  height: 10px;
+  width: 60%;
+  height: 8px;
   background-color: #F3FAFF;
   border-radius: 10px;
   overflow: hidden;
-  margin: 30px auto 50px auto;
-  border: 1px solid black;
+  margin: 40px auto;
+  border: none;
 }
 
 .progress {
@@ -34,57 +34,89 @@
 }
 
 .question-box {
-  flex: 1;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.9);
+  padding: 60px 50px;
+  border-radius: 25px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
   text-align: center;
-  padding: 20px;
-  margin-top: 175px;
+  margin-top: 100px;
 }
 
 .question-box h2 {
-  margin-bottom: 30px;
-  font-size: 28px;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  line-height: 1.4;
+  color: #2F2E2E;
 }
 
-input[type="text"] {
-  padding: 12px;
+input[type="text"],
+select {
+  width: 100%;
+  max-width: 400px;
+  padding: 14px;
   font-size: 16px;
-  border-radius: 5px;
-  width: 300px;
-  margin-bottom: 25px;
-  background-color: #F3FAFF;
-  border: 1px solid black;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background-color: #EEF7F3;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  border-color: #3EAC87;
+  box-shadow: 0 0 0 3px rgba(69,160,73,0.2);
+}
+
+.slider-group {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 input[type="range"] {
-  width: 300px;
-  margin-bottom: 25px;
+  width: 100%;
+  appearance: none;
+  height: 6px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
 }
 
-select {
-  width: 320px;
-  padding: 10px;
-  margin-bottom: 25px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid black;
-  background-color: #F3FAFF;
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #85F1FF;
+  border-radius: 50%;
   cursor: pointer;
+}
+
+.slider-value {
+  font-size: 22px;
+  font-weight: 600;
+  color: #2F2E2E;
 }
 
 button {
-  padding: 10px 25px;
+  padding: 14px 30px;
   font-size: 16px;
   background-color: #85F1FF;
   border: none;
-  border-radius: 5px;
+  border-radius: 14px;
   color: #1A1A1A;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s ease;
-  border: 1px solid black;
   margin: 10px;
   margin-top: 50px;
 }
