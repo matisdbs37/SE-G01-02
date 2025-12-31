@@ -30,6 +30,11 @@ export class ProfileComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
+  mentalHealth: number = 1;
+  sleepQuality: number = 4;
+  stressLevel: number = 10;
+  meditationExperience: number = 9;
+
   user = {
     firstName: 'John',
     lastName: 'Doe',
@@ -111,5 +116,15 @@ export class ProfileComponent {
     }
     this.errorMessage = '';
     this.successMessage = 'Password successfully changed!';
+  }
+
+  getMetricColor(value: number): string {
+    const hue = (value / 10) * 120;
+    return `hsl(${hue}, 70%, 45%)`;
+  }
+
+  getStressColor(value: number): string {
+    const hue = 120 - (value / 10) * 120;
+    return `hsl(${hue}, 70%, 45%)`;
   }
 }
