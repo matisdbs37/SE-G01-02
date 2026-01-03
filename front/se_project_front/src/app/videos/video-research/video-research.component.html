@@ -1,0 +1,86 @@
+<div class="videos-background">
+
+  <div class="videos-page">
+
+    <button class="back">← Back to home</button>
+
+    <h2>Meditation library</h2>
+
+    <div class="filters-bar">
+
+      <input type="text" placeholder="Search..." [(ngModel)]="searchText">
+
+      <select [(ngModel)]="selectedCategory">
+        <option value="">Category</option>
+        <option *ngFor="let c of categories">{{ c }}</option>
+      </select>
+
+      <select [(ngModel)]="selectedType">
+        <option value="">Type</option>
+        <option *ngFor="let t of types">{{ t }}</option>
+      </select>
+
+      <select [(ngModel)]="selectedLanguage">
+        <option value="">Language</option>
+        <option *ngFor="let l of languages">{{ l }}</option>
+      </select>
+
+      <select [(ngModel)]="selectedDifficulty">
+        <option [ngValue]="null">Any difficulty</option>
+        <option [ngValue]="1">1</option>
+        <option [ngValue]="2">2</option>
+        <option [ngValue]="3">3</option>
+      </select>
+
+      <select [(ngModel)]="selectedDuration">
+        <option value="">Duration</option>
+        <option value="short">&lt; 10 min</option>
+        <option value="medium">10–20 min</option>
+        <option value="long">&gt; 20 min</option>
+      </select>
+
+      <select [(ngModel)]="selectedRating">
+        <option [ngValue]="null">Any rating</option>
+        <option *ngFor="let r of ratings" [ngValue]="r">
+          {{ r }}★ & up
+        </option>
+      </select>
+
+    </div>
+
+    <div class="videos-grid">
+      <div class="video-card" *ngFor="let video of paginatedVideos()">
+
+        <div class="thumbnail">
+          <span class="badge">{{ video.type }}</span>
+        </div>
+
+        <div class="video-info">
+          <h3>{{ video.title }}</h3>
+          <p>{{ video.category }} • {{ video.duration }} min</p>
+          <p>{{ video.language }} • Difficulty {{ video.difficulty }}</p>
+          <p class="rating">⭐ {{ video.rating }}/5</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="pagination">
+
+      <button (click)="prevPage()">‹</button>
+
+      <button
+        *ngFor="let p of pagesToDisplay()"
+        [class.active]="p === currentPage"
+        [disabled]="p === '...'"
+        (click)="onPageClick(p)">
+        {{ p }}
+      </button>
+
+      <button (click)="nextPage()">›</button>
+
+    </div>
+
+  </div>
+
+</div>

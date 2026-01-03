@@ -25,5 +25,9 @@ export const routes: Routes = [
     path: 'profile/delete_account',
     loadComponent: () => import('./profile/delete-account/delete-account.component').then(m => m.DeleteAccountComponent)
   },
+  {
+    path: 'videos/research',
+    loadComponent: () => import('./videos/video-research/video-research.component').then(m => m.VideoResearchComponent)
+  },
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' }
 ];

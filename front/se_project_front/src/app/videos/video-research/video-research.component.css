@@ -1,0 +1,119 @@
+.videos-background {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #A8C5E2, #D7C7E9);
+  padding: 60px 0;
+}
+
+.videos-page {
+  max-width: 1200px;
+  margin: auto;
+  background: rgba(255,255,255,0.9);
+  padding: 50px;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+.back:hover {
+  opacity: 1;
+}
+
+.filters-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.filters-bar input,
+.filters-bar select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.video-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.video-card:hover {
+  transform: translateY(-6px);
+}
+
+.thumbnail {
+  height: 150px;
+  background: linear-gradient(135deg, #45a049, #3EAC87);
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.9);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.video-info {
+  padding: 20px;
+}
+
+.video-info h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.video-info p {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.rating {
+  font-weight: bold;
+}
+
+.pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #eee;
+}
+
+.pagination button.active {
+  background: #45a049;
+  color: white;
+}
+
+.pagination button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
