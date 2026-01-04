@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-research',
@@ -9,6 +10,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './video-research.component.css'
 })
 export class VideoResearchComponent {
+  constructor(private router: Router) {}
 
   searchText = '';
   selectedCategory = '';
@@ -138,5 +140,11 @@ export class VideoResearchComponent {
     if (typeof p === 'number') {
       this.goToPage(p);
     }
+  }
+
+  openVideo(video: any, index: number) {
+    this.router.navigate(['/videos/detail', index], {
+      state: { video }
+    });
   }
 }

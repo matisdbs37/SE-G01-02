@@ -1,0 +1,63 @@
+<div class="videos-background">
+
+  <div class="video-detail-page">
+
+    <button class="back" (click)="back()">← Back to library</button>
+
+    <h2>{{ video.title }}</h2>
+
+    <div class="media-container">
+
+        <iframe
+            *ngIf="video.type === 'Video'"
+            [src]="'https://www.youtube.com/embed/kSZddHca0ME' | safeUrl"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="youtube-frame">
+        </iframe>
+
+        <audio *ngIf="video.type === 'Audio'" controls>
+            <source src="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+
+    </div>
+
+    <div class="video-meta">
+      <p>{{ video.category }} • {{ video.duration }} min</p>
+      <p>{{ video.language }} • Difficulty {{ video.difficulty }}</p>
+      <p>⭐ {{ video.rating }}/5</p>
+    </div>
+
+    <div class="rating-section">
+      <p>Rate this session</p>
+      <span *ngFor="let r of [1,2,3,4,5]"
+            (click)="setRating(r)"
+            [class.active]="r <= userRating">
+        ★
+      </span>
+    </div>
+
+    <div class="comments-section">
+      <h3>Comments</h3>
+
+      <textarea
+        placeholder="Write a comment..."
+        [(ngModel)]="newComment">
+      </textarea>
+
+      <button (click)="addComment()">Submit</button>
+
+      <div class="comment" *ngFor="let c of comments">
+        <strong>{{ c.user }}</strong>
+        <span class="stars"> ⭐ {{ c.rating }}</span>
+        <p>{{ c.text }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
