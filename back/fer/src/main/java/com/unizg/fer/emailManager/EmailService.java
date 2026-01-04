@@ -5,19 +5,31 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import jakarta.mail.internet.MimeMessage;
+
 @Service
 public class EmailService {
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     private final ObjectMapper mapper;
 
     private static final String TEMPLATE_FOLDER = "./back/fer/src/main/resources/email_templates/";
 
     private static final String KEY_NOT_FOUND_EXCEPTION = "The key %s was not found in this JSON template %s ";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
     public EmailService() {
         this.mapper = new ObjectMapper();
@@ -68,7 +80,38 @@ public class EmailService {
         return result;
     }
 
-    // TODO : Create email with the Email template
-    // check how to send an SMPT email
+    /**
+     * M
+     * 
+     * @param userEmail
+     * @param type      TemplateType to edit
+     * @param values    
+     */
+    public void sendEmail(String recipient, TemplateType type, Map<JSONValues, String> values) {
+        try {
+            // 1. Charger et éditer le template via la fonction privée
+            // On traite systématiquement SUBJECT et BODY
+            EmailTemplate template = editTemplateKey(
+                    type.getFileName(),
+                    List.of(JSONKeys.SUBJECT, JSONKeys.BODY),
+                    values);
 
+            // 2. Préparer le message Mime (support HTML)
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(template.getFrom());
+            helper.setTo(recipient);
+            helper.setSubject(template.getSubject());
+            helper.setText(template.getBody(), template.isHtml());
+
+            // 3. Envoi
+            mailSender.send(message);
+            LOGGER.info("Email '{}' envoyé avec succès à {}", type, recipient);
+
+        } catch (Exception e) {
+            LOGGER.error("Erreur lors de l'envoi de l'email {} à {}", type, recipient, e);
+            throw new RuntimeException("Échec de l'envoi de l'email", e);
+        }
+    }
 }

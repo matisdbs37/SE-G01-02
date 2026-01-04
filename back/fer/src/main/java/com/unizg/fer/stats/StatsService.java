@@ -2,12 +2,22 @@ package com.unizg.fer.stats;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.unizg.fer.config.ResourceNotFoundException;
+import com.unizg.fer.emailManager.EmailService;
+import com.unizg.fer.emailManager.JSONValues;
+import com.unizg.fer.emailManager.TemplateType;
 
 @Service
 public class StatsService {
@@ -15,7 +25,12 @@ public class StatsService {
     @Autowired
     StatsRepository repo;
 
+    @Autowired
+    private EmailService emailService;
+
     private static final String STAT_NOT_FOUND = "stat not found for user : ";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StatsService.class);
 
     public Stats getStatsByUserId(String userId) {
         return repo.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException(STAT_NOT_FOUND + userId));
@@ -110,6 +125,49 @@ public class StatsService {
     public void updateMoodCheckout(Stats stats, LocalDateTime now) {
         stats.setLastMoodCheckoutDate(now);
 
+    }
+
+    @Scheduled(cron = "0 0 9 * * ?")
+    @Transactional(readOnly = true)
+    public void checkAndNotifyUserEngagement() {
+        LocalDateTime now = LocalDateTime.now();
+        try (Stream<Stats> stream = repo.streamAll()) {
+            stream.forEach(stats -> {
+                if (stats.getLastLoginDate() == null)
+                    return;
+
+                long daysSinceLastLogin = ChronoUnit.DAYS.between(stats.getLastLoginDate(), now);
+
+                if (daysSinceLastLogin == 1) {
+                    sendStreakReminder(stats);
+                }
+
+                if (daysSinceLastLogin >= 7) {
+                    sendInactivityEmail(stats, daysSinceLastLogin);
+                }
+            });
+        } catch (Exception e) {
+            // non blocking error
+            LOGGER.error("error while verifing user engagement", e);
+        }
+    }
+
+    private void sendStreakReminder(Stats stats) {
+        Map<JSONValues, String> values = new HashMap<>();
+        values.put(JSONValues.USER_NAME, stats.getUserId());
+        values.put(JSONValues.ACTUAL_STREAK, String.valueOf(stats.getCurrentStreak()));
+        values.put(JSONValues.EXTENDED_STREAK, String.valueOf(stats.getCurrentStreak() + 1));
+
+        emailService.sendEmail(stats.getUserId(), TemplateType.STREAK, values);
+    }
+
+    private void sendInactivityEmail(Stats stats, long daysInactive) {
+        Map<JSONValues, String> values = new HashMap<>();
+        values.put(JSONValues.USER_NAME, stats.getUserId());
+        values.put(JSONValues.DAYS_INACTIVE, String.valueOf(daysInactive));
+        values.put(JSONValues.LAST_LOGIN_DATE, stats.getLastLoginDate().toString());
+
+        emailService.sendEmail(stats.getUserId(), TemplateType.INACTIVE, values);
     }
 
 }
