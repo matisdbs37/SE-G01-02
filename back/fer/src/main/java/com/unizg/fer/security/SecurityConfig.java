@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,7 +21,11 @@ public class SecurityConfig {
     private final String[] PUBLIC_END_POINTS = {
             "/api/v2/actuator/health",
             "/api/v2/error",
-            "/api/v2/logout"
+            "/api/v2/logout",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/bus/v3/api-docs/**",
+            "/v3/api-docs/**"
     };
 
     @Bean
@@ -32,14 +35,13 @@ public class SecurityConfig {
      */
     public SecurityFilterChain filterChain(HttpSecurity http)
             throws Exception {
-                
-        http
 
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
-                                                             .permitAll()
-                                                             .anyRequest()
-                                                             .authenticated())
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }

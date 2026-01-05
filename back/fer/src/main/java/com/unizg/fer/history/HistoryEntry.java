@@ -14,11 +14,12 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+@Schema(name = "History", description = "History entity to track user activity on the api")
 @Document(collection = "History_entries")
 @CompoundIndex(name = "user_video", def = "{'userId': 1, 'videoId': 1}", unique = true)
 @Data

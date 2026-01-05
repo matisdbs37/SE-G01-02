@@ -135,13 +135,10 @@ public class StatsService {
             stream.forEach(stats -> {
                 if (stats.getLastLoginDate() == null)
                     return;
-
                 long daysSinceLastLogin = ChronoUnit.DAYS.between(stats.getLastLoginDate(), now);
-
                 if (daysSinceLastLogin == 1) {
                     sendStreakReminder(stats);
                 }
-
                 if (daysSinceLastLogin >= 7) {
                     sendInactivityEmail(stats, daysSinceLastLogin);
                 }
