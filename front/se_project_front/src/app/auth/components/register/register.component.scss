@@ -1,218 +1,133 @@
-/* Colors */
-$brand: #65C3A3;
-$brand-hover: #56B092;
-$text: #333;
-$muted: #666;
-$border: #e0e0e0;
-$bg-form: #ffffff;
-
-/* -------------------------------------
-   SPLIT LAYOUT DESKTOP
--------------------------------------- */
-.auth-shell {
+.register-page {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  @media (max-width: 960px) {
-    grid-template-columns: 1fr;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #eef2f3, #e3f2fd);
+  padding: 2rem;
 }
 
-/* -------------------------------------
-   ART PANEL (gradient)
--------------------------------------- */
-.art-panel {
-  background: linear-gradient(180deg, #A8C5E2 0%, #D7C7E9 100%);
-  padding: 48px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  .logo {
-    width: 200px;
-    height: auto;
-  }
-
-  .quote {
-    color: #2a3441;
-    font-size: 20px;
-    max-width: 420px;
-    line-height: 1.4;
-  }
+.register-card {
+  width: 100%;
+  max-width: 460px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
-/* -------------------------------------
-   FORM PANEL DESKTOP
--------------------------------------- */
-.form-panel {
-  background: $bg-form;
-  padding: 64px 80px;
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+}
 
-  .title {
-    font: 700 40px Poppins, system-ui;
-    color: $text;
-  }
+.row {
+  display: flex;
+  gap: 1rem;
+}
 
-  .subtitle {
-    font: 400 16px Lato, system-ui;
-    color: $muted;
-    margin-bottom: 32px;
-  }
-
-  .form {
-    width: 100%;
-    max-width: 480px;
-  }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.3rem;
+  flex: 1;
 
   label {
-    font-weight: 600;
-    font-size: 14px;
-    margin: 12px 0 6px;
-    color: $muted;
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 0.3rem;
   }
 
-  input {
-    width: 100%;
-    height: 44px;
-    padding: 0 14px;
-    border: 1px solid $border;
+  input,
+  select {
+    padding: 0.7rem 0.8rem;
     border-radius: 8px;
-    background: #fff;
-    font-size: 16px;
-    color: $text;
-    box-sizing: border-box;
+    border: 1px solid #ddd;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
 
     &:focus {
-      border-color: $brand;
-      box-shadow: 0 0 0 3px rgba(101,195,163,.2);
       outline: none;
+      border-color: #5c9ded;
     }
   }
 
-  .btn {
-    width: 100%;
-    height: 44px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
+  input[type="range"] {
+    padding: 0;
+  }
+}
 
-    &.primary {
-      background: $brand;
-      color: white;
-      margin: 12px 0;
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #777;
+}
 
-      &:hover {
-        background: $brand-hover;
-      }
-    }
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  margin-top: 1.2rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 10px;
+  background: #5c9ded;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #4a8bd6;
   }
 
-  .link {
-    color: $brand;
+  &:disabled {
+    background: #aac4e8;
+    cursor: not-allowed;
+  }
+}
+
+.error {
+  color: #d9534f;
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+
+  &.center {
+    text-align: center;
+  }
+}
+
+.switch {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 1.5rem;
+
+  a {
+    color: #5c9ded;
     text-decoration: none;
+    font-weight: 500;
 
     &:hover {
       text-decoration: underline;
     }
-  }
-
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 18px 0;
-    color: $muted;
-
-    &::before,
-    &::after {
-      content: "";
-      height: 1px;
-      background: $border;
-      flex: 1;
-    }
-  }
-
-  .oauth {
-    display: grid;
-    gap: 10px;
-  }
-
-  .oauth-btn {
-    height: 44px;
-    border: 1px solid $border;
-    border-radius: 8px;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .oauth-btn img {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
-  }
-
-  .tos {
-    margin-top: 12px;
-    font-size: 12px;
-    color: $muted;
-    text-align: center;
-  }
-
-  .error {
-    color: #d9534f;
-    font-size: 12px;
-    margin-top: 4px;
-  }
-}
-
-/* ============================================================
-   MOBILE RESPONSIVE
-   ============================================================ */
-@media (max-width: 959px) {
-
-  .auth-shell {
-    background: linear-gradient(180deg, #A8C5E2 0%, #D7C7E9 100%);
-    min-height: 100vh;
-    width: 100%;
-    overflow-x: hidden;
-  }
-
-  .art-panel {
-    order: 1;
-    background: transparent;
-    padding: 32px 20px;
-
-    .logo { width: 70px; margin-bottom: 16px; }
-    .quote { max-width: 280px; font-size: 15px; line-height: 1.4; }
-  }
-
-  .form-panel {
-    order: 2;
-    padding: 24px 16px !important;
-    width: 100%;
-    background: transparent;
-    box-sizing: border-box !important;
-  }
-
-  .form {
-    max-width: 100% !important;
-    width: 100%;
-  }
-
-  input,
-  .oauth-btn {
-    width: 100%;
-    box-sizing: border-box;
   }
 }

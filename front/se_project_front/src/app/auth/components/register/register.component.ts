@@ -1,20 +1,28 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService, MockUser } from '../../services/auth.service';
 
 @Component({
   selector: 'mc-register',
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, RouterLink]
 })
 export class RegisterComponent {
 
+  form: FormGroup;
   loading = false;
-  form!: FormGroup;
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -22,51 +30,68 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.form = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirm: ['', [Validators.required]]
+      confirm: ['', Validators.required],
+
+      stressLevel: [3, [Validators.required, Validators.min(1), Validators.max(5)]],
+      goal: ['', Validators.required],
+
+      acceptTerms: [false, Validators.requiredTrue]
     }, {
-      validators: (group) => this.samePassword(group)
+      validators: this.samePassword
     });
   }
 
-  get email() { return this.form.get('email'); }
-  get password() { return this.form.get('password'); }
-  get confirm() { return this.form.get('confirm'); }
-
-  samePassword(control: AbstractControl) {
-    const p = control.get('password')?.value;
-    const c = control.get('confirm')?.value;
-    return p === c ? null : { mismatch: true };
+  // -------------------------
+  // Getters
+  // -------------------------
+  get f() {
+    return this.form.controls;
   }
 
-  submit() {
+  // -------------------------
+  // Validators
+  // -------------------------
+  samePassword(control: AbstractControl) {
+    const password = control.get('password')?.value;
+    const confirm = control.get('confirm')?.value;
+    return password === confirm ? null : { mismatch: true };
+  }
+
+  // -------------------------
+  // Submit
+  // -------------------------
+  submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    const { email, password } = this.form.value;
-
     this.loading = true;
+    this.errorMessage = null;
 
-    this.auth.register(email!, password!).subscribe({
-       next: (response) => {
-        this.router.navigateByUrl('/profile/edit_profile');
-        localStorage.setItem('token',response.token);
-        localStorage.setItem('email', response.email);
-        localStorage.setItem('firstName', response.firstName);
-        localStorage.setItem('lastName', response.lastName);
+    const user: MockUser = {
+      email: this.f['email'].value,
+      password: this.f['password'].value,
+      firstName: this.f['firstName'].value,
+      lastName: this.f['lastName'].value,
+      stressLevel: this.f['stressLevel'].value,
+      goal: this.f['goal'].value
+    };
+
+    this.auth.register(user.email, user.password, user.firstName, user.lastName).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/login');
       },
-      error: (e) => {
+      error: (err) => {
+        this.errorMessage = err.message ?? 'Registration failed';
         this.loading = false;
-        alert(e.message ?? 'Register failed');
       },
       complete: () => this.loading = false
     });
-  }
-
-  oauth(provider: 'google' | 'apple' | 'microsoft') {
-    //this.auth.oauth(provider);
   }
 }
