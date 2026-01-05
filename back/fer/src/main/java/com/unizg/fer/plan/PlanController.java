@@ -14,8 +14,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unizg.fer.user.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @Controller
 @RequestMapping("/plan/")
+@Tag(name = "Learning Plans", description = "APIs for managing personalized learning plans")
+
 public class PlanController {
 
     @Autowired
@@ -32,6 +41,13 @@ public class PlanController {
      * @param jwt   authenticated user JWT token
      * @param level plan difficulty level from path
      */
+    @Operation(summary = "Create a new learning plan", description = "Creates a new personalized learning plan for the authenticated user with specified difficulty level")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Plan created successfully", content = @Content(mediaType = "text/plain", schema = @Schema(implementation = String.class, example = "Plan EASY created successfully"))),
+            @ApiResponse(responseCode = "400", description = "Invalid plan level", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Plan already exists for this level", content = @Content)
+    })
     @PostMapping("/{level}")
     @ResponseBody
     public ResponseEntity<String> createPlan(
@@ -49,6 +65,12 @@ public class PlanController {
      * 
      * @param jwt authenticated user JWT token
      */
+    @Operation(summary = "Get user's learning plans", description = "Retrieves all learning plans created by the authenticated user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Plans retrieved successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Plan.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @GetMapping
     @ResponseBody
     public ResponseEntity<Iterable<Plan>> getMyPlans(@AuthenticationPrincipal Jwt jwt) {
