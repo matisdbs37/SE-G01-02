@@ -27,7 +27,12 @@ jobs:
           java-version: "25.0.1"
           distribution: "temurin"
           cache: maven
+      
+      - name: Show current directory
+        run: pwd
+
       - name: Build with Maven
+        working-directory: back/fer
         run: mvn -B package --file pom.xml
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
