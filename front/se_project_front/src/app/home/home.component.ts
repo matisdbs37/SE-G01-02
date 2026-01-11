@@ -29,4 +29,8 @@ export class HomeComponent implements OnInit {
     this.auth.logout();
     this.router.navigateByUrl('/auth/login');
   }
+
+  goToProfile(): void {
+    this.router.navigateByUrl('/profile');
+  }
 }

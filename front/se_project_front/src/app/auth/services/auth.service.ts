@@ -64,7 +64,7 @@ export class AuthService {
   // LOGOUT (signature inchangée)
   // -------------------------
   logout(): Observable<any> {
-    localStorage.removeItem(this.STORAGE_KEY);
+    //localStorage.removeItem(this.STORAGE_KEY);
     return of({ message: 'Logged out' });
   }
 

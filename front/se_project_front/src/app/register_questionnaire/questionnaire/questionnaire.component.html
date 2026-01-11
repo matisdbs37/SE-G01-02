@@ -35,11 +35,15 @@
       </button>
     </div>
 
-    <div *ngIf="questions[currentQuestionIndex].type == 'slider'">
+    <div *ngIf="questions[currentQuestionIndex].type == 'slider'" class="slider-group">
       <input type="range"
             [min]="questions[currentQuestionIndex].min"
             [max]="questions[currentQuestionIndex].max"
             [(ngModel)]="answers[currentQuestionIndex]">
+
+      <div class="slider-value">
+        {{ answers[currentQuestionIndex] }}
+      </div>
     </div>
 
     <div *ngIf="questions[currentQuestionIndex].type == 'select'">
