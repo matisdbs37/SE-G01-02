@@ -1,0 +1,58 @@
+.home-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #A8C5E2, #D7C7E9);
+  padding: 2rem;
+}
+
+.home-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+button {
+  padding: 0.8rem 1.4rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.primary {
+  background: #5c9ded;
+  color: white;
+}
+
+.secondary {
+  background: #f1f1f1;
+}
+
+.logout {
+  background: transparent;
+  color: #999;
+  font-size: 0.85rem;
+}

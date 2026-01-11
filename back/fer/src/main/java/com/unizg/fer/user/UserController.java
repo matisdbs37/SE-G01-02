@@ -5,12 +5,26 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.unizg.fer.stats.StatUpdater;
 import com.unizg.fer.stats.StatsService;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.*;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * REST controller for managing user-related operations.
@@ -18,11 +32,13 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/v2/")
+@Tag(name = "User Management", description = "APIs for managing user operations including CRUD operations and authentication")
+@SecurityRequirement(name = "bearer-jwt")
 public class UserController {
 
     @Autowired
     private UserService service;
-    
+
     @Autowired
     public StatsService statsService;
 
@@ -32,19 +48,33 @@ public class UserController {
      * @param jwt the JWT token containing the user's email claim
      * @return a `ResponseEntity` containing the user details
      */
+    @Operation(summary = "Get current user details", description = "Retrieves the authenticated user's details using the email from the JWT token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @GetMapping("user")
     public ResponseEntity<User> getUsersByEmail(@AuthenticationPrincipal Jwt jwt) {
         String email = jwt.getClaim("email");
         var user = service.getUserByEmail(email);
         return ResponseEntity.ok(user);
     }
+
     /**
      * Updates the user details based on the email extracted from the JWT token.
      *
-     * @param jwt the JWT token containing the user's email claim
+     * @param jwt         the JWT token containing the user's email claim
      * @param updatedUser the updated user details
      * @return a `ResponseEntity` containing the updated user details
      */
+    @Operation(summary = "Update current user", description = "Updates the authenticated user's details (name, city, etc.)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid user data provided", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @PostMapping("user/update")
     public ResponseEntity<User> updateUser(@AuthenticationPrincipal Jwt jwt, @RequestBody User updatedUser) {
         String email = jwt.getClaim("email");
@@ -52,21 +82,33 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @Operation(summary = "Get user by ID and log activity", description = "Retrieves user information by ID and updates user login statistics")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found and stats updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @GetMapping("user/{id}")
     public ResponseEntity<User> logUser(@PathVariable String id) {
-        //first update stats
+        // first update stats
         LocalDateTime now = LocalDateTime.now();
         statsService.updateStats(id, StatUpdater.login(statsService, id, now));
         // second get user
         var user = service.getInfoById(id);
         return ResponseEntity.ok(user);
     }
+
     /**
      * Deletes the user based on the email extracted from the JWT token.
      *
      * @param jwt the JWT token containing the user's email claim
      * @return a `ResponseEntity` with a success message
      */
+    @Operation(summary = "Delete current user", description = "Permanently deletes the authenticated user's account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User deleted successfully", content = @Content(mediaType = "text/plain", schema = @Schema(implementation = String.class, example = "User deleted successfully"))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @DeleteMapping("user/delete")
     public ResponseEntity<String> deleteUser(@AuthenticationPrincipal Jwt jwt) {
         String email = jwt.getClaim("email");
@@ -77,9 +119,16 @@ public class UserController {
     /**
      * Creates a new user based on the details extracted from the JWT token.
      *
-     * @param jwt the JWT token containing the user's details (email, first name, last name, locale)
+     * @param jwt the JWT token containing the user's details (email, first name,
+     *            last name, locale)
      * @return a `ResponseEntity` containing the created user details
      */
+    @Operation(summary = "Create new user", description = "Creates a new user account using information from the JWT token (email, name, locale)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User created successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid token data or user already exists", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content)
+    })
     @PutMapping("user/create")
     public ResponseEntity<User> createUser(@AuthenticationPrincipal Jwt jwt) {
         String email = jwt.getClaim("email");

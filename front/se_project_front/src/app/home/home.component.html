@@ -1,0 +1,26 @@
+<div class="home-page">
+  <div class="home-card">
+
+    <h1>Welcome 🌿</h1>
+
+    <p class="subtitle" *ngIf="user">
+      {{ user.firstName }} {{ user.lastName }},
+      ready for your next mindfulness session?
+    </p>
+
+    <div class="actions">
+      <button class="primary">
+        Start a session
+      </button>
+
+      <button class="secondary" (click)="goToProfile()">
+        My profile
+      </button>
+    </div>
+
+    <button class="logout" (click)="logout()">
+      Logout
+    </button>
+
+  </div>
+</div>

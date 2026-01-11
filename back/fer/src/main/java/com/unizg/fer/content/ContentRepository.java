@@ -23,4 +23,6 @@ public interface ContentRepository extends MongoRepository<Content, String> {
 
     List<Content> findAllByIdAndType(Iterable<String> ids, String type);
 
+    List<Content> findRandomByType(int number, String type);
+
 }
