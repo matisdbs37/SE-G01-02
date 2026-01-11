@@ -147,4 +147,8 @@ export class VideoResearchComponent {
       state: { video }
     });
   }
+
+  back() {
+    this.router.navigate(['home']);
+  }
 }
