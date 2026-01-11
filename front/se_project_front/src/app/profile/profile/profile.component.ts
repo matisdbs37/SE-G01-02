@@ -127,4 +127,8 @@ export class ProfileComponent {
     const hue = 120 - (value / 10) * 120;
     return `hsl(${hue}, 70%, 45%)`;
   }
+
+  back() {
+    this.router.navigate(['home']);
+  }
 }

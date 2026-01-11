@@ -70,6 +70,6 @@ export class QuestionnaireComponent {
   }
 
   save() {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/home']);
   }
 }

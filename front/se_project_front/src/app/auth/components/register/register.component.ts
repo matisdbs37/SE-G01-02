@@ -85,7 +85,7 @@ export class RegisterComponent {
 
     this.auth.register(user.email, user.password, user.firstName, user.lastName).subscribe({
       next: () => {
-        this.router.navigateByUrl('/login');
+        this.router.navigateByUrl('/questionnaire');
       },
       error: (err) => {
         this.errorMessage = err.message ?? 'Registration failed';
