@@ -31,6 +31,15 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./home/home.component').then(m => m.HomeComponent)
   },
+  
+  {
+    path: 'videos/research',
+    loadComponent: () => import('./videos/video-research/video-research.component').then(m => m.VideoResearchComponent)
+  },
+  {
+    path: 'videos/detail/:id',
+    loadComponent: () => import('./videos/video-detail/video-detail.component').then(m => m.VideoDetailComponent)
+  },
 
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 

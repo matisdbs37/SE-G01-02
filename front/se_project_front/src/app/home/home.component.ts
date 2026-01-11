@@ -33,4 +33,8 @@ export class HomeComponent implements OnInit {
   goToProfile(): void {
     this.router.navigateByUrl('/profile');
   }
+
+  goToVideos(): void {
+    this.router.navigateByUrl('/videos/research');
+  }
 }
