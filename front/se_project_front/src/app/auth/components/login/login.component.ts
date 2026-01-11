@@ -1,64 +1,63 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, MinValidator } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'mc-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, RouterLink]
 })
 export class LoginComponent {
 
+  form: FormGroup;
   loading = false;
-  form!: FormGroup;
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router,
+    private router: Router
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      remember: [false]
+      password: ['', Validators.required]
     });
   }
 
-  get email() { return this.form.get('email'); }
-  get password() { return this.form.get('password'); }
+  get f() {
+    return this.form.controls;
+  }
 
-
-  submit() {
+  submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
+    this.loading = true;
+    this.errorMessage = null;
+
     const { email, password } = this.form.value;
 
-    this.loading = true;
-    this.auth.login(email!, password!).subscribe({
-      next: (response) => {
-        this.router.navigateByUrl('/profile/edit_profile');
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('email', response.email);
-        localStorage.setItem('firstName', response.firstName);
-        localStorage.setItem('lastName', response.lastName);
+    this.auth.login(email, password).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/home');
       },
-      error: (e) => {
+      error: (err) => {
+        this.errorMessage = err.message ?? 'Login failed';
         this.loading = false;
-        alert(e.message ?? 'Login failed');
       },
       complete: () => this.loading = false
     });
-  }
-
-  oauth(): void {
-    this.auth.oauth();
-    
   }
 }

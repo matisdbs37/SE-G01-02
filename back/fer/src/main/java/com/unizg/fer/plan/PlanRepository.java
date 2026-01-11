@@ -1,6 +1,6 @@
-package com.unizg.fer.stats;
+package com.unizg.fer.plan;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -8,11 +8,12 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StatsRepository extends MongoRepository<Stats, String> {
-
-    Optional<Stats> findByUserId(String userId);
+public interface PlanRepository extends MongoRepository<Plan, String> {
 
     // must be stream to not load all at once
     @Query("{}")
-    Stream<Stats> streamAll();
+    Stream<Plan> streamAll();
+
+    List<Plan> findAllByUserId(String userId);
+
 }

@@ -2,12 +2,13 @@ package com.unizg.fer.user;
 
 import java.time.LocalDateTime;
 
-import jakarta.validation.constraints.Max;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,11 +17,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 /**
  * Represents a user entity stored in the MongoDB database.
  * Contains user details such as email, name, roles, and various attributes.
  */
+@Schema(description = "User entity representing application users")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

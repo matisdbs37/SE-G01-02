@@ -1,56 +1,118 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError, delay, timeout, last } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
-
+export interface MockUser {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  stressLevel?: number;
+  goal?: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  API_URL: string = "http://localhost:8080/"
-  LOGIN_MATCHER: string = "api/auth/login"
-  REGISTER_MATCHER: string = "api/auth/register"
-  LOGOUT_MATCHER: string = "logout"
-  USER_MATCHER: String = "user/me"
+  // 🔒 Storage key (centralisé)
+  private readonly STORAGE_KEY = 'mindcraft_user';
 
-  constructor(private readonly http: HttpClient) { }
+  constructor() {}
 
+  // -------------------------
+  // LOGIN (signature inchangée)
+  // -------------------------
   login(email: String, password: String): Observable<any> {
-    const body = { email, password }
-    return this.http.post<{ message: String }>(this.API_URL + this.LOGIN_MATCHER, body)
+    const stored = localStorage.getItem(this.STORAGE_KEY);
 
+    if (!stored) {
+      return throwError(() => new Error('No user registered'));
+    }
+
+    const user: MockUser = JSON.parse(stored);
+
+    if (user.email === email && user.password === password) {
+      return of(user);
+    }
+
+    return throwError(() => new Error('Invalid credentials'));
   }
 
-  register(email: String, password: String, firstName: String = "Jhon", lastName: String = "DOE"): Observable<any> {
-    const body = { email, password, firstName, lastName }
-    return this.http.post<{ message: String }>(this.API_URL + this.REGISTER_MATCHER, body)
+  // -------------------------
+  // REGISTER (signature inchangée)
+  // -------------------------
+  register(
+    email: String,
+    password: String,
+    firstName: String = 'John',
+    lastName: String = 'DOE'
+  ): Observable<any> {
+
+    const user: MockUser = {
+      email: email.toString(),
+      password: password.toString(),
+      firstName: firstName.toString(),
+      lastName: lastName.toString()
+    };
+
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
+    return of(user);
   }
 
+  // -------------------------
+  // LOGOUT (signature inchangée)
+  // -------------------------
   logout(): Observable<any> {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userFirstName');
-    localStorage.removeItem('userLastName');
-    return this.http.get<{ message: String }>(this.API_URL + this.LOGOUT_MATCHER)
+    localStorage.removeItem(this.STORAGE_KEY);
+    return of({ message: 'Logged out' });
   }
 
+  // -------------------------
+  // OAUTH (stub – compatibility)
+  // -------------------------
   oauth(): void {
-     window.location.href = 'http://localhost:8080/login';
-
+    console.warn('[AuthService] OAuth disabled in mock mode');
   }
 
-  getUser():Observable<any>{
-    return this.http.get<{ body: JSON }>(this.API_URL + this.USER_MATCHER)
+  // -------------------------
+  // GET USER (signature inchangée)
+  // -------------------------
+  getUser(): Observable<any> {
+    const user = localStorage.getItem(this.STORAGE_KEY);
+    return of(user ? JSON.parse(user) : null);
   }
 
-  updateUser(email:string, firstName:string, lastName:string):Observable<any>{
-    const body = {firstName, lastName}
-    console.log(this.API_URL + `users/${email}`)
-    return this.http.put<any>(this.API_URL + `users/${email}`, body);
+  // -------------------------
+  // UPDATE USER (needed by profile)
+  // -------------------------
+  updateUser(email: string, firstName: string, lastName: string): Observable<any> {
+    const stored = localStorage.getItem(this.STORAGE_KEY);
+
+    if (!stored) {
+      return of(null);
+    }
+
+    const user: MockUser = JSON.parse(stored);
+
+    if (user.email !== email) {
+      return of(null);
+    }
+
+    const updatedUser: MockUser = {
+      ...user,
+      firstName,
+      lastName
+    };
+
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedUser));
+    return of(updatedUser);
   }
 
+  // -------------------------
+  // Helper (optional)
+  // -------------------------
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem(this.STORAGE_KEY);
+  }
 }
-
-
