@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import com.unizg.fer.content.ContentService;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.metrics.SystemMetricsAutoConfiguration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +37,9 @@ public class PlanManager {
 
     @Autowired
     UserRepository userRepo;
+    private SystemMetricsAutoConfiguration systemMetricsAutoConfiguration;
+    @Autowired
+    private ContentService contentService;
 
     /**
      * Create a new plan with the number of random content specified in the
@@ -47,12 +53,13 @@ public class PlanManager {
     @SuppressWarnings("null")
     public void createPlan(String userId, PlanLevel level) {
         // create a list of plan entry from a random stream of video type of content
-        var toWatch = contentRepo.findRandomByType(level.getValue(), "video").stream()
+        var toWatch = contentService.findRandomByType(level.getValue(), "video").stream()
                 .map(content -> PlanEntry.builder()
-                        .contentId(content.getId())
+                        .content(new ObjectId(content.getId()))
                         .notified(false)
                         .build())
                 .toList();
+        System.out.println(toWatch);
         planRepo.save(Plan.builder()
                 .userId(userId)
                 .toWatch(toWatch)
@@ -104,7 +111,7 @@ public class PlanManager {
                     try {
 
                         var content = contentRepo
-                                .findById(entry.getContentId())
+                                .findById(String.valueOf(entry.getContent()))
                                 .get();
                         var user = userRepo.findById(plan.getUserId())
                                 .get();

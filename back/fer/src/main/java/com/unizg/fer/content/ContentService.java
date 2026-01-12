@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import com.unizg.fer.categories.CategoriesRepository;
@@ -77,6 +80,22 @@ public class ContentService {
         // get all content for this ids and type
         return ValidationUtils.requireNonEmptyList(contentRepo.findAllByIdAndType(contentIds, type.getValue()),
                 NO_CONTENT_FOR_CATEGORY);
+    }
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    public List<Content> findRandomByType(int number, String type) {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("type").is(type)),
+                Aggregation.sample(number)
+        );
+
+        return mongoTemplate.aggregate(
+                aggregation,
+                "Content",
+                Content.class
+        ).getMappedResults();
     }
 
     private String getCategoryIdFromName(String name) throws ResourceNotFoundException {

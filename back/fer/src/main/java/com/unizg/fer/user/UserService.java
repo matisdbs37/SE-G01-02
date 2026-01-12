@@ -33,6 +33,7 @@ public class UserService {
         return userRepo.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(NO_USER + email));
     }
+
     /**
      * Creates a new user with the provided details.
      *

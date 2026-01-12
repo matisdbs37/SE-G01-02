@@ -48,7 +48,7 @@ public class PlanController {
             @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
             @ApiResponse(responseCode = "409", description = "Plan already exists for this level", content = @Content)
     })
-    @PostMapping("/{level}")
+    @PostMapping("{level}")
     @ResponseBody
     public ResponseEntity<String> createPlan(
             @AuthenticationPrincipal Jwt jwt,

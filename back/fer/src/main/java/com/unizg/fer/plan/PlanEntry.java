@@ -1,5 +1,6 @@
 package com.unizg.fer.plan;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,7 +17,7 @@ public class PlanEntry {
     private String id;
 
     @NonNull
-    private String contentId;
+    private ObjectId content;
 
     /**
      * true if api notified the user

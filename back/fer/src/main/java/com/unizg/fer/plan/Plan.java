@@ -3,6 +3,7 @@ package com.unizg.fer.plan;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
