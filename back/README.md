@@ -45,7 +45,7 @@ Go to:
         Token endpoint: <https://oauth2.googleapis.com/token>
 
 **2** - select the following scopes:
-        openid profile email
+        **openid profile email**
 
 **3** - Click Authorize APIs.
 

@@ -9,6 +9,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.unizg.fer.security.rbac.JwtRoleChecker;
+
 @Configuration
 @EnableWebSecurity
 /**
@@ -16,38 +18,45 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 public class SecurityConfig {
 
-    private final String baseUrl = "http://localhost:8080";
+        private final String baseUrl = "http://localhost:8080";
 
-    private final String[] PUBLIC_END_POINTS = {
-            "/api/v2/actuator/health",
-            "/api/v2/error",
-            "/api/v2/logout",
-            "/swagger-ui/**",
-            "/swagger-ui.html",
-            "/bus/v3/api-docs/**",
-            "/v3/api-docs/**"
-    };
+        private final String[] PUBLIC_END_POINTS = {
+                        "/api/v2/actuator/health",
+                        "/api/v2/error",
+                        "/api/v2/logout",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/bus/v3/api-docs/**",
+                        "/v3/api-docs/**"
+        };
 
-    @Bean
-    /**
-     * This bean intercept any http/https request and revoke non authenticated
-     * except for the authorized endpoints
-     */
-    public SecurityFilterChain filterChain(HttpSecurity http)
-            throws Exception {
+        @Bean
+        public JwtRoleChecker jwtRoleChecker() {
+                return new JwtRoleChecker();
+        }
 
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
-        return http.build();
-    }
+        @Bean
+        /**
+         * This bean intercept any http/https request and revoke non authenticated
+         * except for the authorized endpoints
+         */
+        public SecurityFilterChain filterChain(HttpSecurity http)
+                        throws Exception {
 
-    @Bean
-    public JwtDecoder jwtDecoder() {
-        return JwtDecoders.fromIssuerLocation("https://accounts.google.com");
-    }
+                http
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
+                                                .permitAll()
+                                                .anyRequest()
+                                                .authenticated())
+                                .oauth2ResourceServer((oauth2) -> oauth2
+                                                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtRoleChecker())));
+
+                return http.build();
+        }
+
+        @Bean
+        public JwtDecoder jwtDecoder() {
+                return JwtDecoders.fromIssuerLocation("https://accounts.google.com");
+        }
 }

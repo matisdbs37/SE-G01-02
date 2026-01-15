@@ -45,10 +45,6 @@ public class User {
     @Field("last_Name")
     private String lastName;
 
-    @NotNull(message = "Role is required")
-    @Field("roles")
-    private String roles;
-
     @Field("createdAt")
     private LocalDateTime createdAt;
 

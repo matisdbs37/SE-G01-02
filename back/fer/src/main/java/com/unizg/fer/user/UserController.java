@@ -1,9 +1,11 @@
 package com.unizg.fer.user;
 
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 /**
  * REST controller for managing user-related operations.
@@ -135,9 +138,15 @@ public class UserController {
         String firstName = jwt.getClaim("given_name");
         String lastName = jwt.getClaim("family_name");
         String city = jwt.getClaim("locale");
-        // TODO: assign roles based on token roles
         String roles = "USER";
         User user = service.createUser(email, firstName, lastName, roles, city);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping(value = "/users", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole(ROLE_ADMIN)")
+    public ResponseEntity<Stream<User>> getAllUsers() {
+        var stream = service.findAll();
+        return ResponseEntity.ok(stream);
     }
 }
