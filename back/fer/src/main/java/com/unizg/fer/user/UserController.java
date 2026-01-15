@@ -28,7 +28,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
 /**
  * REST controller for managing user-related operations.
  * Provides endpoints for retrieving, updating, deleting, and creating users.
@@ -90,6 +89,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User found and stats updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
+
     @GetMapping("user/{id}")
     public ResponseEntity<User> logUser(@PathVariable String id) {
         // first update stats
@@ -112,6 +112,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
+
     @DeleteMapping("user/delete")
     public ResponseEntity<String> deleteUser(@AuthenticationPrincipal Jwt jwt) {
         String email = jwt.getClaim("email");
@@ -143,8 +144,12 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    /**
+     * 
+     * @return
+     */
     @GetMapping(value = "/users", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole(ROLE_ADMIN)")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Stream<User>> getAllUsers() {
         var stream = service.findAll();
         return ResponseEntity.ok(stream);
