@@ -7,6 +7,7 @@ import org.springframework.security.access.expression.method.MethodSecurityExpre
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -17,6 +18,7 @@ import com.unizg.fer.security.rbac.JwtRoleChecker;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 /**
  * @author Martin NERON Bean in charge of the security configuration of the API
  */
