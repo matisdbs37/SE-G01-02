@@ -1,9 +1,11 @@
 package com.unizg.fer.user;
 
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -87,6 +89,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User found and stats updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
+
     @GetMapping("user/{id}")
     public ResponseEntity<User> logUser(@PathVariable String id) {
         // first update stats
@@ -109,6 +112,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
+
     @DeleteMapping("user/delete")
     public ResponseEntity<String> deleteUser(@AuthenticationPrincipal Jwt jwt) {
         String email = jwt.getClaim("email");
@@ -135,9 +139,19 @@ public class UserController {
         String firstName = jwt.getClaim("given_name");
         String lastName = jwt.getClaim("family_name");
         String city = jwt.getClaim("locale");
-        // TODO: assign roles based on token roles
         String roles = "USER";
         User user = service.createUser(email, firstName, lastName, roles, city);
         return ResponseEntity.ok(user);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    @GetMapping(value = "users", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Stream<User>> getAllUsers() {
+        var stream = service.findAll();
+        return ResponseEntity.ok(stream);
     }
 }

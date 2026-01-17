@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  * Global exception handler for all REST controllers
@@ -65,5 +66,17 @@ public class GlobalExceptionHandler {
                 errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+
+        @ExceptionHandler(AccessDeniedException.class) // Capture AuthorizationDeniedException et ses parents
+        public ResponseEntity<Map<String, Object>> handleAccessDeniedException(AccessDeniedException ex) {
+                LOGGER.warn("Access denied: {}", ex.getMessage()); // .warn est souvent mieux que .error pour ça
+
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("timestamp", LocalDateTime.now());
+                errorResponse.put("message", "Access denied: You don't have the right permission.");
+                errorResponse.put("status", HttpStatus.FORBIDDEN.value()); // 403
+
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
         }
 }
