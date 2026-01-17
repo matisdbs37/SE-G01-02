@@ -57,7 +57,6 @@ export class HomeComponent implements OnInit {
   }
 
   checkUser() {
-    // 1. On récupère les infos Google
     const claims: any = this.auth.getIdentityClaims();
     
     if (!claims) {
@@ -65,36 +64,28 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    // 2. On prépare l'objet User selon le format JSON attendu
-    const userToCreate: any = {
-      email: claims.email,
-      firstName: claims.given_name,
-      lastName: claims.family_name,
-      isActive: true,
-      locale: claims.locale || 'fr',
-      preferences: "default",
-      mental: 10,
-      sleep: 10,
-      stress: 10,
-      meditation: 10,
-      city: "Non renseignée",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+    // On prépare l'objet (même si le backend utilise le JWT, 
+    // il vaut mieux envoyer un objet vide ou minimal pour éviter les erreurs de parsing)
+    const userToCreate = {};
 
-    console.log("Tentative de création de l'utilisateur...", userToCreate);
-
-    // 3. On appelle le PUT create
     this.userService.createUser(userToCreate).subscribe({
       next: (response) => {
-        console.log("Utilisateur créé avec succès !", response);
+        // CAS 1 : L'utilisateur vient d'être créé
+        console.log("Nouvel utilisateur créé ! Redirection vers le questionnaire.");
         this.user = response;
         this.loading = false;
+        this.router.navigateByUrl('/questionnaire');
       },
       error: (err) => {
-        console.error("Erreur lors de la création de l'utilisateur", err);
-        // Si même le CREATE renvoie 401, c'est que le problème de jeton persiste
-        this.loading = false;
+        if (err.status === 409) {
+          // CAS 2 : L'email existe déjà. On ne fait rien, on reste sur Home.
+          // On peut éventuellement charger les données de l'user ici si besoin.
+          this.loading = false;
+        } else {
+          // CAS 3 : Une vraie erreur (500, 401, etc.)
+          console.error("Erreur technique lors de la création", err);
+          this.loading = false;
+        }
       }
     });
   }
