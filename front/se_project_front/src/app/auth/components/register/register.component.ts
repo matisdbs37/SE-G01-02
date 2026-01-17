@@ -9,7 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService, MockUser } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'mc-register',
@@ -66,7 +66,7 @@ export class RegisterComponent {
   // Submit
   // -------------------------
   submit(): void {
-    if (this.form.invalid) {
+    /*if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
@@ -92,6 +92,6 @@ export class RegisterComponent {
         this.loading = false;
       },
       complete: () => this.loading = false
-    });
+    });*/
   }
 }

@@ -1,118 +1,59 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { OAuthService, AuthConfig } from 'angular-oauth2-oidc';
+import { filter } from 'rxjs';
 
-export interface MockUser {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  stressLevel?: number;
-  goal?: string;
-}
+export const authCodeFlowConfig: AuthConfig = {
+  issuer: 'https://accounts.google.com',
+  strictDiscoveryDocumentValidation: false,
+  redirectUri: window.location.origin + '/home',
+  clientId: '465024361535-6ff2tm4fpaf930rs7bm45mc5cu1v6iqk.apps.googleusercontent.com',
+  scope: 'openid profile email',
+  showDebugInformation: true,
+};
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
+  private oauthService = inject(OAuthService);
 
-  // 🔒 Storage key (centralisé)
-  private readonly STORAGE_KEY = 'mindcraft_user';
-
-  constructor() {}
-
-  // -------------------------
-  // LOGIN (signature inchangée)
-  // -------------------------
-  login(email: String, password: String): Observable<any> {
-    const stored = localStorage.getItem(this.STORAGE_KEY);
-
-    if (!stored) {
-      return throwError(() => new Error('No user registered'));
-    }
-
-    const user: MockUser = JSON.parse(stored);
-
-    if (user.email === email && user.password === password) {
-      return of(user);
-    }
-
-    return throwError(() => new Error('Invalid credentials'));
+  constructor() {
+    this.initLogin();
   }
 
-  // -------------------------
-  // REGISTER (signature inchangée)
-  // -------------------------
-  register(
-    email: String,
-    password: String,
-    firstName: String = 'John',
-    lastName: String = 'DOE'
-  ): Observable<any> {
-
-    const user: MockUser = {
-      email: email.toString(),
-      password: password.toString(),
-      firstName: firstName.toString(),
-      lastName: lastName.toString()
-    };
-
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
-    return of(user);
+  private initLogin() {
+    this.oauthService.configure(authCodeFlowConfig);
+    this.oauthService.loadDiscoveryDocumentAndTryLogin();
+    this.oauthService.setupAutomaticSilentRefresh();
   }
 
-  // -------------------------
-  // LOGOUT (signature inchangée)
-  // -------------------------
-  logout(): Observable<any> {
-    //localStorage.removeItem(this.STORAGE_KEY);
-    return of({ message: 'Logged out' });
+  loginWithGoogle() {
+    this.oauthService.initImplicitFlow();
   }
 
-  // -------------------------
-  // OAUTH (stub – compatibility)
-  // -------------------------
-  oauth(): void {
-    console.warn('[AuthService] OAuth disabled in mock mode');
+  logout() {
+    this.oauthService.logOut();
   }
 
-  // -------------------------
-  // GET USER (signature inchangée)
-  // -------------------------
-  getUser(): Observable<any> {
-    const user = localStorage.getItem(this.STORAGE_KEY);
-    return of(user ? JSON.parse(user) : null);
+  get token() {
+    return this.oauthService.getIdToken();
   }
 
-  // -------------------------
-  // UPDATE USER (needed by profile)
-  // -------------------------
-  updateUser(email: string, firstName: string, lastName: string): Observable<any> {
-    const stored = localStorage.getItem(this.STORAGE_KEY);
-
-    if (!stored) {
-      return of(null);
-    }
-
-    const user: MockUser = JSON.parse(stored);
-
-    if (user.email !== email) {
-      return of(null);
-    }
-
-    const updatedUser: MockUser = {
-      ...user,
-      firstName,
-      lastName
-    };
-
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedUser));
-    return of(updatedUser);
-  }
-
-  // -------------------------
-  // Helper (optional)
-  // -------------------------
   isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.STORAGE_KEY);
+    return this.oauthService.hasValidIdToken();
+  }
+
+  getIdentityClaims() {
+    return this.oauthService.getIdentityClaims();
+  }
+
+  public runInitialLoginSequence() {
+    return this.oauthService.loadDiscoveryDocumentAndTryLogin();
+  }
+
+  get events$() {
+    return this.oauthService.events;
+  }
+
+  logoutCompletement() {
+    this.oauthService.revokeTokenAndLogout();
   }
 }

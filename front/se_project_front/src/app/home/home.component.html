@@ -4,7 +4,7 @@
     <h1>Welcome 🌿</h1>
 
     <p class="subtitle" *ngIf="user">
-      {{ user.firstName }} {{ user.lastName }},
+      Hello {{ user.given_name || user.name }},
       ready for your next mindfulness session?
     </p>
 

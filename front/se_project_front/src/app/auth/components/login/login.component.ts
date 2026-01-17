@@ -39,7 +39,7 @@ export class LoginComponent {
   }
 
   submit(): void {
-    if (this.form.invalid) {
+    /*if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
@@ -58,6 +58,10 @@ export class LoginComponent {
         this.loading = false;
       },
       complete: () => this.loading = false
-    });
+    });*/
+  }
+
+  loginGoogle(): void {
+    this.auth.loginWithGoogle();
   }
 }
