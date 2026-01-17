@@ -84,11 +84,9 @@ export class QuestionnaireComponent {
       updatedAt: new Date().toISOString()
     };
 
-    console.log("Envoi des mises à jour...", userToUpdate);
 
     this.userService.updateUser(userToUpdate).subscribe({
       next: (response) => {
-        console.log("Profil mis à jour avec succès !", response);
         this.router.navigate(['/home']);
       },
       error: (err) => {

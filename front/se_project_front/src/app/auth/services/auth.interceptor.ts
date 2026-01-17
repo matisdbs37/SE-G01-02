@@ -7,7 +7,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = oauthService.getIdToken(); 
   console.log("INTERCEPTOR - URL:", req.url, "TOKEN PRESENT ?:", !!token);
   console.log("token :", token);
-  // On n'ajoute le token QUE pour notre API
   if (token && req.url.includes('localhost:8080')) {
     console.log("INTERCEPTOR - Ajout du token pour le backend");
     const authReq = req.clone({

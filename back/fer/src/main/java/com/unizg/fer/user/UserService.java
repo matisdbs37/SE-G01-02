@@ -72,8 +72,6 @@ public class UserService {
                 .city(city)
                 .build();
 
-        User savedUser = userRepo.save(user);
-
         // create role for user
         Role roleEnum = roleConverter.convert(role);
 
@@ -83,7 +81,7 @@ public class UserService {
                 .build();
         userRolesRepo.save(userRole);
 
-        return savedUser;
+        return userRepo.save(user);
     }
 
     public User getInfoById(String id) {

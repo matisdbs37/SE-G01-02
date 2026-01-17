@@ -63,8 +63,7 @@ public class SecurityConfig {
                                 .anyRequest()
                                 .authenticated())
                         .oauth2ResourceServer((oauth2) -> oauth2
-                                .jwt(Customizer.withDefaults())
-                        );
+                                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtRoleChecker())));
 
                 return http.build();
         }
