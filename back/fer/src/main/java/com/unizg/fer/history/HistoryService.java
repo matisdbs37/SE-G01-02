@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
-import com.unizg.fer.config.ResourceNotFoundException;
 import com.unizg.fer.content.ContentRepository;
 
 @Service

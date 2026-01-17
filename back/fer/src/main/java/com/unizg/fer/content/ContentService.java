@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,6 +20,8 @@ import com.unizg.fer.utils.ValidationUtils;
 @SuppressWarnings("unused")
 public class ContentService {
 
+    private static final String CONTENT_NOT_FOUND = "no content found with id %s ";
+    private static final String CATEGORY_NOT_FOUND = "no category found with id %s";
     private static final String NO_CONTENT_OF_TYPE = "no content of type : ";
     private static final String NO_CONTENT_TITLE = "no content with title : ";
     private static final String NO_CATEGORY_NAME = "no category with name : ";
@@ -88,20 +93,69 @@ public class ContentService {
     public List<Content> findRandomByType(int number, String type) {
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(Criteria.where("type").is(type)),
-                Aggregation.sample(number)
-        );
+                Aggregation.sample(number));
 
         return mongoTemplate.aggregate(
                 aggregation,
                 "Content",
-                Content.class
-        ).getMappedResults();
+                Content.class).getMappedResults();
+    }
+
+    public Page<Content> findAll(int pages, int size) {
+        Pageable pageable = PageRequest.of(pages, size);
+        return contentRepo.findAll(pageable);
+    }
+
+    public Content createContent(Content content) {
+        return contentRepo.save(content);
+    }
+
+    public Content updateContent(String id, Content content) {
+        return contentRepo.findById(id)
+                .map(existing -> {
+                    existing.setTitle(content.getTitle());
+                    existing.setType(content.getType());
+                    existing.setDurationMin(content.getDurationMin());
+                    existing.setDifficulty(content.getDifficulty());
+                    existing.setLanguage(content.getLanguage());
+                    existing.setSource(content.getSource());
+                    existing.setIsActive(content.getIsActive());
+                    return contentRepo.save(existing);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(CONTENT_NOT_FOUND, id)));
+    }
+
+    public void deleteContent(String id) {
+        contentRepo.deleteById(id);
     }
 
     private String getCategoryIdFromName(String name) throws ResourceNotFoundException {
         var category = categoriesRepo.findByName(name)
                 .orElseThrow(() -> new ResourceNotFoundException(NO_CATEGORY_NAME));
         return category.getId();
+    }
+
+    public List<ContentCategories> findAllCategories() {
+        return contentCategoriesRepo.findAll();
+
+    }
+
+    public ContentCategories updateCategory(String id, ContentCategories contentCategories) {
+        return contentCategoriesRepo.findById(id)
+                .map(existing -> {
+                    existing.setContentId(contentCategories.getContentId());
+                    existing.setCategoryId(contentCategories.getCategoryId());
+                    return contentCategoriesRepo.save(existing);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(CATEGORY_NOT_FOUND, id)));
+    }
+
+    public ContentCategories createCategory(ContentCategories contentCategories) {
+        return contentCategoriesRepo.save(contentCategories);
+    }
+
+    public void deleteCategory(String id) {
+        contentCategoriesRepo.deleteById(id);
     }
 
 }
