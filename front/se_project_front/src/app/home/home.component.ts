@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/services/auth.service';
-import { filter } from 'rxjs';
+import { filter, first } from 'rxjs';
 import { UserService } from '../services/users.service';
 
 @Component({
@@ -24,7 +24,22 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.checkUser();
+    console.log("1. ngOnInit : On attend que le token arrive...");
+
+    // CONDITION A : Pour le premier login (on attend l'événement)
+    this.auth.events$.pipe(
+      filter(e => e.type === 'token_received'),
+      first() // Importe 'first' de 'rxjs' pour ne le faire qu'une fois
+    ).subscribe(() => {
+      console.log("2. Événement reçu ! Le token est là, on appelle le back.");
+      this.checkUser();
+    });
+
+    // CONDITION B : Si on rafraîchit la page (le token est déjà là)
+    if (this.auth.isLoggedIn()) {
+      console.log("2bis. Déjà logué (F5), on appelle le back.");
+      this.checkUser();
+    }
   }
 
   logout(): void {
@@ -42,21 +57,44 @@ export class HomeComponent implements OnInit {
   }
 
   checkUser() {
-    this.userService.getCurrentUser().subscribe({
-      next: (userData) => {
-        // L'utilisateur existe, on le stocke et on arrête le chargement
-        this.user = userData;
+    // 1. On récupère les infos Google
+    const claims: any = this.auth.getIdentityClaims();
+    
+    if (!claims) {
+      console.error("Impossible de récupérer les infos Google");
+      return;
+    }
+
+    // 2. On prépare l'objet User selon le format JSON attendu
+    const userToCreate: any = {
+      email: claims.email,
+      firstName: claims.given_name,
+      lastName: claims.family_name,
+      isActive: true,
+      locale: claims.locale || 'fr',
+      preferences: "default",
+      mental: 10,
+      sleep: 10,
+      stress: 10,
+      meditation: 10,
+      city: "Non renseignée",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    console.log("Tentative de création de l'utilisateur...", userToCreate);
+
+    // 3. On appelle le PUT create
+    this.userService.createUser(userToCreate).subscribe({
+      next: (response) => {
+        console.log("Utilisateur créé avec succès !", response);
+        this.user = response;
         this.loading = false;
       },
       error: (err) => {
-        if (err.status === 404) {
-          // L'utilisateur n'existe pas en BDD -> Direction questionnaire
-          this.router.navigateByUrl('/questionnaire');
-        } else {
-          // Autre erreur (ex: 500 ou 401)
-          console.error("Erreur serveur", err);
-          this.loading = false;
-        }
+        console.error("Erreur lors de la création de l'utilisateur", err);
+        // Si même le CREATE renvoie 401, c'est que le problème de jeton persiste
+        this.loading = false;
       }
     });
   }
