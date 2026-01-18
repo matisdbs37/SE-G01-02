@@ -6,7 +6,6 @@ import {
   Validators
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 
@@ -15,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, RouterLink]
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class LoginComponent {
 
