@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from '../../services/users.service';
 import { forkJoin } from 'rxjs';
+import { HistoryEntry, HistoryService } from '../../services/history.service';
+import { VideoService } from '../../services/video.service';
 
 @Component({
   selector: 'app-profile',
@@ -15,7 +17,7 @@ import { forkJoin } from 'rxjs';
 })
 
 export class ProfileComponent {
-  constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService) { }
+  constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService, private historyService: HistoryService, private videoService: VideoService) { }
 
   activeSection = 'dashboard';
   isEditing = false;
@@ -30,6 +32,11 @@ export class ProfileComponent {
 
   user: any = null;
   editableUser = { ...this.user };
+
+  userHistory: HistoryEntry[] = [];
+  historyLoading = false;
+  currentPage = 0;
+  isLastPage = false;
 
   loading = true;
 
@@ -59,6 +66,69 @@ export class ProfileComponent {
     this.activeSection = section;
     this.isEditing = false;
     this.editableUser = { ...this.user };
+
+    if (section == 'history') {
+      this.loadHistoryWithTitles();
+    }
+  }
+
+  videoCatalogue: Map<string, string> = new Map();
+
+  loadHistoryWithTitles(page: number = 0) {
+    this.historyLoading = true;
+
+    forkJoin({
+      videos: this.videoService.getContentByType('Video'),
+      audios: this.videoService.getContentByType('Audio'),
+      historyPage: this.historyService.getHistory(page, 20)
+    }).subscribe({
+      next: ({ videos, audios, historyPage }) => {
+        const allContent = [...videos, ...audios];
+        allContent.forEach(item => {
+          if (item.id) this.videoCatalogue.set(item.id, item.title);
+        });
+
+        let newData = historyPage.content;
+        this.userHistory = page === 0 ? newData : [...this.userHistory, ...newData];
+
+        this.userHistory.sort((a, b) => {
+          const dateA = new Date(a.updatedAt || a.watchedAt).getTime();
+          const dateB = new Date(b.updatedAt || b.watchedAt).getTime();
+          return dateB - dateA;
+        });
+
+        this.isLastPage = historyPage.number >= historyPage.totalPages - 1;
+        this.historyLoading = false;
+      },
+      error: (err) => {
+        console.error("Erreur chargement données", err);
+        this.historyLoading = false;
+      }
+    });
+  }
+
+  loadMore() {
+    if (!this.isLastPage) {
+      this.loadHistoryWithTitles(this.currentPage + 1);
+    }
+  }
+
+  getStarsArray(rating: number | undefined) {
+    if (rating === undefined || rating === null) return [];
+    
+    const rate = rating / 2;
+    const stars = [];
+    
+    for (let i = 1; i <= 5; i++) {
+      if (rate >= i) {
+        stars.push('full');
+      } else if (rate >= i - 0.5) {
+        stars.push('half');
+      } else {
+        stars.push('empty');
+      }
+    }
+    return stars;
   }
 
   toggleEdit() {

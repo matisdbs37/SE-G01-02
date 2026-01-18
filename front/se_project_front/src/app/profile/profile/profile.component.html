@@ -12,6 +12,7 @@
       <h3>My Space</h3>
 
       <button (click)="setSection('dashboard')">Dashboard</button>
+      <button (click)="setSection('history')">My History</button>
       <button (click)="setSection('account')">Account details</button>
       <button class="danger" (click)="setSection('delete')">Delete account</button>
 
@@ -86,6 +87,57 @@
               </div>
             </div>
           </div>
+
+        </div>
+      </section>
+
+      <section *ngIf="activeSection == 'history'">
+        <h2>Viewing History</h2>
+        
+        <div *ngIf="historyLoading && userHistory.length === 0" class="small-loader">Loading history...</div>
+
+        <div *ngIf="!historyLoading && userHistory.length === 0" class="empty-state">
+          <p>You haven't watched any sessions yet.</p>
+        </div>
+
+        <div class="history-list" *ngIf="userHistory.length > 0">
+          
+          <div class="history-item" *ngFor="let item of userHistory">
+            <div class="history-info">
+              <span class="video-name">
+                {{ videoCatalogue.get(item.videoId) || 'Loading title...' }}
+              </span>
+              <span class="history-date">{{ item.updatedAt | date:'medium' }}</span>
+            </div>
+            
+            <div class="history-details">
+              <span class="history-rating">
+                <ng-container *ngFor="let type of getStarsArray(item.rating)">
+                  <i class="star-icon" [ngClass]="type">
+                    {{ type === 'half' ? '⯪' : '★' }}
+                  </i>
+                </ng-container>
+                <span class="rating-text" *ngIf="item.rating">({{ item.rating / 2 }}/5)</span>
+              </span>
+              <span class="history-progress">Watched: {{ item.watchedDuration }}s</span>
+            </div>
+
+            <div class="history-comments" *ngIf="item.comments && item.comments.length > 0">
+              <p class="comment-preview" *ngFor="let comm of item.comments">
+                "{{ comm.text }}" <small>({{ comm.postedAt | date:'shortDate' }})</small>
+              </p>
+            </div>
+          </div>
+
+          <div class="load-more-container" *ngIf="!isLastPage">
+            <button class="load-more-btn" (click)="loadMore()" [disabled]="historyLoading">
+              {{ historyLoading ? 'Loading more...' : 'Show older sessions' }}
+            </button>
+          </div>
+
+          <p class="end-of-list" *ngIf="isLastPage && userHistory.length > 0">
+            You've reached the end of your history.
+          </p>
 
         </div>
       </section>
