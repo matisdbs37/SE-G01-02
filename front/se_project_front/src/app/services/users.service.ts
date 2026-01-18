@@ -41,4 +41,10 @@ export class UserService {
   updateUser(userData: Partial<User>): Observable<User> {
     return this.http.post<User>(`${this.API_URL}/update`, userData);
   }
+
+  deleteUser() {
+    return this.http.delete(`${this.API_URL}/delete`, {
+      responseType: 'text' 
+    });
+  }
 }

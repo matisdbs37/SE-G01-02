@@ -3,6 +3,9 @@ import { CommonModule} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CountryService } from '../services/country.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth/services/auth.service';
+import { UserService } from '../../services/users.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +15,7 @@ import { Router } from '@angular/router';
 })
 
 export class ProfileComponent {
-  constructor(private countryService: CountryService, private router: Router) { }
+  constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService) { }
 
   activeSection = 'dashboard';
   isEditing = false;
@@ -20,34 +23,33 @@ export class ProfileComponent {
   countries: string[] = [];
   notificationsOptions: string[] = ['Yes', 'No'];
 
-  delete_account_password: string = '';
   confirmationText: string = '';
-
-  currentPassword: string = '';
-  newPassword: string = '';
-  confirmNewPassword: string = '';
 
   errorMessage: string = '';
   successMessage: string = '';
 
-  mentalHealth: number = 1;
-  sleepQuality: number = 4;
-  stressLevel: number = 10;
-  meditationExperience: number = 9;
-
-  user = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john@doe.com',
-    country: 'Croatia',
-    notifications: 'No'
-  };
-
+  user: any = null;
   editableUser = { ...this.user };
 
+  loading = true;
+
   ngOnInit() {
-    this.countryService.getCountries().subscribe(countries => {
-      this.countries = countries;
+    this.loading = true;
+    forkJoin({
+      countries: this.countryService.getCountries(),
+      user: this.userService.getCurrentUser()
+    }).subscribe({
+      next: ({ countries, user }) => {
+        this.countries = countries;
+        this.user = user;
+        this.editableUser = { ...user };
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Erreur chargement profil', err);
+        this.loading = false;
+        this.router.navigate(['/auth/login']);
+      }
     });
   }
 
@@ -60,6 +62,8 @@ export class ProfileComponent {
   }
 
   toggleEdit() {
+    this.errorMessage = '';
+    this.successMessage = '';
     let isWorking = 1;
     if (this.isEditing) {
       isWorking = this.saveChanges();
@@ -70,52 +74,81 @@ export class ProfileComponent {
   }
 
   saveChanges() {
-    if (!this.editableUser.firstName || !this.editableUser.lastName || !this.editableUser.email || !this.editableUser.country || !this.editableUser.notifications) {
+    if (
+      !this.editableUser.firstName ||
+      !this.editableUser.lastName ||
+      !this.editableUser.locale ||
+      !this.editableUser.preferences
+    ) {
       this.errorMessage = "Fields can't be empty.";
       return 0;
     }
-    this.errorMessage = '';
-    this.user = { ...this.editableUser };
-    console.log("User updated : ", this.user);
+
+    const changed =
+      this.editableUser.firstName !== this.user.firstName ||
+      this.editableUser.lastName !== this.user.lastName ||
+      this.editableUser.locale !== this.user.locale ||
+      this.editableUser.preferences !== this.user.preferences;
+
+    if (!changed) {
+      this.errorMessage = 'No changes detected, nothing to update.';
+      return 1;
+    }
+
+    const updatedData = {
+      firstName: this.editableUser.firstName,
+      lastName: this.editableUser.lastName,
+      locale: this.editableUser.locale,
+      preferences: this.editableUser.preferences,
+      updatedAt: new Date().toISOString()
+    };
+
+    this.userService.updateUser(updatedData).subscribe({
+      next: (response) => {
+        this.user = { ...this.user, ...updatedData };
+        this.errorMessage = '';
+        this.successMessage = 'Profile updated successfully.';
+      },
+      error: (err) => {
+        this.errorMessage = "Failed to update user.";
+        console.error("Error updating user:", err);
+      }
+    });
+
     return 1;
   }
 
   logout() {
-    this.router.navigate(['/auth/login']);
+    this.auth.logout();
+    this.auth.logoutCompletement();
+    this.router.navigate(['/auth/login'], { replaceUrl: true });
   }
 
   submitDeleteAccount() {
-    if (!this.confirmationText || !this.delete_account_password) {
+    if (!this.confirmationText) {
       this.successMessage = '';
       this.errorMessage = 'All fields are required!';
       return;
     }
-    if (this.confirmationText != "I want to delete my account.") {
+
+    if (this.confirmationText !== "I want to delete my account.") {
       this.successMessage = '';
       this.errorMessage = 'Confirmation text does not match.';
       return;
     }
-    this.router.navigate(['/auth/login']);
-  }
 
-  submitResetPassword() {
-    if (!this.currentPassword || !this.newPassword || !this.confirmNewPassword) {
-      this.successMessage = '';
-      this.errorMessage = 'All fields are required!';
-      return;
-    }
-    if (this.newPassword != this.confirmNewPassword) {
-      this.successMessage = '';
-      this.errorMessage = 'New password and confirmation do not match!';
-      return;
-    }
-    if (this.currentPassword == this.newPassword) {
-      this.successMessage = '';
-      this.errorMessage = 'New password can\'t be the same as the current password!';
-      return;
-    }
-    this.errorMessage = '';
-    this.successMessage = 'Password successfully changed!';
+    this.userService.deleteUser().subscribe({
+      next: (response) => {
+        this.auth.logout();
+        this.auth.logoutCompletement();
+        this.router.navigate(['/auth/login'], { replaceUrl: true });
+      },
+      error: (err) => {
+        console.error("Erreur suppression utilisateur", err);
+        this.successMessage = '';
+        this.errorMessage = 'Failed to delete account.';
+      }
+    });
   }
 
   getMetricColor(value: number): string {
