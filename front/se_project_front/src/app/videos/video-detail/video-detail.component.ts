@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core'; // Ajout de OnInit et inject
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
+import { HistoryService, HistoryEntry, CommentsEntry } from '../../services/history.service';
 
 @Component({
   selector: 'app-video-detail',
@@ -11,67 +12,67 @@ import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.css'
 })
-export class VideoDetailComponent {
+export class VideoDetailComponent implements OnInit {
+  private historyService = inject(HistoryService);
+  private router = inject(Router);
 
   video: any;
-
-  userRating = 0;
+  userRating = 0; // Note sur 5 (ex: 3.5)
   newComment = '';
+  comments: CommentsEntry[] = [];
+  
+  // Pour l'affichage des étoiles
+  starsArr = [1, 2, 3, 4, 5];
 
-  comments = [
-    { user: 'Alice', text: 'Very relaxing!', rating: 5 },
-    { user: 'Tom', text: 'Good session, I feel calmer.', rating: 4 },
-    { user: 'Sarah', text: 'Could focus better next time.', rating: 3 },
-    { user: 'Mike', text: 'Perfect background for meditation.', rating: 5 },
-    { user: 'Anna', text: 'Too short, wanted more minutes.', rating: 4 },
-    { user: 'John', text: 'Nice audio quality.', rating: 4 },
-    { user: 'Emma', text: 'Loved the guidance voice.', rating: 5 },
-    { user: 'Liam', text: 'Background music was soothing.', rating: 4 },
-    { user: 'Olivia', text: 'Relaxing but a bit repetitive.', rating: 3 },
-    { user: 'Noah', text: 'Felt sleepy in a good way.', rating: 5 },
-    { user: 'Ava', text: 'Great meditation, helped me focus.', rating: 5 },
-    { user: 'Ethan', text: 'I wish it was longer.', rating: 3 },
-    { user: 'Sophia', text: 'Good intro and outro.', rating: 4 },
-    { user: 'Mason', text: 'Easy to follow along.', rating: 5 },
-    { user: 'Isabella', text: 'Background sound a little loud.', rating: 3 },
-    { user: 'Lucas', text: 'Perfect before bedtime.', rating: 5 },
-    { user: 'Mia', text: 'Felt refreshed after the session.', rating: 4 },
-    { user: 'Oliver', text: 'Guided meditation was clear.', rating: 5 },
-    { user: 'Charlotte', text: 'Could add more breathing exercises.', rating: 4 },
-    { user: 'Elijah', text: 'Great for stress relief.', rating: 5 },
-    { user: 'Amelia', text: 'Very calm and soothing.', rating: 5 },
-    { user: 'Benjamin', text: 'Perfect length for a break.', rating: 4 },
-    { user: 'Harper', text: 'Loved it!', rating: 5 },
-    { user: 'James', text: 'Nice pacing and guidance.', rating: 4 },
-    { user: 'Evelyn', text: 'Good variety of sessions.', rating: 5 },
-    { user: 'William', text: 'Excellent meditation quality.', rating: 5 },
-    { user: 'Abigail', text: 'I felt relaxed after this.', rating: 5 },
-    { user: 'Henry', text: 'Helpful and calming.', rating: 5 },
-    { user: 'Emily', text: 'Background music is nice.', rating: 4 },
-    { user: 'Alexander', text: 'Very professional audio.', rating: 5 }
-  ];
-
-  constructor(private router: Router) {
+  constructor() {
     this.video = history.state.video;
+  }
+
+  ngOnInit() {
+    if (this.video && this.video.id) {
+      this.loadUserHistory();
+    }
+  }
+
+  loadUserHistory() {
+    // On récupère l'historique pour trouver la note et les coms de cette vidéo
+    this.historyService.getHistory(0, 50).subscribe({
+      next: (page) => {
+        const entry = page.content.find(h => h.videoId === this.video.id);
+        if (entry) {
+          // Conversion note 10 -> note 5
+          this.userRating = entry.rating ? entry.rating / 2 : 0;
+          this.comments = entry.comments || [];
+        }
+      }
+    });
   }
 
   back() {
     this.router.navigate(['/videos/research']);
   }
 
-  setRating(r: number) {
-    this.userRating = r;
+  // Gestion des demi-étoiles au clic
+  setRating(event: MouseEvent, starIndex: number) {
+    const rect = (event.target as HTMLElement).getBoundingClientRect();
+    const x = event.clientX - rect.left; 
+    // Si on clique sur la moitié gauche de l'étoile -> .5, sinon entier
+    const value = x < rect.width / 2 ? starIndex - 0.5 : starIndex;
+    
+    this.userRating = value;
+
+    // Envoi au backend (note * 2 pour atteindre l'échelle 0-10)
+    this.historyService.rateVideo(this.video.id, value * 2).subscribe();
   }
 
   addComment() {
     if (!this.newComment.trim()) return;
 
-    this.comments.unshift({
-      user: 'You',
-      text: this.newComment,
-      rating: this.userRating
+    this.historyService.addComment(this.video.id, this.newComment).subscribe({
+      next: (updatedEntry) => {
+        this.comments = updatedEntry.comments;
+        this.newComment = '';
+      }
     });
-
-    this.newComment = '';
   }
 }
