@@ -9,6 +9,12 @@ export interface Question {
 
 export const QUESTIONS: Question[] = [
     {
+        text: "What is your first name ?", type: 'text', placeholder: "Enter your first name"
+    },
+    {
+        text: "What is your last name ?", type: 'text', placeholder: "Enter your last name"
+    },
+    {
         text: "Where are you from ?", type: 'select', placeholder: "Click to select a country", options: []
     },
     {

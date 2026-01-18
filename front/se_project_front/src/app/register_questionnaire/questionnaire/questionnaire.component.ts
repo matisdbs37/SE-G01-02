@@ -50,7 +50,12 @@ export class QuestionnaireComponent {
   nextQuestion() {
     const currentAnswer = this.answers[this.currentQuestionIndex];
     console.log(this.answers);
-    if (currentAnswer == '' || currentAnswer == undefined || currentAnswer == null) {
+    if (currentAnswer == undefined || currentAnswer == null) {
+      this.errorMessage = "Please provide an answer before proceeding.";
+      return;
+    }
+
+    if (typeof currentAnswer === 'string' && currentAnswer.trim() === '') {
       this.errorMessage = "Please provide an answer before proceeding.";
       return;
     }
@@ -75,12 +80,14 @@ export class QuestionnaireComponent {
     const claims: any = this.auth.getIdentityClaims();
 
     const userToUpdate: any = {
-      preferences: this.answers[1],
-      mental: this.answers[2],
-      sleep: this.answers[3],
-      stress: this.answers[4],
-      meditation: this.answers[5],
-      locale: this.answers[0],
+      firstName: this.answers[0],
+      lastName: this.answers[1],
+      preferences: this.answers[3],
+      mental: this.answers[4],
+      sleep: this.answers[5],
+      stress: this.answers[6],
+      meditation: this.answers[7],
+      locale: this.answers[2],
       updatedAt: new Date().toISOString()
     };
 

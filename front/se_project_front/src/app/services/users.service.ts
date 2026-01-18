@@ -2,9 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Interface pour typer l'utilisateur (à adapter selon les champs de ton back)
 export interface User {
-  id?: string;            // UUID ou ID string du back
+  id?: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -13,14 +12,12 @@ export interface User {
   locale?: string;
   preferences?: string;
   isActive: boolean;
-  
-  // Champs de l'app de mindfulness (0 à 10 selon ton JSON)
+
   mental: number;
   sleep: number;
   stress: number;
   meditation: number;
 
-  // Dates au format ISO
   createdAt?: string;
   updatedAt?: string;
 }

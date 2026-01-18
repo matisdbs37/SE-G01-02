@@ -1,26 +1,33 @@
-<div class="home-page">
-  <div class="home-card">
-
-    <h1>Welcome 🌿</h1>
-
-    <p class="subtitle" *ngIf="user">
-      Hello {{ user.given_name || user.name }},
-      ready for your next mindfulness session?
-    </p>
-
-    <div class="actions">
-      <button class="primary" (click)="goToVideos()">
-        Start a session
-      </button>
-
-      <button class="secondary" (click)="goToProfile()">
-        My profile
-      </button>
-    </div>
-
-    <button class="logout" (click)="logout()">
-      Logout
-    </button>
-
-  </div>
+<div *ngIf="loading; else homeContent" class="loading-screen">
+  <div class="loader"></div>
+  <p>Loading your space…</p>
 </div>
+
+<ng-template #homeContent>
+  <div class="home-page">
+    <div class="home-card">
+
+      <h1>Welcome 🌿</h1>
+
+      <p class="subtitle" *ngIf="user">
+        Hello {{ user.firstName }},
+        are you ready for your next mindfulness session?
+      </p>
+
+      <div class="actions">
+        <button class="primary" (click)="goToVideos()">
+          Start a session
+        </button>
+
+        <button class="secondary" (click)="goToProfile()">
+          My profile
+        </button>
+      </div>
+
+      <button class="logout" (click)="logout()">
+        Logout
+      </button>
+
+    </div>
+  </div>
+</ng-template>

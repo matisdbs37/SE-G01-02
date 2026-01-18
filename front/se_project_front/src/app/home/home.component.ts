@@ -62,13 +62,20 @@ export class HomeComponent implements OnInit {
 
     this.userService.createUser(userToCreate).subscribe({
       next: (response) => {
-        this.user = response;
-        this.loading = false;
         this.router.navigateByUrl('/questionnaire');
       },
       error: (err) => {
         if (err.status === 409) {
-          this.loading = false;
+          this.userService.getCurrentUser().subscribe({
+            next: (user) => {
+              this.user = user;
+              this.loading = false;
+            },
+            error: (e) => {
+              console.error("Erreur récupération utilisateur", e);
+              this.loading = false;
+            }
+          });
         } else {
           console.error("Erreur technique lors de la création", err);
           this.loading = false;
