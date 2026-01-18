@@ -21,7 +21,10 @@
     <main class="content">
 
       <section *ngIf="activeSection == 'dashboard'">
-        <h2>Dashboard</h2>
+        <div class="dashboard-header">
+          <h2>Dashboard</h2>
+          <button class="mood-button" (click)="goToMoodCheckIn()">Mood Check-in</button>
+        </div>
         <p>Welcome back {{ user.firstName }}</p>
 
         <div class="metrics-grid">

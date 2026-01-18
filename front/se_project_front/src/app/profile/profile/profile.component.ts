@@ -164,4 +164,8 @@ export class ProfileComponent {
   back() {
     this.router.navigate(['home']);
   }
+
+  goToMoodCheckIn() {
+    this.router.navigate(['/profile/checkin']);
+  }
 }
