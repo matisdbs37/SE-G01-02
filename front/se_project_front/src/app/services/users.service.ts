@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface User {
   id?: string;
@@ -28,7 +29,7 @@ export interface User {
 export class UserService {
   private http = inject(HttpClient);
 
-  private readonly API_URL = `http://localhost:8080/api/v2/user`;
+  private readonly API_URL = environment.apiUrl + '/api/v2/user';
 
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(this.API_URL);
