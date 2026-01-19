@@ -18,6 +18,9 @@ export const QUESTIONS: Question[] = [
         text: "Where are you from ?", type: 'select', placeholder: "Click to select a country", options: []
     },
     {
+        text: "What city do you live in ?", type: 'text', placeholder: "Enter your city"
+    },
+    {
         text: "Do you agree to receive notifications ?", type:'yes_no'
     },
     {

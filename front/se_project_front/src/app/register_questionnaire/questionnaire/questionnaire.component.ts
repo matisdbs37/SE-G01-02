@@ -82,12 +82,13 @@ export class QuestionnaireComponent {
     const userToUpdate: any = {
       firstName: this.answers[0],
       lastName: this.answers[1],
-      preferences: this.answers[3],
-      mental: this.answers[4],
-      sleep: this.answers[5],
-      stress: this.answers[6],
-      meditation: this.answers[7],
+      preferences: this.answers[4],
+      mental: this.answers[5],
+      sleep: this.answers[6],
+      stress: this.answers[7],
+      meditation: this.answers[8],
       locale: this.answers[2],
+      city: this.answers[3],
       updatedAt: new Date().toISOString()
     };
 

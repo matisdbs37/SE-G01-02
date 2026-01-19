@@ -148,6 +148,7 @@ export class ProfileComponent {
       !this.editableUser.firstName ||
       !this.editableUser.lastName ||
       !this.editableUser.locale ||
+      !this.editableUser.city ||
       !this.editableUser.preferences
     ) {
       this.errorMessage = "Fields can't be empty.";
@@ -158,6 +159,7 @@ export class ProfileComponent {
       this.editableUser.firstName !== this.user.firstName ||
       this.editableUser.lastName !== this.user.lastName ||
       this.editableUser.locale !== this.user.locale ||
+      this.editableUser.city !== this.user.city ||
       this.editableUser.preferences !== this.user.preferences;
 
     if (!changed) {
@@ -169,6 +171,7 @@ export class ProfileComponent {
       firstName: this.editableUser.firstName,
       lastName: this.editableUser.lastName,
       locale: this.editableUser.locale,
+      city: this.editableUser.city,
       preferences: this.editableUser.preferences,
       updatedAt: new Date().toISOString()
     };
