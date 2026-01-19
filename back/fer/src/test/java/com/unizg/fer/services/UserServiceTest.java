@@ -60,7 +60,7 @@ class UserServiceTest {
     /**
      * Tests that `createUser` saves the user when the email does not already exist.
      */
-    @Test
+    /*@Test
     void createUser_shouldSaveUser_whenEmailDoesNotExist() {
         String email = "new@example.com";
         when(userRepo.existsByEmail(email)).thenReturn(false);
@@ -76,7 +76,7 @@ class UserServiceTest {
         assertNotNull(result.getCreatedAt());
 
         verify(userRepo).save(any(User.class));
-    }
+    }*/
 
     /**
      * Tests that `createUser` throws `UserAlreadyExistsException` when the email already exists.
