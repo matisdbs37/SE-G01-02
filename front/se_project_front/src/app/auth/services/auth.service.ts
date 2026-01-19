@@ -1,56 +1,59 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, of, throwError, delay, timeout, last } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { OAuthService, AuthConfig } from 'angular-oauth2-oidc';
+import { filter } from 'rxjs';
 
+export const authCodeFlowConfig: AuthConfig = {
+  issuer: 'https://accounts.google.com',
+  strictDiscoveryDocumentValidation: false,
+  redirectUri: window.location.origin + '/home',
+  clientId: '465024361535-6ff2tm4fpaf930rs7bm45mc5cu1v6iqk.apps.googleusercontent.com',
+  scope: 'openid profile email',
+  showDebugInformation: true,
+};
 
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
+  private oauthService = inject(OAuthService);
 
-  API_URL: string = "http://localhost:8080/"
-  LOGIN_MATCHER: string = "api/auth/login"
-  REGISTER_MATCHER: string = "api/auth/register"
-  LOGOUT_MATCHER: string = "logout"
-  USER_MATCHER: String = "user/me"
-
-  constructor(private readonly http: HttpClient) { }
-
-  login(email: String, password: String): Observable<any> {
-    const body = { email, password }
-    return this.http.post<{ message: String }>(this.API_URL + this.LOGIN_MATCHER, body)
-
+  constructor() {
+    this.initLogin();
   }
 
-  register(email: String, password: String, firstName: String = "Jhon", lastName: String = "DOE"): Observable<any> {
-    const body = { email, password, firstName, lastName }
-    return this.http.post<{ message: String }>(this.API_URL + this.REGISTER_MATCHER, body)
+  private initLogin() {
+    this.oauthService.configure(authCodeFlowConfig);
+    this.oauthService.loadDiscoveryDocumentAndTryLogin();
+    this.oauthService.setupAutomaticSilentRefresh();
   }
 
-  logout(): Observable<any> {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userFirstName');
-    localStorage.removeItem('userLastName');
-    return this.http.get<{ message: String }>(this.API_URL + this.LOGOUT_MATCHER)
+  loginWithGoogle() {
+    this.oauthService.initImplicitFlow();
   }
 
-  oauth(): void {
-     window.location.href = 'http://localhost:8080/login';
-
+  logout() {
+    this.oauthService.logOut();
   }
 
-  getUser():Observable<any>{
-    return this.http.get<{ body: JSON }>(this.API_URL + this.USER_MATCHER)
+  get token() {
+    return this.oauthService.getIdToken();
   }
 
-  updateUser(email:string, firstName:string, lastName:string):Observable<any>{
-    const body = {firstName, lastName}
-    console.log(this.API_URL + `users/${email}`)
-    return this.http.put<any>(this.API_URL + `users/${email}`, body);
+  isLoggedIn(): boolean {
+    return this.oauthService.hasValidIdToken();
   }
 
+  getIdentityClaims() {
+    return this.oauthService.getIdentityClaims();
+  }
+
+  public runInitialLoginSequence() {
+    return this.oauthService.loadDiscoveryDocumentAndTryLogin();
+  }
+
+  get events$() {
+    return this.oauthService.events;
+  }
+
+  logoutCompletement() {
+    this.oauthService.revokeTokenAndLogout();
+  }
 }
-
-

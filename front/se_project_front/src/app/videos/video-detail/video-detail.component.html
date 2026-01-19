@@ -1,0 +1,59 @@
+<div class="videos-background">
+  <div class="video-detail-page">
+    <button class="back" (click)="back()">← Back to library</button>
+
+    <h2>{{ video.title }}</h2>
+
+    <div class="media-container">
+
+        <iframe
+            *ngIf="video.type === 'video'"
+            [src]="'https://www.youtube.com/embed/kSZddHca0ME' | safeUrl"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="youtube-frame">
+        </iframe>
+
+        <audio *ngIf="video.type === 'audio'" controls>
+            <source src="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+
+    </div>
+
+    <div class="video-meta">
+      <p>{{ video.category }} • {{ video.durationMin }} min</p>
+      <p>{{ video.language }} • Difficulty {{ video.difficulty }}</p>
+    </div>
+
+    <div class="rating-section">
+      <p>Rate this session ({{ userRating }}/5)</p>
+      <div class="stars">
+        <span *ngFor="let s of starsArr" 
+              class="star" 
+              (click)="setRating($event, s)">
+          <i class="star-icon">★</i>
+          <i class="star-icon filled" 
+             [style.width.%]="(userRating >= s) ? 100 : (userRating >= s - 0.5 ? 50 : 0)">
+             ★
+          </i>
+        </span>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <h3>Comments</h3>
+      <textarea placeholder="Write a comment..." [(ngModel)]="newComment"></textarea>
+      <button (click)="addComment()" [disabled]="!newComment.trim()">Submit</button>
+
+      <div class="comment" *ngFor="let c of comments">
+        <small>{{ c.postedAt | date:'dd/MM/yyyy' }}</small>
+        <p>{{ c.text }}</p>
+      </div>
+      
+      <p *ngIf="comments.length === 0" class="no-comments">No comments yet for this session.</p>
+    </div>
+  </div>
+</div>

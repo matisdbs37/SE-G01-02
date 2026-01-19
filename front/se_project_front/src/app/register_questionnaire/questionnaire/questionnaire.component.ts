@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { CountryService } from '../services/country.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth/services/auth.service';
+import { UserService } from '../../services/users.service';
 
 @Component({
   selector: 'app-questionnaire',
@@ -20,7 +22,7 @@ export class QuestionnaireComponent {
 
   errorMessage: string = '';
 
-  constructor(private countryService: CountryService, private router: Router) {}
+  constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService) {}
 
   ngOnInit() {
     this.countryService.getCountries().subscribe(countries => {
@@ -47,8 +49,13 @@ export class QuestionnaireComponent {
 
   nextQuestion() {
     const currentAnswer = this.answers[this.currentQuestionIndex];
+    console.log(this.answers);
+    if (currentAnswer == undefined || currentAnswer == null) {
+      this.errorMessage = "Please provide an answer before proceeding.";
+      return;
+    }
 
-    if (currentAnswer == '' || currentAnswer == undefined || currentAnswer == null) {
+    if (typeof currentAnswer === 'string' && currentAnswer.trim() === '') {
       this.errorMessage = "Please provide an answer before proceeding.";
       return;
     }
@@ -70,6 +77,29 @@ export class QuestionnaireComponent {
   }
 
   save() {
-    this.router.navigate(['/profile/edit_profile']);
+    const claims: any = this.auth.getIdentityClaims();
+
+    const userToUpdate: any = {
+      firstName: this.answers[0],
+      lastName: this.answers[1],
+      preferences: this.answers[4],
+      mental: this.answers[5],
+      sleep: this.answers[6],
+      stress: this.answers[7],
+      meditation: this.answers[8],
+      locale: this.answers[2],
+      city: this.answers[3],
+      updatedAt: new Date().toISOString()
+    };
+
+
+    this.userService.updateUser(userToUpdate).subscribe({
+      next: (response) => {
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.error("Erreur lors de l'update", err);
+      }
+    });
   }
 }

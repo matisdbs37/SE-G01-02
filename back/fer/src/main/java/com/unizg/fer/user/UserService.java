@@ -1,150 +1,157 @@
 package com.unizg.fer.user;
 
-import java.time.LocalDate;
-import java.util.List;
+import com.unizg.fer.config.ResourceNotFoundException;
+import com.unizg.fer.config.UserAlreadyExistsException;
+import com.unizg.fer.security.rbac.Role;
+import com.unizg.fer.security.rbac.StringToRoleConverter;
+import com.unizg.fer.security.rbac.UserRole;
+import com.unizg.fer.security.rbac.UserRoleRepository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.unizg.fer.config.DuplicateResourceException;
-import com.unizg.fer.config.ResourceNotFoundException;
+import java.lang.module.ModuleDescriptor.Builder;
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
+/**
+ * Service class for managing user-related operations.
+ */
 @Service
 public class UserService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+    private static final String RESOURCE_NOT_FOUND = "user not found";
+    private static final String ID_CANNOT_BE_NULL = "id cannot be null";
+    private static final String NO_USER = "No user found with the email address : ";
+    private static final String USER_EXIST = "A user with this email address already exists.";
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepo;
+
+    @Autowired
+    private UserRoleRepository userRolesRepo;
 
     /**
-     * Get all users
-     * @return List of all users
-     */
-    public List<User> getAllUsers() {
-        LOGGER.info("Fetching all users");
-        return userRepository.findAll();
-    }
-
-    /**
-     * Get user by ID
-     * @param id User ID
-     * @return User entity
-     * @throws ResourceNotFoundException if user not found
-     */
-    public User getUserById(String id) {
-        LOGGER.info("Fetching user with id: {}", id);
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-    }
-
-    /**
-     * Get user by email
-     * @param email User email
-     * @return User entity
-     * @throws ResourceNotFoundException if user not found
+     * Retrieves a user by their email address.
+     *
+     * @param email the email address of the user to retrieve
+     * @return the user with the specified email address
+     * @throws ResourceNotFoundException if no user is found with the given email
      */
     public User getUserByEmail(String email) {
-        LOGGER.info("Fetching user with email: {}", email);
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+        return userRepo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(NO_USER + email));
     }
 
+    @Autowired
+    private StringToRoleConverter roleConverter;
+
     /**
-     * Create a new user
-     * @param user User entity to create
-     * @return Created user
-     * @throws DuplicateResourceException if email already exists
+     * Creates a new user with the provided details.
+     *
+     * @param email     the email address of the new user
+     * @param firstName the first name of the new user
+     * @param lastName  the last name of the new user
+     * @param roles     the roles assigned to the new user
+     * @param city      the city of the new user
+     * @return the created user
+     * @throws UserAlreadyExistsException if a user with the given email already
+     *                                    exists
      */
-    public User createUser(User user) {
-        LOGGER.info("Creating new user with email: {}", user.getEmail());
-
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new DuplicateResourceException("User with email " + user.getEmail() + " already exists");
+    public User createUser(String email, String firstName, String lastName, String role, String city) {
+        if (userRepo.existsByEmail(email)) {
+            throw new UserAlreadyExistsException(USER_EXIST);
         }
+        var user = User.builder()
+                .email(email)
+                .firstName(firstName)
+                .lastName(lastName)
+                .isActive(true)
+                .createdAt(LocalDateTime.now())
+                .city(city)
+                .build();
 
-        if (user.getCreatedAt() == null) {
-            user.setCreatedAt(LocalDate.now());
-        }
+        var savedUser = userRepo.save(user);
 
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            user.setRoles(List.of("user"));
-        }
+        // create role for user
+        Role roleEnum = roleConverter.convert(role);
 
-        User savedUser = userRepository.save(user);
-        LOGGER.info("User created successfully with id: {}", savedUser.getId());
+        var userRole = UserRole.builder()
+                .userId(user.getId())
+                .role(roleEnum)
+                .build();
+        userRolesRepo.save(userRole);
+
         return savedUser;
     }
 
+    public User getInfoById(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException(ID_CANNOT_BE_NULL);
+        }
+        return userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NOT_FOUND));
+    }
+
     /**
-     * Update an existing user
-     * @param email User email(PK)
-     * @param userDetails Updated user details
-     * @return Updated user
-     * @throws ResourceNotFoundException if user not found
+     * Updates an existing user's details.
+     *
+     * @param email       the email address of the user to update
+     * @param userDetails the updated user details
+     * @return the updated user
+     * @throws ResourceNotFoundException if no user is found with the given email
      */
     public User updateUser(String email, User userDetails) {
-        LOGGER.info("Updating user with email: {}", email);
+        User existingUser = getUserByEmail(email);
 
-        User user = getUserByEmail(email);
+        if (userDetails.getFirstName() != null)
+            existingUser.setFirstName(userDetails.getFirstName());
+        if (userDetails.getLastName() != null)
+            existingUser.setLastName(userDetails.getLastName());
+        if (userDetails.getLocale() != null)
+            existingUser.setLocale(userDetails.getLocale());
+        if (userDetails.getPreferences() != null)
+            existingUser.setPreferences(userDetails.getPreferences());
+        if (userDetails.getIsActive() != null)
+            existingUser.setIsActive(userDetails.getIsActive());
 
-        if (userDetails.getFirstName() != null) {
-            user.setFirstName(userDetails.getFirstName());
-        }
+        if (userDetails.getMental() != null)
+            existingUser.setMental(userDetails.getMental());
+        if (userDetails.getSleep() != null)
+            existingUser.setSleep(userDetails.getSleep());
+        if (userDetails.getStress() != null)
+            existingUser.setStress(userDetails.getStress());
+        if (userDetails.getMeditation() != null)
+            existingUser.setMeditation(userDetails.getMeditation());
+        if (userDetails.getCity() != null)
+            existingUser.setCity(userDetails.getCity());
+        existingUser.setUpdatedAt(LocalDateTime.now());
 
-        if (userDetails.getLastName() != null) {
-            user.setLastName(userDetails.getLastName());
-        }
-
-        if (userDetails.getRoles() != null && !userDetails.getRoles().isEmpty()) {
-            user.setRoles(userDetails.getRoles());
-        }
-
-        User updatedUser = userRepository.save(user);
-        LOGGER.info("User updated successfully with id: {}", updatedUser.getId());
-        return updatedUser;
+        return userRepo.save(existingUser);
     }
 
     /**
-     * Delete a user
-     * @param id User ID
-     * @throws ResourceNotFoundException if user not found
+     * Deletes a user by their email address.
+     *
+     * @param email the email address of the user to delete
+     * @throws ResourceNotFoundException if no user is found with the given email
      */
-    public void deleteUser(String id) {
-        LOGGER.info("Deleting user with id: {}", id);
-
-        User user = getUserById(id);
-        userRepository.delete(user);
-
-        LOGGER.info("User deleted successfully with id: {}", id);
+    public void deleteUser(String email) {
+        User userToDelete = getUserByEmail(email);
+        userRepo.delete(userToDelete);
     }
 
-    /**
-     * Update user roles
-     * @param id User ID
-     * @param roles New roles list
-     * @return Updated user
-     * @throws ResourceNotFoundException if user not found
-     */
-    public User updateUserRoles(String id, List<String> roles) {
-        LOGGER.info("Updating roles for user with id: {}", id);
-
-        User user = getUserById(id);
-        user.setRoles(roles);
-
-        User updatedUser = userRepository.save(user);
-        LOGGER.info("User roles updated successfully for id: {}", updatedUser.getId());
-        return updatedUser;
+    public User findByemail(String email) {
+        return userRepo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NOT_FOUND));
     }
 
-    /**
-     * Check if user exists by email
-     * @param email User email
-     * @return true if exists, false otherwise
+    /***
+     * Must be annoted with @Transactionnal to keep conn open with mongo db
+     * 
+     * @return a stream with on all the users
      */
-    public boolean existsByEmail(String email) {
-        return userRepository.findByEmail(email).isPresent();
+    @Transactional(readOnly = true)
+    public Stream<User> findAll() {
+        return userRepo.streamAll();
     }
 }

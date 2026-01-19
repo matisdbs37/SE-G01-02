@@ -1,62 +1,13 @@
-<div class="auth-shell">
-  <div class="art-panel">
-    <img class="logo" src="assets/mindcraft-head.png" alt="Mind Craft logo" />
-    <p class="quote">Take a deep breath.<br />You’re one step closer to calm.</p>
-  </div>
+<div class="login-page">
+  <div class="login-card">
 
-  <div class="form-panel">
-    <h1 class="title">Mind Craft</h1>
-    <p class="subtitle">Mindfulness & Mental Health Platform</p>
+    <h1 class="title">Welcome back</h1>
 
-    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+    <p class="subtitle">
+      Continue your mindfulness journey
+    </p>
 
-      <label>Email address</label>
-      <input type="email" formControlName="email" placeholder="Email address" />
-      <div class="error" *ngIf="email?.touched && email?.invalid">
-        Please enter a valid email.
-      </div>
+    <button type="button" (click)="loginGoogle()">Sign in with Google</button>
 
-      <label>Password</label>
-      <input type="password" formControlName="password" placeholder="Password" />
-      <div class="error" *ngIf="password?.touched && password?.invalid">
-        Minimum 6 characters.
-      </div>
-
-      <div class="row between">
-        <label class="remember small-remember">
-          <input type="checkbox" formControlName="remember" /> Remember me
-        </label>
-
-        <a class="link" href="#">Forgot your password</a>
-      </div>
-
-      <button class="btn primary" [disabled]="loading">
-        {{ loading ? 'Logging in…' : 'Log in' }}
-      </button>
-
-      <div class="muted center small">
-        New here? <a class="link" href="/auth/register">Create an account</a>
-      </div>
-
-      <div class="divider"><span>or continue with</span></div>
-
-      <div class="oauth">
-        <button type="button" class="btn oauth-btn" (click)="oauth()">
-          <img src="/assets/icons/google.png" alt="" /> Continue with Google
-        </button>
-       <!-- <button type="button" class="btn oauth-btn" (click)="oauth('apple')">
-          <img src="assets/icons/apple.png" alt="" /> Continue with Apple
-        </button>
-        <button type="button" class="btn oauth-btn" (click)="oauth('microsoft')">
-          <img src="assets/icons/microsoft.png" alt="" /> Continue with Microsoft
-        </button>
-        -->
-      </div>
-
-      <p class="tos">
-        By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-      </p>
-
-    </form>
   </div>
 </div>
