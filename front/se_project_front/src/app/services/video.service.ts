@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Content {
   id?: string;
@@ -31,7 +32,7 @@ export interface ContentCategory {
 export class VideoService {
   private http = inject(HttpClient);
 
-  private readonly API_URL = 'http://localhost:8080/api/v2';
+  private readonly API_URL = environment.apiUrl + '/api/v2';
 
   getContentByTitle(title: string): Observable<Content> {
     return this.http.get<Content>(`${this.API_URL}/content/${encodeURIComponent(title)}`);

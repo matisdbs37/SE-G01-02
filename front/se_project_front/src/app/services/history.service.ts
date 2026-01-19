@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface CommentsEntry {
   text: string;
@@ -33,7 +34,7 @@ export interface Page<T> {
 })
 export class HistoryService {
   private http = inject(HttpClient);
-  private readonly API_URL = `http://localhost:8080/api/v2/history`;
+  private readonly API_URL = environment.apiUrl + '/api/v2/history';
 
   getHistory(page: number = 0, size: number = 20): Observable<Page<HistoryEntry>> {
     const params = new HttpParams()
