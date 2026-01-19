@@ -1,21 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { VideoService, Content, Categories } from '../../services/video.service';
+import { forkJoin } from 'rxjs';
+
+interface ContentWithCategory extends Content {
+  category?: string;
+}
 
 @Component({
   selector: 'app-video-research',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './video-research.component.html',
-  styleUrl: './video-research.component.css'
+  styleUrls: ['./video-research.component.css']
 })
-export class VideoResearchComponent {
-  constructor(private router: Router) {}
+export class VideoResearchComponent implements OnInit {
+  constructor(private router: Router, private videoService: VideoService) {}
 
   searchText = '';
   selectedCategory = '';
   selectedDuration = '';
-  selectedRating: number | null = null;
   selectedType = '';
   selectedLanguage = '';
   selectedDifficulty: number | null = null;
@@ -23,53 +29,55 @@ export class VideoResearchComponent {
   currentPage = 1;
   pageSize = 12;
 
-  categories = ['Sleep', 'Stress', 'Focus', 'Relaxation'];
-  ratings = [1, 2, 3, 4, 5];
-  types = ['Video', 'Audio'];
-  languages = ['EN', 'FR', 'ES'];
+  videos: ContentWithCategory[] = [];
+  categories: Categories[] = [];
+  types: string[] = ['video', 'audio'];
+  languages: string[] = [];
   difficulties = [1, 2, 3];
 
-  videos = Array.from({ length: 150 }, (_, i) => ({
-    title: `Meditation session ${i + 1}`,
-    category: this.categories[i % this.categories.length],
-    duration: 5 + (i % 30),
-    rating: 1 + (i % 5),
-    type: this.types[i % 2],
-    language: this.languages[i % this.languages.length],
-    difficulty: 1 + (i % 3)
-  }));
+  loading = true;
+
+  ngOnInit() {
+    this.loading = true;
+
+    forkJoin([
+      this.videoService.getContentByType('video'),
+      this.videoService.getContentByType('audio'),
+      this.videoService.getCategories()
+    ]).subscribe({
+      next: ([videos, audios, categories]) => { 
+        const allContent: ContentWithCategory[] = [...videos, ...audios];
+
+        /*allContent.forEach(c => {
+          const cat = categories.find(cat => cat.contentId === c.id);
+          c['category'] = cat?.categoryId ?? '';
+        });*/
+
+        this.videos = allContent;
+        this.categories = categories;
+
+        this.languages = Array.from(new Set(this.videos.map(v => v.language)));
+
+        this.loading = false;
+      }
+    });
+  }
 
   filteredVideos() {
     return this.videos.filter(v => {
-
       if (this.searchText &&
           !v.title.toLowerCase().includes(this.searchText.toLowerCase())) {
         return false;
       }
 
-      if (this.selectedCategory && v.category !== this.selectedCategory) {
-        return false;
-      }
+      if (this.selectedCategory && v.category !== this.selectedCategory) return false;
+      if (this.selectedType && v.type !== this.selectedType) return false;
+      if (this.selectedLanguage && v.language !== this.selectedLanguage) return false;
+      if (this.selectedDifficulty !== null && v.difficulty !== this.selectedDifficulty) return false;
 
-      if (this.selectedType && v.type !== this.selectedType) {
-        return false;
-      }
-
-      if (this.selectedLanguage && v.language !== this.selectedLanguage) {
-        return false;
-      }
-
-      if (this.selectedRating !== null && v.rating < this.selectedRating) {
-        return false;
-      }
-
-      if (this.selectedDifficulty !== null && v.difficulty !== this.selectedDifficulty) {
-        return false;
-      }
-
-      if (this.selectedDuration === 'short' && v.duration >= 10) return false;
-      if (this.selectedDuration === 'medium' && (v.duration < 10 || v.duration > 20)) return false;
-      if (this.selectedDuration === 'long' && v.duration <= 20) return false;
+      if (this.selectedDuration === 'short' && v.durationMin >= 10) return false;
+      if (this.selectedDuration === 'medium' && (v.durationMin < 10 || v.durationMin > 20)) return false;
+      if (this.selectedDuration === 'long' && v.durationMin <= 20) return false;
 
       return true;
     });
@@ -104,22 +112,10 @@ export class VideoResearchComponent {
     }
 
     pages.push(1);
-
-    if (start > 2) {
-      pages.push('...');
-    }
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    if (end < total - 1) {
-      pages.push('...');
-    }
-
-    if (total > 1) {
-      pages.push(total);
-    }
+    if (start > 2) pages.push('...');
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (end < total - 1) pages.push('...');
+    if (total > 1) pages.push(total);
 
     return pages;
   }
@@ -137,18 +133,18 @@ export class VideoResearchComponent {
   }
 
   onPageClick(p: number | string) {
-    if (typeof p === 'number') {
-      this.goToPage(p);
-    }
+    if (typeof p === 'number') this.goToPage(p);
   }
 
-  openVideo(video: any, index: number) {
-    this.router.navigate(['/videos/detail', index], {
-      state: { video }
-    });
+  openVideo(video: Content, index: number) {
+    this.router.navigate(['/videos/detail', index], { state: { video } });
   }
 
   back() {
     this.router.navigate(['home']);
+  }
+
+  onFilterChange() {
+    this.currentPage = 1;
   }
 }

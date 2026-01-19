@@ -1,5 +1,7 @@
 package com.unizg.fer.security;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
@@ -13,6 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.unizg.fer.security.rbac.JwtRoleChecker;
 
@@ -27,13 +32,13 @@ public class SecurityConfig {
         private final String baseUrl = "http://localhost:8080";
 
         private final String[] PUBLIC_END_POINTS = {
-                        "/api/v2/actuator/health",
-                        "/api/v2/error",
-                        "/api/v2/logout",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html",
-                        "/bus/v3/api-docs/**",
-                        "/v3/api-docs/**"
+                "/api/v2/actuator/health",
+                "/api/v2/error",
+                "/api/v2/logout",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/bus/v3/api-docs/**",
+                "/v3/api-docs/**"
         };
 
         @Bean
@@ -47,16 +52,19 @@ public class SecurityConfig {
          * except for the authorized endpoints
          */
         public SecurityFilterChain filterChain(HttpSecurity http)
-                        throws Exception {
+                throws Exception {
 
                 http
-                                .csrf(csrf -> csrf.disable())
-                                .authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
-                                                .permitAll()
-                                                .anyRequest()
-                                                .authenticated())
-                                .oauth2ResourceServer((oauth2) -> oauth2
-                                                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtRoleChecker())));
+                        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                        .csrf(csrf -> csrf.disable())
+                        .csrf(csrf -> csrf.disable())
+                        .authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated())
+                        .oauth2ResourceServer((oauth2) -> oauth2
+                                .jwt(Customizer.withDefaults()) // Utilise le convertisseur par défaut de Spring
+                        );
 
                 return http.build();
         }
@@ -68,19 +76,19 @@ public class SecurityConfig {
 
         /**
          * Bean used to configure ADMIN > USER roles hierarchy
-         * 
+         *
          * @return RoleHierarchy
          */
         @Bean
         public RoleHierarchy roleHierarchy() {
                 return RoleHierarchyImpl.withDefaultRolePrefix()
-                                .role("ADMIN").implies("USER")
-                                .build();
+                        .role("ADMIN").implies("USER")
+                        .build();
         }
 
         /**
          * Expression handler for custom role hierarchy
-         * 
+         *
          * @param roleHierarchy
          * @return
          */
@@ -89,5 +97,22 @@ public class SecurityConfig {
                 DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
                 expressionHandler.setRoleHierarchy(roleHierarchy);
                 return expressionHandler;
+        }
+
+        /*
+         * CORS RUES
+         */
+
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+                configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                configuration.setAllowedHeaders(
+                        List.of("Authorization", "Content-Type", "X-Requested-With", "Accept", "Bearer"));
+                configuration.setAllowCredentials(true);
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", configuration);
+                return source;
         }
 }

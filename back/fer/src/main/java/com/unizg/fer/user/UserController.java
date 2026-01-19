@@ -139,7 +139,7 @@ public class UserController {
         String firstName = jwt.getClaim("given_name");
         String lastName = jwt.getClaim("family_name");
         String city = jwt.getClaim("locale");
-        String roles = "USER";
+        String roles = "ROLE_USER";
         User user = service.createUser(email, firstName, lastName, roles, city);
         return ResponseEntity.ok(user);
     }

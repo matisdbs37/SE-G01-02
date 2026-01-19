@@ -137,3 +137,31 @@ textarea {
   height: 450px;
   border-radius: 15px;
 }
+
+.stars {
+  display: flex;
+  gap: 5px;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  color: #ccc;
+}
+
+.star-icon.filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #ffca08;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 0.2s;
+}
+
+.comment {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}

@@ -41,6 +41,11 @@ export const routes: Routes = [
     loadComponent: () => import('./videos/video-detail/video-detail.component').then(m => m.VideoDetailComponent)
   },
 
+  {
+    path: 'profile/checkin',
+    loadComponent: () => import('./profile/checkin/checkin.component').then(m => m.CheckinComponent)
+  },
+
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
   { path: '**', redirectTo: 'auth/login' }

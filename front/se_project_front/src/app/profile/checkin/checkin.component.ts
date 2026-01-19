@@ -1,20 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Question, QUESTIONS } from '../data/questions';
-import { CommonModule } from '@angular/common';
-import { CountryService } from '../services/country.service';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Question, QUESTIONS } from '../data/questions';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from '../../services/users.service';
 
 @Component({
-  selector: 'app-questionnaire',
-  standalone: true,
+  selector: 'app-checkin',
   imports: [CommonModule, FormsModule],
-  templateUrl: './questionnaire.component.html',
-  styleUrl: './questionnaire.component.css',
+  templateUrl: './checkin.component.html',
+  styleUrl: './checkin.component.css'
 })
-export class QuestionnaireComponent {
+export class CheckinComponent {
   currentQuestionIndex: number = -1;
 
   questions: Question[] = QUESTIONS;
@@ -22,16 +19,7 @@ export class QuestionnaireComponent {
 
   errorMessage: string = '';
 
-  constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService) {}
-
-  ngOnInit() {
-    this.countryService.getCountries().subscribe(countries => {
-      const countryQuestion = this.questions.find(q => q.text.includes('Where are you from ?'));
-      if (countryQuestion) {
-        countryQuestion.options = countries;
-      }
-    });
-  }
+  constructor(private router: Router, private userService: UserService) {}
 
   startQuestionnaire() {
     this.currentQuestionIndex = 0;
@@ -77,25 +65,17 @@ export class QuestionnaireComponent {
   }
 
   save() {
-    const claims: any = this.auth.getIdentityClaims();
-
     const userToUpdate: any = {
-      firstName: this.answers[0],
-      lastName: this.answers[1],
-      preferences: this.answers[4],
-      mental: this.answers[5],
-      sleep: this.answers[6],
-      stress: this.answers[7],
-      meditation: this.answers[8],
-      locale: this.answers[2],
-      city: this.answers[3],
+      mental: this.answers[0],
+      sleep: this.answers[1],
+      stress: this.answers[2],
+      meditation: this.answers[3],
       updatedAt: new Date().toISOString()
     };
 
-
     this.userService.updateUser(userToUpdate).subscribe({
       next: (response) => {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/profile']);
       },
       error: (err) => {
         console.error("Erreur lors de l'update", err);
