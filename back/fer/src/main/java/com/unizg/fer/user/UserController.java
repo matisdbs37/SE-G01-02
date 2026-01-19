@@ -8,14 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.unizg.fer.stats.StatUpdater;
 import com.unizg.fer.stats.StatsService;
@@ -148,10 +141,56 @@ public class UserController {
      * 
      * @return
      */
-    @GetMapping(value = "users", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "admin/users", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Stream<User>> getAllUsers() {
         var stream = service.findAll();
         return ResponseEntity.ok(stream);
+    }
+
+    /**
+     * Deletes a specific user by email. Restricted to administrators.
+     *
+     * @param email the email of the user to delete passed as a request parameter
+     * @return a `ResponseEntity` with a success message
+     */
+    @Operation(summary = "Delete user by email (Admin)", description = "Permanently deletes a specific user account by their email. Requires ADMIN privileges.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User deleted successfully", content = @Content(mediaType = "text/plain", schema = @Schema(implementation = String.class, example = "User user@example.com deleted successfully"))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Access denied - Requires ROLE_ADMIN", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
+    @DeleteMapping("admin/user/delete")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<String> deleteUserByEmail(@RequestParam String email) {
+        service.deleteUser(email);
+        return ResponseEntity.ok("User " + email + " deleted successfully");
+    }
+
+
+    /**
+     * Updates a specific user's details based on email. Restricted to administrators.
+     *
+     * @param email       the email of the user to update (passed as query param)
+     * @param updatedUser the new user details
+     * @return the updated user
+     */
+    @Operation(summary = "Update user by email (Admin)", description = "Updates a specific user's profile data. Requires ADMIN privileges.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid data provided", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Access denied - Requires ROLE_ADMIN", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
+    @PutMapping("admin/user/update")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<User> updateUserByEmailAdmin(
+            @RequestParam String email,
+            @RequestBody User updatedUser) {
+
+        var user = service.updateUser(email, updatedUser);
+        return ResponseEntity.ok(user);
     }
 }
