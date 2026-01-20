@@ -143,6 +143,17 @@ public class UserService {
         return userRepo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NOT_FOUND));
     }
 
+    /**
+     * Find the user by email in database or create a new one with just the email
+     * found in the token claims.
+     * 
+     * @param email
+     * @return found or freshly created user
+     */
+    public User findOrCreateUserByEmail(String email) {
+        return userRepo.findByEmail(email).orElse(userRepo.save(createUser(email, "", "", "ROLE_USER", "zagreb")));
+    }
+
     /***
      * Must be annoted with @Transactionnal to keep conn open with mongo db
      * 

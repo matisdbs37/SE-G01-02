@@ -48,7 +48,7 @@ public class JwtRoleChecker implements Converter<Jwt, AbstractAuthenticationToke
         String email = token.getClaim(EMAIL_FIELD);
 
         // retrieve user from email
-        var user = userService.findByemail(email);
+        var user = userService.findOrCreateUserByEmail(email);
 
         // get the user's role
         GrantedAuthority authority = userRoleRepository.findByUserId(user.getId())
