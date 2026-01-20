@@ -2,11 +2,14 @@ package com.unizg.fer.user;
 
 import com.unizg.fer.config.ResourceNotFoundException;
 import com.unizg.fer.config.UserAlreadyExistsException;
+import com.unizg.fer.plan.PlanManager;
 import com.unizg.fer.security.rbac.Role;
 import com.unizg.fer.security.rbac.StringToRoleConverter;
 import com.unizg.fer.security.rbac.UserRole;
 import com.unizg.fer.security.rbac.UserRoleRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +27,11 @@ public class UserService {
     private static final String RESOURCE_NOT_FOUND = "user not found";
     private static final String ID_CANNOT_BE_NULL = "id cannot be null";
     private static final String NO_USER_EMAIL = "No user found with the email address : ";
-    private static final String NO_USER_ID = "No user found with the email : %s ";
+    private static final String NO_USER_ID = "No user found with the id : %s ";
     private static final String USER_EXIST = "A user with this email address already exists.";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
 
     @Autowired
     private UserRepository userRepo;
@@ -169,6 +175,10 @@ public class UserService {
     }
 
     public User getUserById(String id) {
-        return userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format(NO_USER_ID, id)));
+        return userRepo.findById(id).orElseThrow(() -> {
+            LOGGER.warn("User not found with id: {}", id); 
+            return new ResourceNotFoundException(String.format(NO_USER_ID, id));
+        });
+        
     }
 }

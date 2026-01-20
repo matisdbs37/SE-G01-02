@@ -140,7 +140,7 @@ public class StatsService {
                 if (stats.getLastLoginDate() == null)
                     return;
                 long daysSinceLastLogin = ChronoUnit.DAYS.between(stats.getLastLoginDate(), now);
-                if (daysSinceLastLogin == 1) {
+                if (daysSinceLastLogin == 0) {
                     sendStreakReminder(stats);
                 }
                 if (daysSinceLastLogin >= 7) {

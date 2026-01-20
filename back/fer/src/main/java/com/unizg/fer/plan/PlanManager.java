@@ -63,7 +63,6 @@ public class PlanManager {
                     return planEntriesRepository.save(entry);
                 })
                 .toList();
-        System.out.println(toWatch);
         planRepo.save(Plan.builder()
                 .userId(userId)
                 .toWatch(toWatch)
@@ -107,13 +106,11 @@ public class PlanManager {
 
     @SuppressWarnings("null")
     private void notifyNextEntry(Plan plan) {
-        System.out.println("============================================= PLAN " + plan);
         plan.getToWatch().stream()
                 .filter(entry -> !entry.isNotified())
                 .findFirst()
                 .ifPresent(entry -> {
                     try {
-                        System.out.println("======================= entry  found in plan: " + entry);
                         var content = contentRepo
                                 .findById(String.valueOf(entry.getContent()))
                                 .get();
