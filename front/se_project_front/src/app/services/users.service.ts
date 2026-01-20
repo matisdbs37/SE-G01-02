@@ -28,11 +28,18 @@ export interface User {
 })
 export class UserService {
   private http = inject(HttpClient);
-
   private readonly API_URL = environment.apiUrl + '/api/v2/user';
 
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(this.API_URL);
+  }
+
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(`${this.API_URL}/${id}`);
+  }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiUrl}/api/v2/users`);
   }
 
   createUser(userData: Partial<User>): Observable<User> {
@@ -44,8 +51,6 @@ export class UserService {
   }
 
   deleteUser() {
-    return this.http.delete(`${this.API_URL}/delete`, {
-      responseType: 'text' 
-    });
+    return this.http.delete(`${this.API_URL}/delete`, { responseType: 'text' });
   }
 }

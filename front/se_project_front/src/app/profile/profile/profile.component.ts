@@ -5,7 +5,7 @@ import { CountryService } from '../services/country.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from '../../services/users.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, catchError, of } from 'rxjs';
 import { HistoryEntry, HistoryService } from '../../services/history.service';
 import { VideoService } from '../../services/video.service';
 import { PlanService, PlanLevel, Plan } from '../../services/plan.service';
@@ -86,27 +86,27 @@ export class ProfileComponent {
     this.planLoading = true;
     
     forkJoin({
-      plans: this.planService.getMyPlans(),
-      videos: this.videoService.getContentByType('video'),
-      audios: this.videoService.getContentByType('audio')
+      plans: this.planService.getMyPlans().pipe(catchError(() => of([]))),
+      videos: this.videoService.getContentByType('Video').pipe(catchError(() => of([]))),
+      audios: this.videoService.getContentByType('Audio').pipe(catchError(() => of([])))
     }).subscribe({
       next: ({ plans, videos, audios }) => {
         const allPlans = plans as Plan[];
-        console.log(allPlans);
         if (allPlans && allPlans.length > 0) {
           this.userPlan = allPlans.sort((a, b) => 
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           )[0];
 
-          const allContent = [...videos, ...audios];
-
-          this.planContent = this.userPlan.toWatch.map(entry => {
-            const contentDetail = allContent.find(c => c.id === entry.id);
-            return {
-              ...contentDetail,
-              notified: entry.notified
-            };
-          });
+          const allContent = [...(videos || []), ...(audios || [])];
+          if (this.userPlan && this.userPlan.toWatch) {
+            this.planContent = this.userPlan.toWatch.map(entry => {
+              const contentDetail = allContent.find(c => c.id === entry.contentId);
+              return {
+                ...contentDetail,
+                notified: entry.notified
+              };
+            });
+          }
         }
         this.planLoading = false;
       },
@@ -129,17 +129,18 @@ export class ProfileComponent {
     this.historyLoading = true;
 
     forkJoin({
-      videos: this.videoService.getContentByType('Video'),
-      audios: this.videoService.getContentByType('Audio'),
-      historyPage: this.historyService.getHistory(page, 20)
+      videos: this.videoService.getContentByType('Video').pipe(catchError(() => of([]))),
+      audios: this.videoService.getContentByType('Audio').pipe(catchError(() => of([]))),
+      historyPage: this.historyService.getHistory(page, 20).pipe(catchError(() => of({ content: [], totalPages: 0, number: 0 })))
     }).subscribe({
       next: ({ videos, audios, historyPage }) => {
-        const allContent = [...videos, ...audios];
+        const allContent = [...(videos || []), ...(audios || [])];
+        
         allContent.forEach(item => {
           if (item.id) this.videoCatalogue.set(item.id, item.title);
         });
 
-        let newData = historyPage.content;
+        let newData = historyPage.content || [];
         this.userHistory = page === 0 ? newData : [...this.userHistory, ...newData];
 
         this.userHistory.sort((a, b) => {
@@ -148,11 +149,11 @@ export class ProfileComponent {
           return dateB - dateA;
         });
 
-        this.isLastPage = historyPage.number >= historyPage.totalPages - 1;
+        this.isLastPage = historyPage.number >= (historyPage.totalPages || 1) - 1;
         this.historyLoading = false;
       },
       error: (err) => {
-        console.error("Erreur chargement données", err);
+        console.error("Erreur chargement données historique", err);
         this.historyLoading = false;
       }
     });

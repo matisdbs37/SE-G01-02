@@ -13,6 +13,7 @@ export interface PlanEntry {
   id?: string;
   content: string;
   notified: boolean;
+  contentId: string;
 }
 
 export interface Plan {
@@ -29,7 +30,7 @@ export interface Plan {
 export class PlanService {
   private http = inject(HttpClient);
 
-  private readonly API_URL = `${environment.apiUrl}/plan/`;
+  private readonly API_URL = `${environment.apiUrl}/api/v2/plan/`;
 
   getMyPlans(): Observable<Plan[]> {
     return this.http.get<Plan[]>(this.API_URL);

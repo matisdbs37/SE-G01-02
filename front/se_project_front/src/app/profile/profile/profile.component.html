@@ -106,7 +106,7 @@
           <div class="history-item" *ngFor="let item of userHistory">
             <div class="history-info">
               <span class="video-name">
-                {{ videoCatalogue.get(item.videoId) || 'Loading title...' }}
+                {{ videoCatalogue.get(item.contentId) || 'Loading title...' }}
               </span>
               <span class="history-date">{{ item.updatedAt | date:'medium' }}</span>
             </div>
@@ -145,7 +145,7 @@
 
       <section *ngIf="activeSection == 'plan'">
         <div class="dashboard-header">
-          <h2>My Active Plan</h2>
+          <h2>My Plan</h2>
         </div>
         
         <div *ngIf="planLoading" class="small-loader">Analyzing your profile...</div>

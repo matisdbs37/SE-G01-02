@@ -60,26 +60,21 @@ export class HomeComponent implements OnInit {
 
     const userToCreate = {};
 
-    this.userService.createUser(userToCreate).subscribe({
-      next: (response) => {
-        this.router.navigateByUrl('/questionnaire');
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.user = user;
+        
+        const isProfileIncomplete = !user.firstName?.trim() || !user.lastName?.trim();
+
+        if (isProfileIncomplete) {
+          this.router.navigateByUrl('/questionnaire');
+        }
+        
+        this.loading = false;
       },
       error: (err) => {
-        if (err.status === 409) {
-          this.userService.getCurrentUser().subscribe({
-            next: (user) => {
-              this.user = user;
-              this.loading = false;
-            },
-            error: (e) => {
-              console.error("Erreur récupération utilisateur", e);
-              this.loading = false;
-            }
-          });
-        } else {
-          console.error("Erreur technique lors de la création", err);
-          this.loading = false;
-        }
+        console.error("Erreur récupération utilisateur", err);
+        this.loading = false;
       }
     });
   }
