@@ -117,9 +117,21 @@ public class HistoryService {
         if (!contentRepo.existsById(id)) {
             throw new ResourceNotFoundException(String.format(NO_CONTENT_FOUND, id));
         }
-        
+
         var contentId = id;
         return repo.findByContentId(contentId);
     }
 
+    /**
+     * Computes the mean rating of this content.
+     * 
+     * @param contentId
+     * @return average or -1 if no one rated the content 
+     */
+    public Double getRating(String contentId) {
+        return getAllContentInteraction(contentId)
+                .stream()
+                .filter(entry -> entry.getRating() != null)
+                .mapToInt(HistoryEntry::getRating).average().orElse(-1);
+    }
 }

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -124,12 +125,28 @@ public class ContentController {
     @Operation(summary = "Get all interactions for a specific content", description = "Retrieves all history records for a content. Throws 404 if the content ID does not exist in the database.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of interactions successfully retrieved", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = HistoryEntry.class)))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Valid JWT token required", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden - Requires ROLE_USER authority", content = @Content),
             @ApiResponse(responseCode = "404", description = "Content not found - The provided contentId does not exist", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
     })
     @GetMapping("/interactions/{id}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<List<HistoryEntry>> getAllContentInteraction(@PathVariable String contentId) {
         return ResponseEntity.ok(history.getAllContentInteraction(contentId));
+    }
+
+    @Tag(name = "Rating", description = "Endpoints for content evaluation and statistics")
+    @Operation(summary = "Get mean rating for a specific content", description = "Calculates the average rating from all user history entries for the given content. Returns -1.0 if no ratings exist.", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Average rating successfully calculated, if -1 then no one rated this content", content = @Content(mediaType = "application/json", schema = @Schema(type = "number", format = "double", example = "8.5"))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Valid JWT token required", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden - Requires ROLE_USER authority", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Content not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+    })
+    @GetMapping("/rating/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<Double> getContentMeanRating(@PathVariable String contentId) {
+        return ResponseEntity.ok(history.getRating(contentId));
     }
 
 }
