@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
-@RequestMapping("/plan/")
+@RequestMapping("/api/v2/plan/")
 @Tag(name = "Learning Plans", description = "APIs for managing personalized learning plans")
 
 public class PlanController {
