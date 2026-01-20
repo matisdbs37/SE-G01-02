@@ -8,6 +8,8 @@ public interface ContentCategoriesRepository extends MongoRepository<ContentCate
     
     List<ContentCategories> findByCategoryId(String categoryId);
 
+    List<ContentCategories> findAllByContentId(String contentId);
+
     void deleteById(String id);
 
     

@@ -20,6 +20,9 @@ import com.unizg.fer.history.HistoryEntry;
 import com.unizg.fer.history.HistoryService;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/v2/content")
@@ -148,5 +151,14 @@ public class ContentController {
     public ResponseEntity<Double> getContentMeanRating(@PathVariable String contentId) {
         return ResponseEntity.ok(history.getRating(contentId));
     }
+
+
+    @Operation(summary = "Get categories of a content", description = "Retrieves all associations between content items and categories.")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/categories/{id}")
+    public ResponseEntity<List<ContentCategories>> getAllCategories(@PathVariable String contentId) {
+        return ResponseEntity.ok(service.findAllCategories());
+    }
+
 
 }

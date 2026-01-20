@@ -137,7 +137,10 @@ public class ContentService {
 
     public List<ContentCategories> findAllCategories() {
         return contentCategoriesRepo.findAll();
+    }
 
+    public List<ContentCategories> findAllCategoriesByContentId(String contentId){
+        return contentCategoriesRepo.findAllByContentId(contentId);
     }
 
     public ContentCategories updateCategory(String id, ContentCategories contentCategories) {
