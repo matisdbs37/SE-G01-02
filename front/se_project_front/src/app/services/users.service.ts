@@ -35,7 +35,7 @@ export class UserService {
   }
 
   getUserById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.API_URL}/${id}`);
+    return this.http.get<User>(`${this.API_URL}/infos/${id}`);
   }
 
   getAllUsers(): Observable<User[]> {
