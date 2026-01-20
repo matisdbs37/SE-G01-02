@@ -3,7 +3,7 @@ package com.unizg.fer.emailManager;
 public enum TemplateType {
     STREAK("streak.json"),
     PLAN("plan.json"),
-    INACTIVE("inactive.json");
+    INACTIVE("inactivity.json");
 
     private final String fileName;
 

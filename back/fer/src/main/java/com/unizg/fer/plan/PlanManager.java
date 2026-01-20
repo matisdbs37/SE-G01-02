@@ -37,9 +37,12 @@ public class PlanManager {
 
     @Autowired
     UserRepository userRepo;
-    private SystemMetricsAutoConfiguration systemMetricsAutoConfiguration;
+
     @Autowired
     private ContentService contentService;
+
+    @Autowired
+    private PlanEntriesRepository planEntriesRepository;
 
     /**
      * Create a new plan with the number of random content specified in the
@@ -52,10 +55,13 @@ public class PlanManager {
     public void createPlan(String userId, PlanLevel level) {
         // create a list of plan entry from a random stream of video type of content
         var toWatch = contentService.findRandomByType(level.getValue(), "video").stream()
-                .map(content -> PlanEntry.builder()
-                        .content(new ObjectId(content.getId()))
-                        .notified(false)
-                        .build())
+                .map(content -> {
+                    var entry = PlanEntry.builder()
+                            .content(new ObjectId(content.getId()))
+                            .notified(false)
+                            .build();
+                    return planEntriesRepository.save(entry);
+                })
                 .toList();
         System.out.println(toWatch);
         planRepo.save(Plan.builder()
@@ -64,7 +70,6 @@ public class PlanManager {
                 .level(level)
                 .createdAt(LocalDateTime.now())
                 .build());
-
     }
 
     /***
@@ -102,12 +107,13 @@ public class PlanManager {
 
     @SuppressWarnings("null")
     private void notifyNextEntry(Plan plan) {
+        System.out.println("============================================= PLAN " + plan);
         plan.getToWatch().stream()
                 .filter(entry -> !entry.isNotified())
                 .findFirst()
                 .ifPresent(entry -> {
                     try {
-
+                        System.out.println("======================= entry  found in plan: " + entry);
                         var content = contentRepo
                                 .findById(String.valueOf(entry.getContent()))
                                 .get();

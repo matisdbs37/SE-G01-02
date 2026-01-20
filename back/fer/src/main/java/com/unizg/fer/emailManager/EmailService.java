@@ -2,12 +2,14 @@ package com.unizg.fer.emailManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -54,7 +56,10 @@ public class EmailService {
     private EmailTemplate editTemplateKey(String templateName, List<JSONKeys> keys, Map<JSONValues, String> values)
             throws IOException {
         // load the template
-        ObjectNode template = (ObjectNode) mapper.readTree(new File(TEMPLATE_FOLDER + templateName));
+        // INPUT STREAM COMPATIBLE WITH PROD ENV 
+        ClassPathResource resource = new ClassPathResource("email_templates/" + templateName);
+        InputStream inputStream = resource.getInputStream();
+        ObjectNode template = (ObjectNode) mapper.readTree(inputStream);
         // itearte on all the keys provided
         for (var key : keys) {
             var node = template.get(key.getValue());
@@ -85,18 +90,17 @@ public class EmailService {
      * 
      * @param userEmail
      * @param type      TemplateType to edit
-     * @param values    
+     * @param values
      */
     public void sendEmail(String recipient, TemplateType type, Map<JSONValues, String> values) {
         try {
-            // 1. Charger et éditer le template via la fonction privée
-            // On traite systématiquement SUBJECT et BODY
+            // load and edit template
             EmailTemplate template = editTemplateKey(
                     type.getFileName(),
                     List.of(JSONKeys.SUBJECT, JSONKeys.BODY),
                     values);
 
-            // 2. Préparer le message Mime (support HTML)
+            // mime message
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
@@ -105,13 +109,13 @@ public class EmailService {
             helper.setSubject(template.getSubject());
             helper.setText(template.getBody(), template.isHtml());
 
-            // 3. Envoi
+            // send
             mailSender.send(message);
-            LOGGER.info("Email '{}' envoyé avec succès à {}", type, recipient);
+            LOGGER.info("Email '{}' sendt  to  {}", type, recipient);
 
         } catch (Exception e) {
-            LOGGER.error("Erreur lors de l'envoi de l'email {} à {}", type, recipient, e);
-            throw new RuntimeException("Échec de l'envoi de l'email", e);
+            LOGGER.error("Error while sending email  {} to {}", type, recipient, e);
+            throw new RuntimeException("Error while sending email", e);
         }
     }
 }

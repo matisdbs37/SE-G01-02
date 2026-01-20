@@ -154,18 +154,13 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    /**
-     * 
-     * @return
-     */
+
     @GetMapping(value = "users", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Stream<User>> getAllUsers() {
         var stream = service.findAll();
         return ResponseEntity.ok(stream);
     }
-
-
 
     /**
      * Get user info by id 
