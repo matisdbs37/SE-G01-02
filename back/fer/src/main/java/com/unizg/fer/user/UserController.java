@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.unizg.fer.stats.StatUpdater;
 import com.unizg.fer.stats.StatsService;
 
+import io.micrometer.core.ipc.http.HttpSender.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -162,5 +163,16 @@ public class UserController {
     public ResponseEntity<Stream<User>> getAllUsers() {
         var stream = service.findAll();
         return ResponseEntity.ok(stream);
+    }
+
+
+
+    /**
+     * Get user info by id 
+     */
+    @GetMapping(value = "user/infos/{id}", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<User> getUserInfo(@PathVariable String id) {
+        return ResponseEntity.ok(service.getInfoById(id));
     }
 }
