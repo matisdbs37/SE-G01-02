@@ -14,6 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.unizg.fer.config.ResourceNotFoundException;
+import com.unizg.fer.history.HistoryEntry;
+import com.unizg.fer.history.HistoryService;
+
 import java.util.List;
 
 @RestController
@@ -23,6 +27,9 @@ public class ContentController {
 
     @Autowired
     private ContentService service;
+
+    @Autowired
+    private HistoryService history;
 
     @Operation(summary = "Get content by type", description = "Retrieves a list of content filtered by type. Supported values: AUDIO, VIDEO (Case-insensitive).")
     @ApiResponses(value = {
@@ -113,4 +120,16 @@ public class ContentController {
         service.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Get all interactions for a specific content", description = "Retrieves all history records for a content. Throws 404 if the content ID does not exist in the database.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of interactions successfully retrieved", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = HistoryEntry.class)))),
+            @ApiResponse(responseCode = "404", description = "Content not found - The provided contentId does not exist", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+    })
+    @GetMapping("/interactions/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<List<HistoryEntry>> getAllContentInteraction(@PathVariable String contentId) {
+        return ResponseEntity.ok(history.getAllContentInteraction(contentId));
+    }
+
 }

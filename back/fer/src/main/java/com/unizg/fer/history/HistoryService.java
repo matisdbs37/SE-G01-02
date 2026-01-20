@@ -2,6 +2,7 @@ package com.unizg.fer.history;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
+import com.unizg.fer.config.ResourceNotFoundException;
 import com.unizg.fer.content.ContentRepository;
 
 @Service
@@ -17,7 +19,7 @@ public class HistoryService {
 
     private static final String NO_RESOURCE_FOUND = "history for user %s and video %s was not found ";
     private static final String INVALID_STARS = "the number of stars : %s is invalid";
-    private static final String NO_VIDO_FOUND = "no video with id : %s";
+    private static final String NO_CONTENT_FOUND = "no content with id : %s";
     private static final String ILLEGAL_ARGUMENTS = "illegal argument for userId : %s or videoId : %s";
 
     @Autowired
@@ -26,8 +28,6 @@ public class HistoryService {
     @Autowired
     ContentRepository contentRepo;
 
-    // TODO: utiliser validation utils pour renvoyer une erreur si aucun historique
-    // existe
     public Page<HistoryEntry> getPaginatedHistory(String userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return repo.findByUserIdOrderByWatchedAtDesc(userId, pageable);
@@ -37,22 +37,22 @@ public class HistoryService {
      * Find or create history
      * 
      * @param userId
-     * @param videoId
+     * @param contentId
      * @return an actual history or a new one
      */
-    public HistoryEntry findHistory(String userId, String videoId) {
+    public HistoryEntry findHistory(String userId, String contentId) {
         // check user id && video id for safety
-        if (userId == null || userId.isEmpty() || videoId.isEmpty() || videoId == null) {
-            throw new IllegalArgumentException(String.format(ILLEGAL_ARGUMENTS, videoId, userId));
+        if (userId == null || userId.isEmpty() || contentId.isEmpty() || contentId == null) {
+            throw new IllegalArgumentException(String.format(ILLEGAL_ARGUMENTS, contentId, userId));
         }
-        return repo.findByUserIdAndVideoId(userId, videoId).orElseGet(() -> {
+        return repo.findByUserIdAndContentId(userId, contentId).orElseGet(() -> {
             // get vido or else throw video not found error
-            var content = contentRepo.findById(videoId).orElseThrow(() -> new IllegalArgumentException(
-                    String.format(NO_VIDO_FOUND, videoId)));
+            var content = contentRepo.findById(contentId).orElseThrow(() -> new IllegalArgumentException(
+                    String.format(NO_CONTENT_FOUND, contentId)));
             var now = LocalDateTime.now();
             HistoryEntry newEntry = new HistoryEntry();
             newEntry.setUserId(userId);
-            newEntry.setVideoId(videoId);
+            newEntry.setContentId(contentId);
             newEntry.setWatchedAt(now);
             newEntry.setContentDuration(content.getDurationMin());
             newEntry.setWatchedDuration(0);
@@ -104,6 +104,22 @@ public class HistoryService {
         }
         history.setRating(stars);
         return repo.save(history);
+    }
+
+    /**
+     * find all the interaction with this content.
+     * 
+     * @param contentId
+     * @return
+     */
+    public List<HistoryEntry> getAllContentInteraction(String id) {
+        // check if content exists
+        if (!contentRepo.existsById(id)) {
+            throw new ResourceNotFoundException(String.format(NO_CONTENT_FOUND, id));
+        }
+        
+        var contentId = id;
+        return repo.findByContentId(contentId);
     }
 
 }

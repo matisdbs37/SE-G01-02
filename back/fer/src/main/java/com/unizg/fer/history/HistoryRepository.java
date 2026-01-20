@@ -15,9 +15,11 @@ public interface HistoryRepository extends MongoRepository<HistoryEntry, String>
     // Count the number of videos seen by an user
     long countByUserId(String userId);
 
-    // Find all the history_entries by video id
-    List<HistoryEntry> findByVideoId(String videoId);
+    // Find all the history_entries by content id
+    List<HistoryEntry> findByContentId(String contentId);
 
-    Optional<HistoryEntry> findByUserIdAndVideoId(String userId, String videoId);
+    Optional<HistoryEntry> findByUserIdAndContentId(String userId, String videoId);
+
+    
 
 }
