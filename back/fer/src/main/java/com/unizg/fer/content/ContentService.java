@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
+import com.unizg.fer.categories.Categories;
 import com.unizg.fer.categories.CategoriesRepository;
 import com.unizg.fer.config.ResourceNotFoundException;
 import com.unizg.fer.utils.ValidationUtils;
@@ -139,8 +140,23 @@ public class ContentService {
         return contentCategoriesRepo.findAll();
     }
 
-    public List<ContentCategories> findAllCategoriesByContentId(String contentId){
-        return contentCategoriesRepo.findAllByContentId(contentId);
+    /**
+     * Find all the categories of a content id
+     * @param contentId
+     * @return a list of categories
+     */
+    public List<Categories> findAllCategoriesByContentId(String contentId) {
+        // check if content exists in dv 
+        if (!contentRepo.existsById(contentId)) {
+            throw new ResourceNotFoundException(String.format(CONTENT_NOT_FOUND, contentId));
+        }
+        //get all content_categories by content id and stream over this to get their ids
+        var contentCategories = contentCategoriesRepo.findAllByContentId(contentId);
+        var categoriesIds = contentCategories.stream()
+                .map(ContentCategories::getCategoryId) 
+                .collect(Collectors.toList());
+        //get a list of categories
+        return categoriesRepo.findAllByIdIn(categoriesIds);
     }
 
     public ContentCategories updateCategory(String id, ContentCategories contentCategories) {

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.unizg.fer.categories.Categories;
 import com.unizg.fer.config.ResourceNotFoundException;
 import com.unizg.fer.history.HistoryEntry;
 import com.unizg.fer.history.HistoryService;
@@ -134,8 +135,8 @@ public class ContentController {
     })
     @GetMapping("/interactions/{id}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<List<HistoryEntry>> getAllContentInteraction(@PathVariable String contentId) {
-        return ResponseEntity.ok(history.getAllContentInteraction(contentId));
+    public ResponseEntity<List<HistoryEntry>> getAllContentInteraction(@PathVariable String id) {
+        return ResponseEntity.ok(history.getAllContentInteraction(id));
     }
 
     @Tag(name = "Rating", description = "Endpoints for content evaluation and statistics")
@@ -148,16 +149,16 @@ public class ContentController {
     })
     @GetMapping("/rating/{id}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<Double> getContentMeanRating(@PathVariable String contentId) {
-        return ResponseEntity.ok(history.getRating(contentId));
+    public ResponseEntity<Double> getContentMeanRating(@PathVariable String id) {
+        return ResponseEntity.ok(history.getRating(id));
     }
 
 
     @Operation(summary = "Get categories of a content", description = "Retrieves all associations between content items and categories.")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/categories/{id}")
-    public ResponseEntity<List<ContentCategories>> getAllCategories(@PathVariable String contentId) {
-        return ResponseEntity.ok(service.findAllCategories());
+    public ResponseEntity<List<Categories>> getAllCategories(@PathVariable String id) {
+        return ResponseEntity.ok(service.findAllCategoriesByContentId(id));
     }
 
 

@@ -151,7 +151,8 @@ public class UserService {
      * @return found or freshly created user
      */
     public User findOrCreateUserByEmail(String email) {
-        return userRepo.findByEmail(email).orElse(userRepo.save(createUser(email, "", "", "ROLE_USER", "zagreb")));
+        return userRepo.findByEmail(email)
+                .orElseGet(() -> userRepo.save(createUser(email, "", "", "ROLE_USER", "zagreb")));
     }
 
     /***
