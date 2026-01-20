@@ -6,7 +6,9 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.unizg.fer.config.ResourceNotFoundException;
+import com.unizg.fer.security.rbac.UserRoleService;
 import com.unizg.fer.stats.StatUpdater;
 import com.unizg.fer.stats.StatsService;
 
@@ -27,6 +31,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * REST controller for managing user-related operations.
@@ -42,7 +47,10 @@ public class UserController {
     private UserService service;
 
     @Autowired
-    public StatsService statsService;
+    private StatsService statsService;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * Retrieves the user details based on the email extracted from the JWT token.
@@ -154,4 +162,19 @@ public class UserController {
         var stream = service.findAll();
         return ResponseEntity.ok(stream);
     }
+
+    @Operation(summary = "Get user's role", description = "extract the user email from the token claims and retrieve his granted authorities", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "get role", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SimpleGrantedAuthority.class))),
+            @ApiResponse(responseCode = "401", description = "non authenticated", content = @Content),
+            @ApiResponse(responseCode = "403", description = "you don't have the role for this request, required 'ROLE_USER'", content = @Content),
+            @ApiResponse(responseCode = "404", description = "user or role not found in database", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+    })
+    @GetMapping("user/role")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<GrantedAuthority> getUserRole(@AuthenticationPrincipal Jwt jwt) {
+        String email = jwt.getClaim("email");
+        return ResponseEntity.ok(userRoleService.getUserAuthority(email));
+    }
+
 }
