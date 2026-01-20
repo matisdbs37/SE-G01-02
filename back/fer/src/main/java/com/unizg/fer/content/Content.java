@@ -28,6 +28,10 @@ public class Content {
     @Id
     private String id;
 
+    @NotBlank(message = "url is required")
+    @Field("url")
+    private String url;
+
     @NotBlank(message = "Title is required")
     @Field("title")
     private String title;
