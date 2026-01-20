@@ -48,8 +48,6 @@ public class PlanManager {
      * @param userId
      * @param level
      */
-    // FIXME : get rid of compilers null, complier still throws warnings with
-    // @NonNull (lombok)
     @SuppressWarnings("null")
     public void createPlan(String userId, PlanLevel level) {
         // create a list of plan entry from a random stream of video type of content

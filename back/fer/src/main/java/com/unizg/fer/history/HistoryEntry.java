@@ -35,8 +35,8 @@ public class HistoryEntry {
     private String userId;
 
     @Indexed
-    @Field("videoId")
-    private String videoId;
+    @Field("contentId")
+    private String contentId;
 
     @Indexed
     @Field("watchedAt")
