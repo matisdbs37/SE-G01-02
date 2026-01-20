@@ -53,4 +53,8 @@ export class UserService {
   deleteUser() {
     return this.http.delete(`${this.API_URL}/delete`, { responseType: 'text' });
   }
+
+  logUserActivity(): Observable<User> {
+    return this.http.get<User>(`${this.API_URL}/log`);
+  }
 }

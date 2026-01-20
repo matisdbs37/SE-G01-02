@@ -84,14 +84,12 @@ export class VideoDetailComponent {
     }
 
     const userRequests = userIds.map(id => 
-      this.userService.getUserById(id).pipe(catchError(() => of(null)))
+      this.userService.getAllUsers().pipe(catchError(() => of(null)))
     );
 
     forkJoin(userRequests).subscribe(users => {
       const userMap = new Map<string, string>();
-      users.forEach(u => {
-        if (u) userMap.set(u.id!, `${u.firstName} ${u.lastName}`);
-      });
+      console.log(users);
 
       interactions.forEach(inter => {
         if (inter.comments && inter.comments.length > 0) {
