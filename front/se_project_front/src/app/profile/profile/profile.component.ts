@@ -8,6 +8,7 @@ import { UserService } from '../../services/users.service';
 import { forkJoin } from 'rxjs';
 import { HistoryEntry, HistoryService } from '../../services/history.service';
 import { VideoService } from '../../services/video.service';
+import { PlanService, PlanLevel, Plan } from '../../services/plan.service';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +18,7 @@ import { VideoService } from '../../services/video.service';
 })
 
 export class ProfileComponent {
-  constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService, private historyService: HistoryService, private videoService: VideoService) { }
+  constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService, private historyService: HistoryService, private videoService: VideoService, private planService: PlanService) { }
 
   activeSection = 'dashboard';
   isEditing = false;
@@ -37,6 +38,10 @@ export class ProfileComponent {
   historyLoading = false;
   currentPage = 0;
   isLastPage = false;
+
+  userPlan: Plan | null = null;
+  planContent: any[] = [];
+  planLoading = false;
 
   loading = true;
 
@@ -70,9 +75,55 @@ export class ProfileComponent {
     if (section == 'history') {
       this.loadHistoryWithTitles();
     }
+    if (section == 'plan') {
+      this.loadMyPlan();
+    }
   }
 
   videoCatalogue: Map<string, string> = new Map();
+
+  loadMyPlan() {
+    this.planLoading = true;
+    
+    forkJoin({
+      plans: this.planService.getMyPlans(),
+      videos: this.videoService.getContentByType('video'),
+      audios: this.videoService.getContentByType('audio')
+    }).subscribe({
+      next: ({ plans, videos, audios }) => {
+        const allPlans = plans as Plan[];
+        console.log(allPlans);
+        if (allPlans && allPlans.length > 0) {
+          this.userPlan = allPlans.sort((a, b) => 
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )[0];
+
+          const allContent = [...videos, ...audios];
+
+          this.planContent = this.userPlan.toWatch.map(entry => {
+            const contentDetail = allContent.find(c => c.id === entry.id);
+            return {
+              ...contentDetail,
+              notified: entry.notified
+            };
+          });
+        }
+        this.planLoading = false;
+      },
+      error: (err) => {
+        console.error("Error loading plan", err);
+        this.planLoading = false;
+      }
+    });
+  }
+
+  openContent(content: any) {
+    if (!content || !content.id) return;
+
+    this.router.navigate(['/videos/detail', content.id], { 
+      state: { video: content } 
+    });
+  }
 
   loadHistoryWithTitles(page: number = 0) {
     this.historyLoading = true;

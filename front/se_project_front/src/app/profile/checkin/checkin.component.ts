@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Question, QUESTIONS } from '../data/questions';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/users.service';
+import { PlanService, PlanLevel } from '../../services/plan.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-checkin',
@@ -19,7 +21,7 @@ export class CheckinComponent {
 
   errorMessage: string = '';
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService, private planService: PlanService) {}
 
   startQuestionnaire() {
     this.currentQuestionIndex = 0;
@@ -64,6 +66,12 @@ export class CheckinComponent {
     else return (this.currentQuestionIndex / (this.questions.length)) * 100;
   }
 
+  private determinePlanLevel(score: number): PlanLevel {
+    if (score >= 8) return PlanLevel.EASY;
+    if (score >= 5) return PlanLevel.INTERMEDIATE;
+    return PlanLevel.ADVANCED;
+  }
+
   save() {
     const userToUpdate: any = {
       mental: this.answers[0],
@@ -73,12 +81,19 @@ export class CheckinComponent {
       updatedAt: new Date().toISOString()
     };
 
-    this.userService.updateUser(userToUpdate).subscribe({
+    const level = this.determinePlanLevel(this.answers[0]);
+
+    this.userService.updateUser(userToUpdate).pipe(
+      switchMap(() => {
+        return this.planService.createPlan(level);
+      })
+    ).subscribe({
       next: (response) => {
         this.router.navigate(['/profile']);
       },
       error: (err) => {
-        console.error("Erreur lors de l'update", err);
+        console.error("Error in plan process :", err);
+        this.errorMessage = "An error occurred while creating your plan. Please try again later.";
       }
     });
   }

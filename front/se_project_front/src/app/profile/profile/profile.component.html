@@ -13,8 +13,9 @@
 
       <button (click)="setSection('dashboard')">Dashboard</button>
       <button (click)="setSection('history')">My History</button>
-      <button (click)="setSection('account')">Account details</button>
-      <button class="danger" (click)="setSection('delete')">Delete account</button>
+      <button (click)="setSection('plan')">My Plan</button>
+      <button (click)="setSection('account')">Account Details</button>
+      <button class="danger" (click)="setSection('delete')">Delete Account</button>
 
       <button class="logout" (click)="logout()">Logout</button>
     </aside>
@@ -139,6 +140,53 @@
             You've reached the end of your history.
           </p>
 
+        </div>
+      </section>
+
+      <section *ngIf="activeSection == 'plan'">
+        <div class="dashboard-header">
+          <h2>My Active Plan</h2>
+        </div>
+        
+        <div *ngIf="planLoading" class="small-loader">Analyzing your profile...</div>
+
+        <div *ngIf="!planLoading && !userPlan" class="empty-state">
+          <p>You haven't generated a plan yet.</p>
+          <button class="mood-button" (click)="goToMoodCheckIn()">Start Check-in</button>
+        </div>
+
+        <div *ngIf="userPlan" class="plan-wrapper">
+          <div class="plan-status-bar">
+            <span class="plan-badge" [attr.data-level]="userPlan.level">
+              Level: {{ userPlan.level }}
+            </span>
+            <span class="plan-date">Generated on {{ userPlan.createdAt | date:'mediumDate' }}</span>
+          </div>
+
+          <div class="plan-grid">
+            <div class="content-card clickable-card" 
+                *ngFor="let item of planContent; let i = index"
+                (click)="openContent(item)">
+              
+              <div class="notified-tag" *ngIf="item.notified">
+                <span class="icon">🔔</span> Today's Goal
+              </div>
+
+              <div class="card-step">Step {{ i + 1 }}</div>
+              
+              <div class="card-main">
+                <h4>{{ item.title || 'Unknown Title' }}</h4>
+                <p class="card-meta">
+                  <span class="type-tag">{{ item.type }}</span> • 
+                  <span>{{ item.durationMin }} min</span>
+                </p>
+              </div>
+
+              <div class="card-footer">
+                <span>Click to start →</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
