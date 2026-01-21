@@ -27,6 +27,8 @@ export class QuestionnaireComponent {
   constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService, private planService: PlanService) {}
 
   ngOnInit() {
+    this.auth.checkAccess();
+
     this.countryService.getCountries().subscribe(countries => {
       const countryQuestion = this.questions.find(q => q.text.includes('Where are you from ?'));
       if (countryQuestion) {

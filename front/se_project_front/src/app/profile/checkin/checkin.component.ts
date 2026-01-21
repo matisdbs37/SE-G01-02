@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Question, QUESTIONS } from '../data/questions';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/users.service';
 import { PlanService, PlanLevel } from '../../services/plan.service';
 import { switchMap } from 'rxjs';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-checkin',
@@ -21,7 +22,11 @@ export class CheckinComponent {
 
   errorMessage: string = '';
 
-  constructor(private router: Router, private userService: UserService, private planService: PlanService) {}
+  constructor(private router: Router, private userService: UserService, private planService: PlanService, private auth: AuthService) {}
+
+  ngOnInit(): void {
+    this.auth.checkAccess();
+  }
 
   startQuestionnaire() {
     this.currentQuestionIndex = 0;

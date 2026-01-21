@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { VideoService, Content, Category } from '../../services/video.service';
 import { forkJoin, catchError, of, map } from 'rxjs';
+import { AuthService } from '../../auth/services/auth.service';
 
 interface EnhancedContent extends Content {
   categoryNames?: string[];
@@ -18,7 +19,7 @@ interface EnhancedContent extends Content {
   styleUrls: ['./video-research.component.css']
 })
 export class VideoResearchComponent implements OnInit {
-  constructor(private router: Router, private videoService: VideoService) {}
+  constructor(private router: Router, private videoService: VideoService, private auth: AuthService) {}
 
   searchText = '';
   selectedCategory = '';
@@ -39,6 +40,8 @@ export class VideoResearchComponent implements OnInit {
   loading = true;
 
   ngOnInit() {
+    this.auth.checkAccess();
+
     this.loadAllData();
   }
 

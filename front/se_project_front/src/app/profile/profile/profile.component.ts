@@ -46,6 +46,8 @@ export class ProfileComponent {
   loading = true;
 
   ngOnInit() {
+    this.auth.checkAccess();
+    
     this.loading = true;
     forkJoin({
       countries: this.countryService.getCountries(),

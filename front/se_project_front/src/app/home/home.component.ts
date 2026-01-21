@@ -24,6 +24,8 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.auth.checkAccess();
+
     this.auth.events$.pipe(
       filter(e => e.type === 'token_received'),
       first()

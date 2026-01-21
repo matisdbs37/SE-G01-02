@@ -7,6 +7,7 @@ import { HistoryService, CommentsEntry } from '../../services/history.service';
 import { VideoService, Category } from '../../services/video.service';
 import { forkJoin, catchError, of } from 'rxjs';
 import { UserService } from '../../services/users.service';
+import { AuthService } from '../../auth/services/auth.service';
 
 interface CommentWithRating extends CommentsEntry {
   userRating?: number;
@@ -22,7 +23,7 @@ interface CommentWithRating extends CommentsEntry {
   styleUrl: './video-detail.component.css'
 })
 export class VideoDetailComponent {
-  constructor(private router: Router, private videoService: VideoService, private historyService: HistoryService, private userService: UserService) {
+  constructor(private router: Router, private videoService: VideoService, private historyService: HistoryService, private userService: UserService, private auth: AuthService) {
     this.video = history.state.video;
   }
 
@@ -38,6 +39,8 @@ export class VideoDetailComponent {
   loading = true;
 
   ngOnInit() {
+    this.auth.checkAccess();
+
     if (!this.video || !this.video.id) {
       this.router.navigate(['/videos/research']);
       return;

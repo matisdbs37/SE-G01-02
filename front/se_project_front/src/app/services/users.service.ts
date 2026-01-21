@@ -57,4 +57,12 @@ export class UserService {
   logUserActivity(): Observable<User> {
     return this.http.get<User>(`${this.API_URL}/log`);
   }
+
+  getUserRole(): Observable<string> {
+    return this.http.get<string>(`${this.API_URL}/role`);
+  }
+
+  triggerEmail(): Observable<string> {
+    return this.http.get(environment.apiUrl + '/api/v2/mail/trigger', { responseType: 'text' });
+  }
 }
