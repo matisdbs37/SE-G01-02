@@ -18,6 +18,7 @@ import com.unizg.fer.config.ResourceNotFoundException;
 import com.unizg.fer.emailManager.EmailService;
 import com.unizg.fer.emailManager.JSONValues;
 import com.unizg.fer.emailManager.TemplateType;
+import com.unizg.fer.user.UserService;
 
 @Service
 public class StatsService {
@@ -27,6 +28,9 @@ public class StatsService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    UserService service;
 
     private static final String STAT_NOT_FOUND = "stat not found for user : ";
 
@@ -136,7 +140,7 @@ public class StatsService {
                 if (stats.getLastLoginDate() == null)
                     return;
                 long daysSinceLastLogin = ChronoUnit.DAYS.between(stats.getLastLoginDate(), now);
-                if (daysSinceLastLogin == 1) {
+                if (daysSinceLastLogin == 0) {
                     sendStreakReminder(stats);
                 }
                 if (daysSinceLastLogin >= 7) {
@@ -151,20 +155,22 @@ public class StatsService {
 
     private void sendStreakReminder(Stats stats) {
         Map<JSONValues, String> values = new HashMap<>();
-        values.put(JSONValues.USER_NAME, stats.getUserId());
+        var user = service.getUserById(stats.getUserId());
+        values.put(JSONValues.USER_NAME, user.getFirstName());
         values.put(JSONValues.ACTUAL_STREAK, String.valueOf(stats.getCurrentStreak()));
         values.put(JSONValues.EXTENDED_STREAK, String.valueOf(stats.getCurrentStreak() + 1));
 
-        emailService.sendEmail(stats.getUserId(), TemplateType.STREAK, values);
+        emailService.sendEmail(user.getEmail(), TemplateType.STREAK, values);
     }
 
     private void sendInactivityEmail(Stats stats, long daysInactive) {
         Map<JSONValues, String> values = new HashMap<>();
-        values.put(JSONValues.USER_NAME, stats.getUserId());
+        var user = service.getUserById(stats.getUserId());
+        values.put(JSONValues.USER_NAME, user.getFirstName());
         values.put(JSONValues.DAYS_INACTIVE, String.valueOf(daysInactive));
         values.put(JSONValues.LAST_LOGIN_DATE, stats.getLastLoginDate().toString());
 
-        emailService.sendEmail(stats.getUserId(), TemplateType.INACTIVE, values);
+        emailService.sendEmail(user.getEmail(), TemplateType.INACTIVE, values);
     }
 
 }
