@@ -143,3 +143,34 @@
     transform: rotate(360deg);
   }
 }
+
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.cat-tag {
+  background: #f0f0f0;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  color: #666;
+}
+
+.rating-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffca28;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.thumbnail {
+  position: relative;
+}

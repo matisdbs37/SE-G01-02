@@ -189,5 +189,5 @@ public class UserController {
     public ResponseEntity<GrantedAuthority> getUserRole(@AuthenticationPrincipal Jwt jwt) {
         String email = jwt.getClaim("email");
         return ResponseEntity.ok(userRoleService.getUserAuthority(email));
-
+    }
 }
