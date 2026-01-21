@@ -1,0 +1,117 @@
+:host {
+  display: block;
+}
+
+/* PAGE */
+
+.map-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #A8C5E2, #D7C7E9);
+  padding: 2rem;
+}
+
+/* CARD */
+
+.map-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 720px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* BACK */
+
+.back {
+  background: transparent;
+  border: none;
+  color: #5c9ded;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+/* HEADER */
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* MAP */
+
+.map {
+  height: 380px;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  margin-bottom: 1.5rem;
+}
+
+/* RESULTS */
+
+.results {
+  text-align: left;
+}
+
+.results h2 {
+  margin-bottom: 1rem;
+}
+
+/* EMPTY */
+
+.empty {
+  text-align: center;
+  opacity: 0.6;
+  font-style: italic;
+}
+
+/* CARD RESULT */
+
+.card {
+  background: #f9fafb;
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.card p {
+  margin: 0;
+  color: #555;
+  font-size: 13px;
+}
+
+/* MARKERS */
+
+.user-marker,
+.psy-marker {
+  font-size: 26px;
+}
