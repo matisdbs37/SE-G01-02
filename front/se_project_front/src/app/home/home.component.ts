@@ -23,8 +23,13 @@ export class HomeComponent implements OnInit {
     private userService: UserService
   ) {}
 
+  isAdmin = false;
+
   ngOnInit(): void {
     this.auth.checkAccess();
+    this.userService.getUserRole().subscribe((res: any) => {
+      this.isAdmin = res.authority === 'ROLE_ADMIN';
+    });
 
     this.auth.events$.pipe(
       filter(e => e.type === 'token_received'),
@@ -48,6 +53,10 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl('/profile');
   }
 
+  goToAdmin() {
+  this.router.navigate(['/admin']);
+  }
+
   goToVideos(): void {
     this.router.navigateByUrl('/videos/research');
   }
@@ -69,13 +78,13 @@ export class HomeComponent implements OnInit {
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
         this.user = user;
-        
+
         const isProfileIncomplete = !user.firstName?.trim() || !user.lastName?.trim();
 
         if (isProfileIncomplete) {
           this.router.navigateByUrl('/questionnaire');
         }
-        
+
         this.loading = false;
       },
       error: (err) => {
