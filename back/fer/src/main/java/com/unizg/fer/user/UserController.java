@@ -6,7 +6,9 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.unizg.fer.config.ResourceNotFoundException;
+import com.unizg.fer.security.rbac.UserRoleService;
 import com.unizg.fer.stats.StatUpdater;
 import com.unizg.fer.stats.StatsService;
 
@@ -154,7 +158,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-
     @GetMapping(value = "users", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Stream<User>> getAllUsers() {
@@ -163,11 +166,28 @@ public class UserController {
     }
 
     /**
-     * Get user info by id 
+     * Get user info by id
      */
     @GetMapping(value = "user/infos/{id}", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<User> getUserInfo(@PathVariable String id) {
         return ResponseEntity.ok(service.getInfoById(id));
     }
+
+    @Autowired
+    private UserRoleService userRoleService;
+
+    @Operation(summary = "Get user's role", description = "extract the user email from the token claims and retrieve his granted authorities", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "get role", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SimpleGrantedAuthority.class))),
+            @ApiResponse(responseCode = "401", description = "non authenticated", content = @Content),
+            @ApiResponse(responseCode = "403", description = "you don't have the role for this request, required 'ROLE_USER'", content = @Content),
+            @ApiResponse(responseCode = "404", description = "user or role not found in database", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+    })
+    @GetMapping("user/role")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<GrantedAuthority> getUserRole(@AuthenticationPrincipal Jwt jwt) {
+        String email = jwt.getClaim("email");
+        return ResponseEntity.ok(userRoleService.getUserAuthority(email));
+
 }
