@@ -50,9 +50,13 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl('/videos/research');
   }
 
+  goToPsychologists() {
+  this.router.navigate(['/psychologists']);
+  }
+
   checkUser() {
     const claims: any = this.auth.getIdentityClaims();
-    
+
     if (!claims) {
       console.error("Impossible de récupérer les infos Google");
       return;
