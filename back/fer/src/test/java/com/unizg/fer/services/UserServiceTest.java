@@ -57,26 +57,6 @@ class UserServiceTest {
         assertThrows(ResourceNotFoundException.class, () -> userService.getUserByEmail(email));
     }
 
-    /**
-     * Tests that `createUser` saves the user when the email does not already exist.
-     */
-    /*@Test
-    void createUser_shouldSaveUser_whenEmailDoesNotExist() {
-        String email = "new@example.com";
-        when(userRepo.existsByEmail(email)).thenReturn(false);
-
-        when(userRepo.save(any(User.class))).thenAnswer(i -> i.getArguments()[0]);
-
-        User result = userService.createUser(email, "John", "Doe", "USER", "Paris");
-
-        assertNotNull(result);
-        assertEquals(email, result.getEmail());
-        assertEquals("John", result.getFirstName());
-        assertTrue(result.getIsActive());
-        assertNotNull(result.getCreatedAt());
-
-        verify(userRepo).save(any(User.class));
-    }*/
 
     /**
      * Tests that `createUser` throws `UserAlreadyExistsException` when the email already exists.
