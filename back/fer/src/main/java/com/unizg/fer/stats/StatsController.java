@@ -28,6 +28,7 @@ public class StatsController {
             @ApiResponse(responseCode = "404", description = "User not found or no statistics available", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @RequestMapping("/{userId}")
     public ResponseEntity<Stats> getStats(@PathVariable String userId) {
         return ResponseEntity.ok(service.getStatsByUserId(userId));
