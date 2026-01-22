@@ -1,0 +1,122 @@
+<div class="admin-page">
+
+  <h1>Admin Panel</h1>
+
+  <button class="mail-btn" type="button" (click)="triggerEmails()">
+    Send emails
+  </button>
+
+  <!-- CREATE CONTENT -->
+  <div class="card">
+
+    <button class="back-btn" type="button" (click)="goHome()">
+      ← Back to home
+    </button>
+
+    <h2>Create content</h2>
+
+    <div class="form-grid">
+
+      <input
+        placeholder="Title"
+        name="title"
+        [(ngModel)]="form.title" />
+
+      <input
+        placeholder="URL (Youtube...)"
+        name="url"
+        [(ngModel)]="form.url" />
+
+      <select name="type" [(ngModel)]="form.type">
+        <option value="video">Video</option>
+        <option value="audio">Audio</option>
+      </select>
+
+      <input
+        min="1"
+        placeholder="Duration (min)"
+        name="durationMin"
+        [(ngModel)]="form.durationMin" />
+
+      <select name="difficulty" [(ngModel)]="form.difficulty">
+        <option [ngValue]="1">Easy</option>
+        <option [ngValue]="2">Medium</option>
+        <option [ngValue]="3">Hard</option>
+      </select>
+
+      <input
+        placeholder="Language (en, fr...)"
+        name="language"
+        [(ngModel)]="form.language" />
+
+      <input
+        placeholder="Source (Youtube...)"
+        name="source"
+        [(ngModel)]="form.source" />
+
+    </div>
+
+    <!-- CATEGORIES -->
+    <h3>Categories</h3>
+
+    <div class="categories">
+      <label *ngFor="let cat of categories">
+        <input
+          #cb
+          type="checkbox"
+          (change)="toggleCategory(cat.id, cb.checked)" />
+        {{ cat.name }}
+      </label>
+    </div>
+
+    <button
+      class="create-btn"
+      type="button"
+      (click)="createContent()"
+      [disabled]="loading">
+
+      {{ loading ? 'Creating...' : 'Create content' }}
+    </button>
+
+    <p class="msg" *ngIf="message">{{ message }}</p>
+
+  </div>
+
+  <!-- LIST -->
+  <div class="list">
+
+    <h2>All contents</h2>
+
+    <div class="content-card" *ngFor="let c of contents">
+
+      <div class="left">
+        <b>{{ c.title }}</b>
+
+        <span>
+          {{ c.type }} • {{ c.durationMin }} min
+        </span>
+
+        <small *ngIf="c.language || c.difficulty">
+          {{ c.language }} <span *ngIf="c.difficulty">| diff {{ c.difficulty }}</span>
+        </small>
+
+        <!-- CATEGORIES (safe) -->
+        <div class="badges" *ngIf="c.id && (contentCategories[c.id] || []).length">
+          <span class="badge" *ngFor="let catName of (contentCategories[c.id] || [])">
+            {{ catName }}
+          </span>
+        </div>
+      </div>
+
+      <button
+        class="delete"
+        type="button"
+        (click)="c.id && deleteContent(c.id)">
+        Delete
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
