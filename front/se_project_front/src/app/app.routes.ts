@@ -46,6 +46,12 @@ export const routes: Routes = [
     import('./map/map.component').then(m => m.MapComponent)
   },
 
+  {
+  path: 'admin',
+  loadComponent: () =>
+    import('./admin/admin.component')
+      .then(m => m.AdminComponent)
+  },
 
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
