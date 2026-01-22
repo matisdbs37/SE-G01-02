@@ -27,20 +27,28 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.checkAccess();
-    this.userService.getUserRole().subscribe((res: any) => {
-      this.isAdmin = res.authority === 'ROLE_ADMIN';
-    });
 
     this.auth.events$.pipe(
       filter(e => e.type === 'token_received'),
       first()
     ).subscribe(() => {
-      this.checkUser();
+      this.fetchUserAndRole();
     });
 
     if (this.auth.isLoggedIn()) {
-      this.checkUser();
+      this.fetchUserAndRole();
     }
+  }
+
+  private fetchUserAndRole(): void {
+    this.checkUser();
+
+    this.userService.getUserRole().subscribe({
+      next: (res: any) => {
+        this.isAdmin = res.authority === 'ROLE_ADMIN';
+      },
+      error: (err) => console.error('Error during role fetching', err)
+    });
   }
 
   logout(): void {

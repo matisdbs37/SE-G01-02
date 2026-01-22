@@ -159,4 +159,14 @@ export class AdminComponent implements OnInit {
   goHome() {
   this.router.navigate(['/home']);
   }
+
+  getDifficultyLabel(level?: number): string {
+  switch (level) {
+    case 1: return 'Easy';
+    case 2: return 'Medium';
+    case 3: return 'Hard';
+    default: return '';
+    }
+  }
+
 }

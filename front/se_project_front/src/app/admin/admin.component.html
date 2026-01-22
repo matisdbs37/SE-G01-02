@@ -3,7 +3,7 @@
   <h1>Admin Panel</h1>
 
   <button class="mail-btn" type="button" (click)="triggerEmails()">
-    Send emails
+    Trigger emails
   </button>
 
   <!-- CREATE CONTENT -->
@@ -23,7 +23,7 @@
         [(ngModel)]="form.title" />
 
       <input
-        placeholder="URL (Youtube...)"
+        placeholder="URL"
         name="url"
         [(ngModel)]="form.url" />
 
@@ -97,10 +97,13 @@
         </span>
 
         <small *ngIf="c.language || c.difficulty">
-          {{ c.language }} <span *ngIf="c.difficulty">| diff {{ c.difficulty }}</span>
+          {{ c.language }}
+          <span *ngIf="c.difficulty">
+            | {{ getDifficultyLabel(c.difficulty) }}
+          </span>
         </small>
 
-        <!-- CATEGORIES (safe) -->
+        <!-- CATEGORIES -->
         <div class="badges" *ngIf="c.id && (contentCategories[c.id] || []).length">
           <span class="badge" *ngFor="let catName of (contentCategories[c.id] || [])">
             {{ catName }}
