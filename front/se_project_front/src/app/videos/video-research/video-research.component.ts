@@ -51,33 +51,40 @@ export class VideoResearchComponent implements OnInit {
     forkJoin({
       videos: this.videoService.getContentByType('video').pipe(catchError(() => of([]))),
       audios: this.videoService.getContentByType('audio').pipe(catchError(() => of([]))),
-      categories: this.videoService.getCategories().pipe(catchError(() => of([])))
+      categories: this.videoService.getCategories().pipe(catchError(() => of([]))),
+      allLinks: this.videoService.getAllCategoryAssociations().pipe(catchError(() => of([])))
     }).subscribe({
-      next: ({ videos, audios, categories }) => {
-        const combined: EnhancedContent[] = [...videos, ...audios];
+      next: ({ videos, audios, categories, allLinks }) => {
+        const combined = [...videos, ...audios] as EnhancedContent[];
         this.categories = categories;
 
-        const detailRequests = combined.map(content => 
-          forkJoin({
-            catDetails: this.videoService.getContentCategories(content.id!).pipe(catchError(() => of([]))),
-            rating: this.videoService.getMeanRating(content.id!).pipe(catchError(() => of(-1)))
-          }).pipe(
-            map(details => {
-              content.categoryNames = details.catDetails.map(c => c.name);
-              const finalRating = details.rating != -1 ? details.rating / 2 : -1;
-              content.rating = finalRating;
-              return content;
-            })
+        const enrichedWithCats = combined.map(content => {
+          const linkIds = allLinks.filter(l => l.contentId === content.id).map(l => l.categoryId);
+          content.categoryNames = categories.filter(c => linkIds.includes(c.id)).map(c => c.name);
+          content.rating = -1;
+          return content;
+        });
+
+        const ratingRequests = enrichedWithCats.map(v => 
+          this.videoService.getMeanRating(v.id!).pipe(
+            map(r => ({ id: v.id, rating: r })),
+            catchError(() => of({ id: v.id, rating: -1 }))
           )
         );
 
-        if (detailRequests.length > 0) {
-          forkJoin(detailRequests).subscribe(enrichedVideos => {
-            this.allVideos = enrichedVideos;
+        if (ratingRequests.length > 0) {
+          forkJoin(ratingRequests).subscribe(ratings => {
+            ratings.forEach(res => {
+              const video = enrichedWithCats.find(v => v.id === res.id);
+              if (video) {
+                video.rating = res.rating !== -1 ? res.rating / 2 : -1;
+              }
+            });
+            this.allVideos = enrichedWithCats;
             this.finalizeLoading();
           });
         } else {
-          this.allVideos = [];
+          this.allVideos = enrichedWithCats;
           this.finalizeLoading();
         }
       },
@@ -166,6 +173,22 @@ export class VideoResearchComponent implements OnInit {
 
   openVideo(video: Content) {
     this.router.navigate(['/videos/detail', video.id], { state: { video } });
+  }
+
+  getThumbnail(url: string): string | null {
+    if (!url) return null;
+
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      const videoId = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
+      return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+    }
+
+    if (url.includes('vimeo.com')) {
+      const videoId = url.split('/').pop();
+      return `https://vumbnail.com/${videoId}.jpg`;
+    }
+
+    return null; 
   }
 
   back() { 

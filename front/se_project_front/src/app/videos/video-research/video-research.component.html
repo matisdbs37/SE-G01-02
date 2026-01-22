@@ -61,7 +61,16 @@
         <div class="video-card" *ngFor="let video of paginatedVideos()" (click)="openVideo(video)">
           
           <div class="thumbnail">
-            <span class="badge" [ngClass]="video.type">{{ video.type.toUpperCase() }}</span>
+            <img 
+              *ngIf="video.url"
+              [src]="getThumbnail(video.url)" 
+              #img
+              (error)="img.style.display = 'none'"
+              class="thumb-img">
+
+            <span class="badge" [ngClass]="video.type" style="z-index: 2;">
+              {{ video.type.toUpperCase() }}
+            </span>
           </div>
 
           <div class="video-info">
