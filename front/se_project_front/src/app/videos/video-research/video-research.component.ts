@@ -120,9 +120,9 @@ export class VideoResearchComponent implements OnInit {
         }
       }
 
-      if (this.selectedDuration === 'short' && v.durationMin >= 10) return false;
-      if (this.selectedDuration === 'medium' && (v.durationMin < 10 || v.durationMin > 20)) return false;
-      if (this.selectedDuration === 'long' && v.durationMin <= 20) return false;
+      if (this.selectedDuration === 'short' && v.durationMin >= 20) return false;
+      if (this.selectedDuration === 'medium' && (v.durationMin < 20 || v.durationMin > 40)) return false;
+      if (this.selectedDuration === 'long' && v.durationMin <= 40) return false;
 
       return true;
     });
