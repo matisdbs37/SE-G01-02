@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,8 @@ import { VideoService, Category } from '../../services/video.service';
 import { forkJoin, catchError, of } from 'rxjs';
 import { UserService } from '../../services/users.service';
 import { AuthService } from '../../auth/services/auth.service';
+
+declare var YT: any;
 
 interface CommentWithRating extends CommentsEntry {
   userRating?: number;
@@ -38,6 +40,10 @@ export class VideoDetailComponent {
   starsArr = [1, 2, 3, 4, 5];
   loading = true;
 
+  player: any;
+  progressInterval: any;
+  lastUpdateSeconds = 0;
+
   ngOnInit() {
     this.auth.checkAccess();
 
@@ -46,6 +52,9 @@ export class VideoDetailComponent {
       return;
     }
     this.loadAllContentData();
+    setTimeout(() => {
+      this.initYouTubePlayer();
+    }, 1000);
   }
 
   loadAllContentData() {
@@ -143,5 +152,64 @@ export class VideoDetailComponent {
   getEmbedUrl(url: string): string {
     const videoId = url.split('v=')[1]?.split('&')[0];
     return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+  }
+
+  initYouTubePlayer() {
+    if (typeof YT !== 'undefined' && YT.Player) {
+      this.player = new YT.Player('youtube-player', {
+        events: {
+          'onStateChange': (event: any) => {
+            this.onPlayerStateChange(event);
+          }
+        }
+      });
+    }
+  }
+
+  onPlayerStateChange(event: any) {
+    if (event.data === 1) {
+      this.startTracking();
+    } else {
+      this.stopTracking();
+      this.saveProgress();
+    }
+  }
+
+  startTracking() {
+    if (this.progressInterval) return;
+    this.progressInterval = setInterval(() => {
+      this.saveProgress();
+    }, 30000);
+  }
+
+  stopTracking() {
+    clearInterval(this.progressInterval);
+    this.progressInterval = null;
+  }
+
+  saveProgress() {
+    if (this.player && typeof this.player.getCurrentTime === 'function') {
+      const currentTime = Math.floor(this.player.getCurrentTime());
+      
+      if (currentTime > this.lastUpdateSeconds) {
+        this.historyService.updateProgress(this.video.id, currentTime).subscribe({
+          next: () => this.lastUpdateSeconds = currentTime,
+          error: (err) => console.error('Erreur API Progress', err)
+        });
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    this.stopTracking();
+    this.saveProgress();
+  }
+
+  onAudioTimeUpdate(currentTime: number) {
+    const roundedTime = Math.floor(currentTime);
+    if (roundedTime % 10 === 0 && roundedTime !== this.lastUpdateSeconds) {
+      this.lastUpdateSeconds = roundedTime;
+      this.historyService.updateProgress(this.video.id, roundedTime).subscribe();
+    }
   }
 }

@@ -120,7 +120,7 @@
                 </ng-container>
                 <span class="rating-text" *ngIf="item.rating">({{ item.rating / 2 }}/5)</span>
               </span>
-              <span class="history-progress">Watched: {{ item.watchedDuration }}s</span>
+              <span class="history-progress">Watched: {{ formatWatchTime(item.watchedDuration) }}</span>
             </div>
 
             <div class="history-comments" *ngIf="item.comments && item.comments.length > 0">

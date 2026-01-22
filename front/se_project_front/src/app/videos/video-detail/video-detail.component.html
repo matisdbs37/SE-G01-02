@@ -10,8 +10,21 @@
     </div>
 
     <div class="media-container">
-      <iframe *ngIf="video.type === 'video'" [src]="getEmbedUrl(video.url) | safeUrl" frameborder="0" allowfullscreen class="youtube-frame"></iframe>
-      <audio *ngIf="video.type === 'audio'" controls class="audio-player">
+      <iframe 
+        *ngIf="video.type === 'video'" 
+        id="youtube-player"
+        [src]="(getEmbedUrl(video.url) + '?enablejsapi=1') | safeUrl" 
+        frameborder="0" 
+        allowfullscreen 
+        class="youtube-frame">
+      </iframe>
+
+      <audio 
+        #audioPlayer
+        *ngIf="video.type === 'audio'" 
+        (timeupdate)="onAudioTimeUpdate(audioPlayer.currentTime)"
+        controls 
+        class="audio-player">
         <source [src]="video.url" type="audio/mpeg">
       </audio>
     </div>
