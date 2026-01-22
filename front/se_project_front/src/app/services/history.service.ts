@@ -11,7 +11,7 @@ export interface CommentsEntry {
 export interface HistoryEntry {
   id?: string;
   userId: string;
-  videoId: string;
+  contentId: string;
   watchedAt: string;
   contentDuration: number;
   watchedDuration: number;

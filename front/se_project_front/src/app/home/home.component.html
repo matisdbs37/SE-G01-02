@@ -22,6 +22,17 @@
         <button class="secondary" (click)="goToProfile()">
           My profile
         </button>
+
+        <button class="secondary" (click)="goToPsychologists()">
+          Find a psychologist
+        </button>
+        <button
+          *ngIf="isAdmin"
+          class="secondary"
+          (click)="goToAdmin()">
+
+          Admin panel
+        </button>
       </div>
 
       <button class="logout" (click)="logout()">

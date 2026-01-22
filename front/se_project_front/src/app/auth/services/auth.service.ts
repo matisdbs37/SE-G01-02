@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { OAuthService, AuthConfig } from 'angular-oauth2-oidc';
 import { filter } from 'rxjs';
+import { UserService } from '../../services/users.service';
+import { Router } from '@angular/router';
 
 export const authCodeFlowConfig: AuthConfig = {
   issuer: 'https://accounts.google.com',
@@ -14,15 +16,28 @@ export const authCodeFlowConfig: AuthConfig = {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private oauthService = inject(OAuthService);
+  private userService = inject(UserService);
+  private router = inject(Router);
 
   constructor() {
     this.initLogin();
+    this.setupLogOnSuccess();
   }
 
   private initLogin() {
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
     this.oauthService.setupAutomaticSilentRefresh();
+  }
+
+  private setupLogOnSuccess() {
+    this.oauthService.events
+      .pipe(filter(e => e.type === 'token_received'))
+      .subscribe(() => {
+        this.userService.logUserActivity().subscribe({
+          error: (err) => console.error('Error during log :', err)
+        });
+      });
   }
 
   loginWithGoogle() {
@@ -55,5 +70,11 @@ export class AuthService {
 
   logoutCompletement() {
     this.oauthService.revokeTokenAndLogout();
+  }
+
+  checkAccess(): void {
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['/auth/login']);
+    }
   }
 }

@@ -28,11 +28,18 @@ export interface User {
 })
 export class UserService {
   private http = inject(HttpClient);
-
   private readonly API_URL = environment.apiUrl + '/api/v2/user';
 
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(this.API_URL);
+  }
+
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(`${this.API_URL}/infos/${id}`);
+  }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiUrl}/api/v2/users`);
   }
 
   createUser(userData: Partial<User>): Observable<User> {
@@ -44,8 +51,18 @@ export class UserService {
   }
 
   deleteUser() {
-    return this.http.delete(`${this.API_URL}/delete`, {
-      responseType: 'text' 
-    });
+    return this.http.delete(`${this.API_URL}/delete`, { responseType: 'text' });
+  }
+
+  logUserActivity(): Observable<User> {
+    return this.http.get<User>(`${this.API_URL}/log`);
+  }
+
+  getUserRole(): Observable<string> {
+    return this.http.get<string>(`${this.API_URL}/role`);
+  }
+
+  triggerEmail(): Observable<string> {
+    return this.http.get(environment.apiUrl + '/api/v2/mail/trigger', { responseType: 'text' });
   }
 }

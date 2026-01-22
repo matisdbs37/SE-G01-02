@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from '../../services/users.service';
+import { PlanService, PlanLevel } from '../../services/plan.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-questionnaire',
@@ -22,9 +24,11 @@ export class QuestionnaireComponent {
 
   errorMessage: string = '';
 
-  constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService) {}
+  constructor(private countryService: CountryService, private router: Router, private auth: AuthService, private userService: UserService, private planService: PlanService) {}
 
   ngOnInit() {
+    this.auth.checkAccess();
+
     this.countryService.getCountries().subscribe(countries => {
       const countryQuestion = this.questions.find(q => q.text.includes('Where are you from ?'));
       if (countryQuestion) {
@@ -76,6 +80,16 @@ export class QuestionnaireComponent {
     else return (this.currentQuestionIndex / (this.questions.length)) * 100;
   }
 
+  private determinePlanLevel(score: number): PlanLevel {
+    if (score >= 8) {
+      return PlanLevel.EASY;
+    } else if (score >= 5) {
+      return PlanLevel.INTERMEDIATE;
+    } else {
+      return PlanLevel.ADVANCED;
+    }
+  }
+
   save() {
     const claims: any = this.auth.getIdentityClaims();
 
@@ -92,13 +106,19 @@ export class QuestionnaireComponent {
       updatedAt: new Date().toISOString()
     };
 
+    const level = this.determinePlanLevel(this.answers[5]);
 
-    this.userService.updateUser(userToUpdate).subscribe({
-      next: (response) => {
+    this.userService.updateUser(userToUpdate).pipe(
+      switchMap(() => {
+        return this.planService.createPlan(level);
+      })
+    ).subscribe({
+      next: (planResponse) => {
         this.router.navigate(['/home']);
       },
       error: (err) => {
-        console.error("Erreur lors de l'update", err);
+        console.error("Error in plan process :", err);
+        this.errorMessage = "An error occurred while creating your plan. Please try again later.";
       }
     });
   }
