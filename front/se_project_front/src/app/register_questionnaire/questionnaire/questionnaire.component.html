@@ -1,18 +1,25 @@
 <div class="container">
+
+  <!-- Progress bar showing questionnaire completion -->
   <div class="progress-bar">
     <div class="progress" [style.width.%]="getProgress()"></div>
   </div>
 
+  <!-- Initial welcome screen before questionnaire starts -->
   <div *ngIf="currentQuestionIndex == -1" class="question-box">
     <h2>Welcome to Mind Craft !</h2>
     <br>
     <h2>Let's get to know you better !</h2>
+    <!-- Button to start the questionnaire -->
     <button (click)="startQuestionnaire()">Start</button>
   </div>
 
+  <!-- Questionnaire questions -->
   <div *ngIf="currentQuestionIndex >= 0 && currentQuestionIndex < this.questions.length" class="question-box">
+    <!-- Display current question text -->
     <h2>{{ questions[currentQuestionIndex].text }}</h2>
 
+    <!-- Text input question -->
     <input
       *ngIf="questions[currentQuestionIndex].type == 'text'"
       type="text"
@@ -20,6 +27,7 @@
       [(ngModel)]="answers[currentQuestionIndex]"
     >
 
+    <!-- Yes/No question -->
     <div *ngIf="questions[currentQuestionIndex].type == 'yes_no'" class="yes-no-group">
       <button 
         class="yes_button" 
@@ -35,43 +43,56 @@
       </button>
     </div>
 
+    <!-- Slider question -->
     <div *ngIf="questions[currentQuestionIndex].type == 'slider'" class="slider-group">
       <input type="range"
             [min]="questions[currentQuestionIndex].min"
             [max]="questions[currentQuestionIndex].max"
             [(ngModel)]="answers[currentQuestionIndex]">
 
+      <!-- Show current slider value -->
       <div class="slider-value">
         {{ answers[currentQuestionIndex] }}
       </div>
     </div>
 
+    <!-- Select (dropdown) question -->
     <div *ngIf="questions[currentQuestionIndex].type == 'select'">
       <select [(ngModel)]="answers[currentQuestionIndex]">
+        <!-- Placeholder option, disabled to force user selection -->
         <option value="" disabled> {{questions[currentQuestionIndex].placeholder}} </option>
+        <!-- Loop over available options for this question -->
         <option *ngFor="let opt of questions[currentQuestionIndex].options" [value]="opt">
           {{ opt }}
         </option>
       </select>
     </div>
 
+    <!-- Display validation error message if user tries to continue without answering -->
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
 
+    <!-- Navigation buttons -->
     <div class="button-group">
+      <!-- Back button is hidden for the first question -->
       <button *ngIf="currentQuestionIndex != 0" (click)="previousQuestion()">Back</button>
+      <!-- Next button to go to the next question -->
       <button (click)="nextQuestion()">Next</button>
     </div>
   </div>
 
+  <!-- Final screen shown after completing all questions -->
   <div *ngIf="currentQuestionIndex == (this.questions.length)" class="question-box">
-        <h2>Thanks for your answers !</h2>
-        <br>
-        <h2>You can now enter the application !</h2>
-        <div class="button-group">
-          <button *ngIf="currentQuestionIndex != 0" (click)="previousQuestion()">Back</button>
-          <button (click)="save()">Save and continue</button>
-        </div>
+    <h2>Thanks for your answers !</h2>
+    <br>
+    <h2>You can now enter the application !</h2>
+    <div class="button-group">
+      <!-- Back button to review last question -->
+      <button *ngIf="currentQuestionIndex != 0" (click)="previousQuestion()">Back</button>
+      <!-- Save answers and create plan -->
+      <button (click)="save()">Save and continue</button>
+    </div>
   </div>
+
 </div>

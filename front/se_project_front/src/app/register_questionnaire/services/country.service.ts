@@ -7,16 +7,18 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CountryService {
+  // REST API endpoint returning all countries with only their 'name' field
   private apiUrl = 'https://restcountries.com/v3.1/all?fields=name';
 
   constructor(private http: HttpClient) {}
   
+  // Method to fetch and process countries
   getCountries(): Observable<string[]> {
     return this.http.get<any[]>(this.apiUrl).pipe(
       map(countries =>
         countries
-          .map(c => c.name.common)
-          .sort((a: string, b: string) => a.localeCompare(b))
+          .map(c => c.name.common) // Extract the common name from the API response
+          .sort((a: string, b: string) => a.localeCompare(b)) // Sort countries alphabetically
       )
     );
   }

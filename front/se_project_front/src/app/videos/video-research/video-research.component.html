@@ -1,32 +1,40 @@
+<!-- LOADING SCREEN -->
 <div *ngIf="loading; else sessionContent" class="loading-screen">
   <div class="loader"></div>
   <p>Accessing the catalog…</p>
 </div>
 
+<!-- MAIN CONTENT -->
 <ng-template #sessionContent>
   <div class="videos-background">
     <div class="videos-page">
-      
+
+      <!-- BACK BUTTON -->
       <button class="back" (click)="back()">← Back to home</button>
 
       <h2>Meditation Library</h2>
 
+      <!-- FILTERS BAR -->
       <div class="filters-bar">
+        <!-- Search by title -->
         <input type="text" 
                placeholder="Search by title..." 
                [(ngModel)]="searchText" 
                (ngModelChange)="onFilterChange()">
 
+        <!-- Category filter -->
         <select [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
           <option value="">All Categories</option>
           <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
         </select>
 
+        <!-- Type filter (video/audio) -->
         <select [(ngModel)]="selectedType" (ngModelChange)="onFilterChange()">
           <option value="">All Types</option>
           <option *ngFor="let t of types" [value]="t">{{ t | titlecase }}</option>
         </select>
 
+        <!-- Rating filter -->
         <select [(ngModel)]="selectedRating" (ngModelChange)="onFilterChange()">
           <option value="">Any Rating</option>
           <option value="5">5⭐</option>
@@ -37,11 +45,13 @@
           <option value="none">Not rated</option>
         </select>
 
+        <!-- Language filter -->
         <select [(ngModel)]="selectedLanguage" (ngModelChange)="onFilterChange()">
           <option value="">All Languages</option>
           <option *ngFor="let l of languages" [value]="l">{{ l }}</option>
         </select>
 
+        <!-- Difficulty filter -->
         <select [(ngModel)]="selectedDifficulty" (ngModelChange)="onFilterChange()">
           <option [ngValue]="null">Any Difficulty</option>
           <option [ngValue]="1">Beginner (1)</option>
@@ -49,6 +59,7 @@
           <option [ngValue]="3">Advanced (3)</option>
         </select>
 
+        <!-- Duration filter -->
         <select [(ngModel)]="selectedDuration" (ngModelChange)="onFilterChange()">
           <option value="">Any Duration</option>
           <option value="short">&lt; 20 min</option>
@@ -57,9 +68,11 @@
         </select>
       </div>
 
+      <!-- VIDEOS GRID -->
       <div class="videos-grid">
         <div class="video-card" *ngFor="let video of paginatedVideos()" (click)="openVideo(video)">
           
+          <!-- THUMBNAIL & TYPE BADGE -->
           <div class="thumbnail">
             <img 
               *ngIf="video.url"
@@ -73,9 +86,11 @@
             </span>
           </div>
 
+          <!-- VIDEO INFO -->
           <div class="video-info">
             <h3>{{ video.title }}</h3>
             
+            <!-- CATEGORY TAGS & RATING -->
             <div class="card-tags-row">
               <div class="category-tags">
                 <span *ngFor="let catName of video.categoryNames" class="cat-tag">{{ catName }}</span>
@@ -86,27 +101,31 @@
               </span>
             </div>
 
+            <!-- DURATION & LANGUAGE -->
             <p class="meta">
               <span>{{ video.durationMin }} min</span> • 
               <span>{{ video.language }}</span>
             </p>
+
+            <!-- DIFFICULTY -->
             <p class="difficulty-text">Difficulty: {{ video.difficulty }}/3</p>
           </div>
         </div>
       </div>
 
+      <!-- EMPTY RESULTS MESSAGE -->
       <div *ngIf="getFilteredResults().length === 0" class="empty-results">
         <p>No content found matching your filters.</p>
       </div>
 
+      <!-- PAGINATION CONTROLS -->
       <div class="pagination" *ngIf="totalPages() > 1">
         <button (click)="prevPage()" [disabled]="currentPage === 1">‹</button>
 
         <button
           *ngFor="let p of pagesToDisplay()"
           [class.active]="p === currentPage"
-          [disabled]="p === '...'"
-          (click)="onPageClick(p)">
+          [disabled]="p === '...'">
           {{ p }}
         </button>
 

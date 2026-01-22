@@ -1,15 +1,24 @@
+<!-- Background wrapper for the video detail page -->
 <div class="videos-background">
   <div class="video-detail-page">
+
+    <!-- Back button to return to the video library -->
     <button class="back" (click)="back()">← Back to library</button>
 
+    <!-- Header section: video title and global rating badge -->
     <div class="header-container">
       <h2>{{ video.title }}</h2>
+      
+      <!-- Show average rating if available -->
       <div class="global-badge" *ngIf="globalRating > 0">
         ⭐ {{ globalRating | number:'1.1-1' }} <small>/ 5</small>
       </div>
     </div>
 
+    <!-- Media player container: either video iframe or audio player -->
     <div class="media-container">
+
+      <!-- YouTube iframe for videos -->
       <iframe 
         *ngIf="video.type === 'video'" 
         id="youtube-player"
@@ -19,6 +28,7 @@
         class="youtube-frame">
       </iframe>
 
+      <!-- HTML audio player for audio content -->
       <audio 
         #audioPlayer
         *ngIf="video.type === 'audio'" 
@@ -29,40 +39,66 @@
       </audio>
     </div>
 
+    <!-- Video metadata: categories, duration, language, difficulty -->
     <div class="video-meta">
+      <!-- Category tags -->
       <div class="category-tags">
         <span *ngFor="let cat of categoryNames" class="cat-tag">{{ cat }}</span>
       </div>
+      <!-- Duration, language, and difficulty info -->
       <p>{{ video.durationMin }} min • {{ video.language }} • Difficulty {{ video.difficulty }}/3</p>
     </div>
 
+    <!-- User rating section -->
     <div class="rating-section">
       <h3>Your rating ({{ userRating }}/5)</h3>
       <div class="stars">
+        <!-- Render 5 stars; support half-star ratings -->
         <span *ngFor="let s of starsArr" class="star" (click)="setRating($event, s)">
           <i class="star-icon">★</i>
-          <i class="star-icon filled" [style.width.%]="(userRating >= s) ? 100 : (userRating >= s - 0.5 ? 50 : 0)">★</i>
+          <!-- Filled portion of star -->
+          <i class="star-icon filled" 
+             [style.width.%]="(userRating >= s) ? 100 : (userRating >= s - 0.5 ? 50 : 0)">★</i>
         </span>
       </div>
     </div>
 
+    <!-- Comments section -->
     <div class="comments-section">
       <h3>Comments</h3>
+
+      <!-- Box for adding a new comment -->
       <div class="add-comment-box">
-        <textarea placeholder="Tell us what you thought of this session..." [(ngModel)]="newComment"></textarea>
-        <button class="submit-comment-btn" (click)="addComment()" [disabled]="!newComment.trim()">Submit Comment</button>
+        <textarea 
+          placeholder="Tell us what you thought of this session..." 
+          [(ngModel)]="newComment">
+        </textarea>
+        <button 
+          class="submit-comment-btn" 
+          (click)="addComment()" 
+          [disabled]="!newComment.trim()">
+          Submit Comment
+        </button>
       </div>
 
+      <!-- Display all comments -->
       <div class="comment-card" *ngFor="let c of allComments">
         <div class="comment-header">
+          <!-- User's name -->
           <span class="user-id">{{ c.userName }}</span>
+          <!-- Optional user rating -->
           <span class="user-note" *ngIf="c.userRating">⭐ {{ c.userRating }}</span>
+          <!-- Date of comment -->
           <small class="date">{{ c.postedAt | date:'dd MMM yyyy' }}</small>
         </div>
+        <!-- Comment text -->
         <p class="comment-text">{{ c.text }}</p>
       </div>
       
-      <p *ngIf="allComments.length === 0" class="no-comments">No reviews yet. Be the first to rate!</p>
+      <!-- Message if no comments exist -->
+      <p *ngIf="allComments.length === 0" class="no-comments">
+        No reviews yet. Be the first to rate!
+      </p>
     </div>
   </div>
 </div>
