@@ -49,7 +49,7 @@ public class Content {
     private Integer difficulty;
 
     @NotBlank(message = "Language is required")
-    @Field("language")
+    @Field("lang")
     private String language;
 
     @Field("source")

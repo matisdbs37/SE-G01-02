@@ -79,7 +79,7 @@ export class AdminComponent implements OnInit {
   // Create new content and assign selected categories
   createContent() {
     this.form.createdAt = new Date().toISOString();
-
+    
     this.videoService.createContent(this.form).subscribe({
       next: (created) => {
         this.assignCategories(created.id!);
