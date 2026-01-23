@@ -125,7 +125,8 @@
         <button
           *ngFor="let p of pagesToDisplay()"
           [class.active]="p === currentPage"
-          [disabled]="p === '...'">
+          [disabled]="p === '...'"
+          (click)="onPageClick(p)">
           {{ p }}
         </button>
 

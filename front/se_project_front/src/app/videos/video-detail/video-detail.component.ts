@@ -250,7 +250,7 @@ export class VideoDetailComponent {
   // Update progress every 10 seconds during audio playback
   onAudioTimeUpdate(currentTime: number) {
     const roundedTime = Math.floor(currentTime);
-    if (roundedTime % 10 === 0 && roundedTime !== this.lastUpdateSeconds) {
+    if (roundedTime % 1 === 0 && roundedTime !== this.lastUpdateSeconds) {
       this.lastUpdateSeconds = roundedTime;
       this.historyService.updateProgress(this.video.id, roundedTime).subscribe();
     }
