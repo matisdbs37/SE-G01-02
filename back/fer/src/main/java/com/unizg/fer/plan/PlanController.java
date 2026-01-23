@@ -3,6 +3,7 @@ package com.unizg.fer.plan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
@@ -48,6 +49,7 @@ public class PlanController {
                         @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
                         @ApiResponse(responseCode = "409", description = "Plan already exists for this level", content = @Content)
         })
+        @PreAuthorize("hasAuthority('ROLE_USER')")
         @PostMapping("{level}")
         @ResponseBody
         public ResponseEntity<String> createPlan(
@@ -71,6 +73,7 @@ public class PlanController {
                         @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
                         @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
         })
+        @PreAuthorize("hasAuthority('ROLE_USER')")
         @GetMapping
         @ResponseBody
         public ResponseEntity<Iterable<Plan>> getMyPlans(@AuthenticationPrincipal Jwt jwt) {
