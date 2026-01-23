@@ -3,7 +3,7 @@
 
 ## Project Description
 
-Mind Craft is a digital platform designed to support wellbeing through guided audio/video meditations, short mindfulness drills, and tools for tracking mood, sleep, stress, and other habits. After a brief onboarding, users receive a personalized practice plan aligned with their goals. The app offers daily challenges, streak tracking, and a diverse content catalog including structured programs and educational material.
+Mind Craft is a digital platform designed to support wellbeing through guided audio/video meditations, short mindfulness drills, and tools for tracking mood, sleep, stress, and other habits. After a brief onboarding, users receive a personalized practice plan aligned with their goals. The app offers a diverse content catalog including structured programs and educational material.
 
 ## Motivation
 
@@ -25,32 +25,26 @@ Mind Craft aims to offer a calm, simple, and intuitive experience. The motivatio
 
 | ID  | Description                                                                                                                           | Priority Level (1 to 5) | Target role(s) : Users, Unauthenticated users, Admins | Tested |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------------- | ------ |
-| F1  | Allow new users to create an account by using OAuth 2.0 providers such as Google, Apple, and Microsoft                                | 5                       | Unauthenticated users                                 |        |
-| F2  | Allow users who already have an account to access it using OAuth 2.0 providers such as Google, Apple and Microsoft                    | 5                       | Unauthenticated users                                 |        |
+| F1  | Allow new users to create an account by using OAuth 2.0 providers such as Google                                                      | 5                       | Unauthenticated users                                 |        |
+| F2  | Allow users who already have an account to access it using OAuth 2.0 providers such as Google                                         | 5                       | Unauthenticated users                                 |        |
 | F3  | Allow users to delete their account and all associated data                                                                           | 3                       | Users                                                 |        |
 | F4  | Allow new users who just created their account to fill in a short onboarding questionnaire covering stress level, sleep quality, ...  | 5                       | Users                                                 |        |
-| F5  | Generate a personalized seven-day practice plan for new users based on their responses in the onboarding questionnaire (see F4)       | 3                       | Users                                                 |        |
+| F5  | Generate a personalized practice plan for new users based on their responses in the onboarding questionnaire (see F4)                 | 3                       | Users                                                 |        |
 | F6  | Allow users to update their personal information, preferences and account settings                                                    | 5                       | Users                                                 |        |
 | F7  | Allow users to participate in a meditation session by accessing guided audio or video content                                         | 5                       | Users                                                 |        |
 | F8  | Allow users to search content by keywords / search bar                                                                                | 4                       | Users                                                 |        |
 | F9  | Allow users to filter content by duration, category, ...                                                                              | 4                       | Users                                                 |        |
 | F10 | Provide a map of the nearest psychologists                                                                                            | 1                       | Users                                                 |        |
 | F11 | Allow users to rate the services (from 1 to 5) and provide a comment after each session                                               | 3                       | Users                                                 |        |
-| F12 | Moderate the inappropriate content                                                                                                    | 2                       | Admins                                                |        |
-| F13 | Allow users to use their own calendar like Google Calendar or other CalDAV-<br>compatible services                                    | 4                       | Users                                                 |        |
-| F14 | Manage roles/permissions with RBAC                                                                                                    | 5                       | Users/Admins                                          |        |
-| F15 | Notifications for upcoming sessions                                                                                                   | 2                       | Users                                                 |        |
-| F16 | Log useful information about authentication and RBAC and users/admin actions                                                          | 4                       | Users/Admins                                          |        |
-| F17 | Store guided meditations in audio and video formats by fetching them using an API, with duration, language, difficulty level and tags | 4                       | Admins                                                |        |
-| F18 | Organize meditations by categories (focus, sleep, ...)                                                                                | 3                       | Admins                                                |        |
-| F19 | Allow users to do a daily challenge with a meditation and a short exercise                                                            | 4                       | Users                                                 |        |
-| F20 | Allow users to get badges if they do streaks for their daily challenges (see F17)                                                     | 2                       | Users                                                 |        |
-| F21 | Display average ratings and user reviews for each session                                                                             | 3                       | Admins                                                |        |
-| F22 | Allow users to perform daily mood check-ins with a 1–10 scale, emotion tags, and optional notes                                       | 4                       | Users                                                 |        |
-| F23 | Integrate with external sleep tracking services and display sleep score data (0–100)                                                  | 1                       | Users                                                 |        |
-| F24 | Display user progress and weekly summaries (mood trends, streaks, time spent)                                                         | 3                       | Users                                                 |        |
-| F25 | Allow users to mark content as favorite                                                                                               | 3                       | Users                                                 |        |
-| F26 | Display recently played sessions                                                                                                      | 2                       | Users                                                 |        |
+| F12 | Allow users to use their own calendar like Google Calendar or other CalDAV-<br>compatible services                                    | 4                       | Users                                                 |        |
+| F13 | Manage roles/permissions with RBAC                                                                                                    | 5                       | Users/Admins                                          |        |
+| F14 | Notifications for upcoming sessions                                                                                                   | 2                       | Users                                                 |        |
+| F15 | Store guided meditations in audio and video formats by fetching them using an API, with duration, language, difficulty level and tags | 4                       | Admins                                                |        |
+| F16 | Organize meditations by categories (focus, sleep, ...)                                                                                | 3                       | Admins                                                |        |
+| F17 | Allow users to do a daily challenge with a meditation and a short exercise if they have a plan                                        | 4                       | Users                                                 |        |
+| F18 | Display average ratings and user reviews for each session                                                                             | 3                       | Admins                                                |        |
+| F19 | Allow users to perform mood check-ins                                                                                                 | 4                       | Users                                                 |        |
+| F20 | Display recently played sessions                                                                                                      | 2                       | Users                                     
 
 
 ## Non-functional Requirements
@@ -66,23 +60,16 @@ Mind Craft aims to offer a calm, simple, and intuitive experience. The motivatio
 | NF7  | Maintainability | Clear technical documentation should exist for API, deployment, etc. to facilitate future development                               |
 | NF8  | Compatibility   | The system must be compatible with all major browsers, such as Chrome, Firefox, ...                                                 |
 | NF9  | Reliability     | Notifications must be delivered with a maximum delay of 60 seconds                                                                  |
-| NF10 | Maintainability | The system must be designed using a modular architecture, allowing independents updates of components                               |
 
 ## Deployment
-This section provides information on how to access and evaluate the deployed demo version of the application, allowing users to interact with the app and test its functionality in a limited scope before running it locally.
 
-For a demonstration of the application's functionality, a demo version is available at *[link to deployment]*. This version allows users to explore key features and interact with the app in a limited scope.
+Link for the **deployed API** using **Render** : https://mindcraftapi.onrender.com/
 
-### Accessing the Test Application
-> - **Visit the Demo Link**: Navigate to the provided URL to access the live demo version of the application.
-> - **Test Features**: You can explore the core functionalities, such as [list key features].
-> - **Limited Scope?**: Please note that this demo version may have limited features or data for testing purposes.
-
-For detailed instructions on installation and running the application in a local environment, please refer to the documentation in the [link to Wiki].
+Link for the **deployed website** using **Vercel** : https://mindcraft-omega.vercel.app/
 
 ## Installation
 
-To run the project, you have to install **Java**, **Maven** and **Node.js / npm**.
+To run the project locally, you have to install **Java**, **Maven** and **Node.js / npm**.
 
 Once Node.js and npm are installed :
 
