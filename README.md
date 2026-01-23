@@ -19,33 +19,32 @@ Mind Craft aims to offer a calm, simple, and intuitive experience. The motivatio
 
 - Working collaboratively with team members
 
-- Integrating external services (APIs, notifications, calendars)
+- Integrating external services (APIs, notifications, map, ...)
 
 ## Functional Requirements
 
-| ID  | Description                                                                                                                           | Priority Level (1 to 5) | Target role(s) : Users, Unauthenticated users, Admins | Tested |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------------- | ------ |
-| F1  | Allow new users to create an account by using OAuth 2.0 providers such as Google                                                      | 5                       | Unauthenticated users                                 |        |
-| F2  | Allow users who already have an account to access it using OAuth 2.0 providers such as Google                                         | 5                       | Unauthenticated users                                 |        |
-| F3  | Allow users to delete their account and all associated data                                                                           | 3                       | Users                                                 |        |
-| F4  | Allow new users who just created their account to fill in a short onboarding questionnaire covering stress level, sleep quality, ...  | 5                       | Users                                                 |        |
-| F5  | Generate a personalized practice plan for new users based on their responses in the onboarding questionnaire (see F4)                 | 3                       | Users                                                 |        |
-| F6  | Allow users to update their personal information, preferences and account settings                                                    | 5                       | Users                                                 |        |
-| F7  | Allow users to participate in a meditation session by accessing guided audio or video content                                         | 5                       | Users                                                 |        |
-| F8  | Allow users to search content by keywords / search bar                                                                                | 4                       | Users                                                 |        |
-| F9  | Allow users to filter content by duration, category, ...                                                                              | 4                       | Users                                                 |        |
-| F10 | Provide a map of the nearest psychologists                                                                                            | 1                       | Users                                                 |        |
-| F11 | Allow users to rate the services (from 1 to 5) and provide a comment after each session                                               | 3                       | Users                                                 |        |
-| F12 | Allow users to use their own calendar like Google Calendar or other CalDAV-<br>compatible services                                    | 4                       | Users                                                 |        |
-| F13 | Manage roles/permissions with RBAC                                                                                                    | 5                       | Users/Admins                                          |        |
-| F14 | Notifications for upcoming sessions                                                                                                   | 2                       | Users                                                 |        |
-| F15 | Store guided meditations in audio and video formats by fetching them using an API, with duration, language, difficulty level and tags | 4                       | Admins                                                |        |
-| F16 | Organize meditations by categories (focus, sleep, ...)                                                                                | 3                       | Admins                                                |        |
-| F17 | Allow users to do a daily challenge with a meditation and a short exercise if they have a plan                                        | 4                       | Users                                                 |        |
-| F18 | Display average ratings and user reviews for each session                                                                             | 3                       | Admins                                                |        |
-| F19 | Allow users to perform mood check-ins                                                                                                 | 4                       | Users                                                 |        |
-| F20 | Display recently played sessions                                                                                                      | 2                       | Users                                     
-
+| ID  | Description                                                                                                                           | Priority Level (1 to 5) | Target role(s) : Users, Unauthenticated users, Admins |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------------- |
+| F1  | Allow new users to create an account by using OAuth 2.0 providers such as Google                                                      | 5                       | Unauthenticated users                                 |
+| F2  | Allow users who already have an account to access it using OAuth 2.0 providers such as Google                                         | 5                       | Unauthenticated users                                 |
+| F3  | Allow users to delete their account and all associated data                                                                           | 3                       | Users                                                 |
+| F4  | Allow new users who just created their account to fill in a short onboarding questionnaire covering stress level, sleep quality, ...  | 5                       | Users                                                 |
+| F5  | Generate a personalized practice plan for new users based on their responses in the onboarding questionnaire (see F4)                 | 3                       | Users                                                 |
+| F6  | Allow users to update their personal information, preferences and account settings                                                    | 5                       | Users                                                 |
+| F7  | Allow users to participate in a meditation session by accessing guided audio or video content                                         | 5                       | Users                                                 |
+| F8  | Allow users to search content by keywords / search bar                                                                                | 4                       | Users                                                 |
+| F9  | Allow users to filter content by duration, category, ...                                                                              | 4                       | Users                                                 |
+| F10 | Provide a map of the nearest psychologists                                                                                            | 1                       | Users                                                 |
+| F11 | Allow users to rate the services (from 1 to 5) and provide a comment after each session                                               | 3                       | Users                                                 |
+| F12 | Allow users to use their own calendar like Google Calendar or other CalDAV-<br>compatible services                                    | 4                       | Users                                                 |
+| F13 | Manage roles/permissions with RBAC                                                                                                    | 5                       | Users/Admins                                          |
+| F14 | Notifications for upcoming sessions                                                                                                   | 2                       | Users                                                 |
+| F15 | Store guided meditations in audio and video formats by fetching them using an API, with duration, language, difficulty level and tags | 4                       | Admins                                                |
+| F16 | Organize meditations by categories (focus, sleep, ...)                                                                                | 3                       | Admins                                                |
+| F17 | Allow users to do a daily challenge with a meditation and a short exercise if they have a plan                                        | 4                       | Users                                                 |
+| F18 | Display average ratings and user reviews for each session                                                                             | 3                       | Admins                                                |
+| F19 | Allow users to perform mood check-ins                                                                                                 | 4                       | Users                                                 |
+| F20 | Display recently played sessions                                                                                                      | 2                       | Users                                                 |
 
 ## Non-functional Requirements
 
@@ -93,10 +92,10 @@ Frontend runs at : **http://localhost:4200**
 
 ## Technologies
 
-- Backend / API : Spring
+- Backend / API : Java Spring
 - Frontend : Angular
 - MongoDB Database
-- Firebase for authentication and notifications
+- OAuth 2.0 for authentication
 
 ## Team Members
 
@@ -110,8 +109,8 @@ Frontend runs at : **http://localhost:4200**
 ## Contributions (Optional)
 
 - Functional and Non-functional Requirements : Everyone
-- Matis DUBOIS : Mockups for the interface, frontend
-- Matthieu CHARTON : Mockups for the interface, frontend
+- Matis DUBOIS : design for the interface, frontend
+- Matthieu CHARTON : design for the interface, frontend
 - Evan LEMMONIER : use cases, backend
 - Martin NERON : use cases, backend
 - Lucas MAGRET : database model, MongoDB management
