@@ -4,6 +4,7 @@ import { VideoService, Content, Category } from '../services/video.service';
 import { UserService } from '../services/users.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/services/auth.service';
 
 @Component({
   selector: 'mc-admin',
@@ -41,13 +42,33 @@ export class AdminComponent implements OnInit {
   constructor(
     private videoService: VideoService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   // Component initialization
   ngOnInit(): void {
+    this.authService.checkAccess(); // Ensure admin access
+
+    this.fetchRole(); // Verify user role
+
     this.loadContents(); // Load existing contents
     this.loadCategories(); // Load available categories
+  }
+
+  // Fetch user role and redirect if not admin
+  private fetchRole(): void {
+    this.userService.getUserRole().subscribe({
+      next: (res: any) => {
+        if (res.authority === 'ROLE_USER') {
+          this.router.navigate(['/home']);
+        }
+      },
+      error: (err) => {
+        console.error('Error during role fetching', err);
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
   /* ---------------- LOAD ---------------- */

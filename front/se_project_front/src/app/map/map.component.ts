@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../auth/services/auth.service';
 import * as L from 'leaflet';
 
 @Component({
@@ -17,6 +18,12 @@ export class MapComponent implements AfterViewInit {
 
   // Loaded psychologists data
   psychologists: any[] = [];
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.checkAccess(); // Ensure user access
+  }
 
   // After view initialization
   ngAfterViewInit() {
