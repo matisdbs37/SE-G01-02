@@ -10,15 +10,14 @@
 
     <!-- Sidebar for navigation -->
     <aside class="sidebar">
-      <button class="back" (click)="back()">← Back to home</button>
-
+      <button class="back" (click)="back()">← Back</button>
       <h3>My Space</h3>
 
-      <button (click)="setSection('dashboard')">Dashboard</button>
-      <button (click)="setSection('history')">My History</button>
-      <button (click)="setSection('plan')">My Plan</button>
-      <button (click)="setSection('account')">Account Details</button>
-      <button class="danger" (click)="setSection('delete')">Delete Account</button>
+      <button [class.active]="activeSection == 'dashboard'" (click)="setSection('dashboard')">Dashboard</button>
+      <button [class.active]="activeSection == 'history'" (click)="setSection('history')">History</button>
+      <button [class.active]="activeSection == 'plan'" (click)="setSection('plan')">Plan</button>
+      <button [class.active]="activeSection == 'account'" (click)="setSection('account')">Account</button>
+      <button class="danger" (click)="setSection('delete')">Delete</button>
 
       <button class="logout" (click)="logout()">Logout</button>
     </aside>
