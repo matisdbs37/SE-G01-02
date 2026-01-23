@@ -2,6 +2,7 @@
 
   <h1>Admin Panel</h1>
 
+  <!-- BUTTON FOR TRIGGER EMAILS -->
   <button class="mail-btn" type="button" (click)="triggerEmails()">
     Trigger emails
   </button>
@@ -9,12 +10,14 @@
   <!-- CREATE CONTENT -->
   <div class="card">
 
+    <!-- BUTTON TO GO BACK TO HOME -->
     <button class="back-btn" type="button" (click)="goHome()">
       ← Back to home
     </button>
 
     <h2>Create content</h2>
 
+    <!-- FORM FOR CREATE CONTENT -->
     <div class="form-grid">
 
       <input
@@ -56,7 +59,7 @@
 
     </div>
 
-    <!-- CATEGORIES -->
+    <!-- CATEGORIES SECTION TO ASSIGN CATEGORIES -->
     <h3>Categories</h3>
 
     <div class="categories">
@@ -69,6 +72,7 @@
       </label>
     </div>
 
+    <!-- BUTTON TO SUBMIT FORM -->
     <button
       class="create-btn"
       type="button"
@@ -82,7 +86,7 @@
 
   </div>
 
-  <!-- LIST -->
+  <!-- LIST OF EXISTING CONTENTS -->
   <div class="list">
 
     <h2>All contents</h2>
@@ -111,6 +115,7 @@
         </div>
       </div>
 
+      <!-- BUTTON TO DELETE CONTENT -->
       <button
         class="delete"
         type="button"

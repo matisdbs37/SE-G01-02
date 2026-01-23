@@ -172,5 +172,26 @@
 }
 
 .thumbnail {
+  height: 150px;
+  /* Votre fond vert actuel reste ici comme base */
+  background: linear-gradient(135deg, #45a049, #3EAC87); 
   position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.thumb-img[src=""], .thumb-img:not([src]) {
+  display: none;
 }

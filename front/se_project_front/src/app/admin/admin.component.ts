@@ -13,16 +13,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-
+  // All contents and categories in the system
   contents: Content[] = [];
   categories: Category[] = [];
 
+  // Mapping of content IDs to their category names
   contentCategories: { [key: string]: string[] } = {};
 
+  // Loading state and messages
   loading = false;
   message = '';
 
-  // formulaire
+  // Form data for creating new content
   form: Content = {
     url: '',
     title: '',
@@ -32,7 +34,8 @@ export class AdminComponent implements OnInit {
     language: '',
     source: ''
   };
-
+  
+  // Selected categories for new content
   selectedCategories: string[] = [];
 
   constructor(
@@ -41,13 +44,15 @@ export class AdminComponent implements OnInit {
     private router: Router
   ) {}
 
+  // Component initialization
   ngOnInit(): void {
-    this.loadContents();
-    this.loadCategories();
+    this.loadContents(); // Load existing contents
+    this.loadCategories(); // Load available categories
   }
 
   /* ---------------- LOAD ---------------- */
 
+  // Load all contents and their associated categories
   loadContents() {
     this.videoService.getAllContent(0, 100).subscribe(res => {
       this.contents = res.content;
@@ -62,6 +67,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  // Load all available categories
   loadCategories() {
     this.videoService.getCategories().subscribe(res => {
       this.categories = res;
@@ -70,10 +76,9 @@ export class AdminComponent implements OnInit {
 
   /* ---------------- CREATE ---------------- */
 
+  // Create new content and assign selected categories
   createContent() {
     this.form.createdAt = new Date().toISOString();
-
-    console.log('PAYLOAD:', this.form);
 
     this.videoService.createContent(this.form).subscribe({
       next: (created) => {
@@ -85,8 +90,9 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  // Assign selected categories to the newly created content
   private assignCategories(contentId: string) {
-
+    // If no categories selected, finish creation
     if (this.selectedCategories.length === 0) {
       this.finishCreation();
       return;
@@ -94,6 +100,7 @@ export class AdminComponent implements OnInit {
 
     let done = 0;
 
+    // Assign each selected category
     this.selectedCategories.forEach(catId => {
       this.videoService.assignCategory({
         contentId,
@@ -109,6 +116,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  // Finalize content creation process
   private finishCreation() {
     this.loading = false;
     this.message = 'Content created successfully ✅';
@@ -116,6 +124,7 @@ export class AdminComponent implements OnInit {
     this.loadContents();
   }
 
+  // Reset the content creation form
   resetForm() {
     this.form = {
       url: '',
@@ -131,6 +140,7 @@ export class AdminComponent implements OnInit {
 
   /* ---------------- ACTIONS ---------------- */
 
+  // Delete content by ID
   deleteContent(id: string) {
     if (!confirm('Delete this content ?')) return;
 
@@ -139,6 +149,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  // Toggle category selection for new content
   toggleCategory(id: string, checked: boolean) {
     if (checked) {
       if (!this.selectedCategories.includes(id)) {
@@ -150,23 +161,25 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  // Trigger email sending to users
   triggerEmails() {
     this.userService.triggerEmail().subscribe(() => {
       alert('Emails sent');
     });
   }
 
+  // Navigate back to home
   goHome() {
-  this.router.navigate(['/home']);
+    this.router.navigate(['/home']);
   }
 
+  // Get human-readable label for difficulty level
   getDifficultyLabel(level?: number): string {
-  switch (level) {
-    case 1: return 'Easy';
-    case 2: return 'Medium';
-    case 3: return 'Hard';
-    default: return '';
+    switch (level) {
+      case 1: return 'Easy';
+      case 2: return 'Medium';
+      case 3: return 'Hard';
+      default: return '';
     }
   }
-
 }
