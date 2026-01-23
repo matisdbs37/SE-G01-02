@@ -1,59 +1,104 @@
+<!-- Background wrapper for the video detail page -->
 <div class="videos-background">
   <div class="video-detail-page">
+
+    <!-- Back button to return to the video library -->
     <button class="back" (click)="back()">← Back to library</button>
 
-    <h2>{{ video.title }}</h2>
+    <!-- Header section: video title and global rating badge -->
+    <div class="header-container">
+      <h2>{{ video.title }}</h2>
+      
+      <!-- Show average rating if available -->
+      <div class="global-badge" *ngIf="globalRating > 0">
+        ⭐ {{ globalRating | number:'1.1-1' }} <small>/ 5</small>
+      </div>
+    </div>
 
+    <!-- Media player container: either video iframe or audio player -->
     <div class="media-container">
 
-        <iframe
-            *ngIf="video.type === 'video'"
-            [src]="'https://www.youtube.com/embed/kSZddHca0ME' | safeUrl"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            class="youtube-frame">
-        </iframe>
+      <!-- YouTube iframe for videos -->
+      <iframe 
+        *ngIf="video.type === 'video'" 
+        id="youtube-player"
+        [src]="(getEmbedUrl(video.url) + '?enablejsapi=1') | safeUrl" 
+        frameborder="0" 
+        allowfullscreen 
+        class="youtube-frame">
+      </iframe>
 
-        <audio *ngIf="video.type === 'audio'" controls>
-            <source src="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-
-
+      <!-- HTML audio player for audio content -->
+      <audio 
+        #audioPlayer
+        *ngIf="video.type === 'audio'" 
+        (timeupdate)="onAudioTimeUpdate(audioPlayer.currentTime)"
+        controls 
+        class="audio-player">
+        <source [src]="video.url" type="audio/mpeg">
+      </audio>
     </div>
 
+    <!-- Video metadata: categories, duration, language, difficulty -->
     <div class="video-meta">
-      <p>{{ video.category }} • {{ video.durationMin }} min</p>
-      <p>{{ video.language }} • Difficulty {{ video.difficulty }}</p>
+      <!-- Category tags -->
+      <div class="category-tags">
+        <span *ngFor="let cat of categoryNames" class="cat-tag">{{ cat }}</span>
+      </div>
+      <!-- Duration, language, and difficulty info -->
+      <p>{{ video.durationMin }} min • {{ video.language }} • Difficulty {{ video.difficulty }}/3</p>
     </div>
 
+    <!-- User rating section -->
     <div class="rating-section">
-      <p>Rate this session ({{ userRating }}/5)</p>
+      <h3>Your rating ({{ userRating }}/5)</h3>
       <div class="stars">
-        <span *ngFor="let s of starsArr" 
-              class="star" 
-              (click)="setRating($event, s)">
+        <!-- Render 5 stars; support half-star ratings -->
+        <span *ngFor="let s of starsArr" class="star" (click)="setRating($event, s)">
           <i class="star-icon">★</i>
+          <!-- Filled portion of star -->
           <i class="star-icon filled" 
-             [style.width.%]="(userRating >= s) ? 100 : (userRating >= s - 0.5 ? 50 : 0)">
-             ★
-          </i>
+             [style.width.%]="(userRating >= s) ? 100 : (userRating >= s - 0.5 ? 50 : 0)">★</i>
         </span>
       </div>
     </div>
 
+    <!-- Comments section -->
     <div class="comments-section">
       <h3>Comments</h3>
-      <textarea placeholder="Write a comment..." [(ngModel)]="newComment"></textarea>
-      <button (click)="addComment()" [disabled]="!newComment.trim()">Submit</button>
 
-      <div class="comment" *ngFor="let c of comments">
-        <small>{{ c.postedAt | date:'dd/MM/yyyy' }}</small>
-        <p>{{ c.text }}</p>
+      <!-- Box for adding a new comment -->
+      <div class="add-comment-box">
+        <textarea 
+          placeholder="Tell us what you thought of this session..." 
+          [(ngModel)]="newComment">
+        </textarea>
+        <button 
+          class="submit-comment-btn" 
+          (click)="addComment()" 
+          [disabled]="!newComment.trim()">
+          Submit Comment
+        </button>
+      </div>
+
+      <!-- Display all comments -->
+      <div class="comment-card" *ngFor="let c of allComments">
+        <div class="comment-header">
+          <!-- User's name -->
+          <span class="user-id">{{ c.userName }}</span>
+          <!-- Optional user rating -->
+          <span class="user-note" *ngIf="c.userRating">⭐ {{ c.userRating }}</span>
+          <!-- Date of comment -->
+          <small class="date">{{ c.postedAt | date:'dd MMM yyyy' }}</small>
+        </div>
+        <!-- Comment text -->
+        <p class="comment-text">{{ c.text }}</p>
       </div>
       
-      <p *ngIf="comments.length === 0" class="no-comments">No comments yet for this session.</p>
+      <!-- Message if no comments exist -->
+      <p *ngIf="allComments.length === 0" class="no-comments">
+        No reviews yet. Be the first to rate!
+      </p>
     </div>
   </div>
 </div>

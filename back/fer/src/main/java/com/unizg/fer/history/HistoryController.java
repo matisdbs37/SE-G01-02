@@ -3,6 +3,7 @@ package com.unizg.fer.history;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,7 @@ public class HistoryController {
             @ApiResponse(responseCode = "400", description = "Invalid email claim", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content)
     })
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping
     public ResponseEntity<Page<HistoryEntry>> getPaginatedHistory(@AuthenticationPrincipal Jwt jwt,
             @RequestParam(defaultValue = "0") int pages,
@@ -83,6 +85,7 @@ public class HistoryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
             @ApiResponse(responseCode = "404", description = "Video not found", content = @Content)
     })
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PatchMapping("/{videoId}/progress")
     public void watchVideo(@PathVariable String videoId, @AuthenticationPrincipal Jwt jwt,
             @RequestParam int watchTime) {
@@ -107,6 +110,7 @@ public class HistoryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
             @ApiResponse(responseCode = "404", description = "Video not found", content = @Content)
     })
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PatchMapping("/{videoId}/rating")
     public ResponseEntity<HistoryEntry> rateVideo(@PathVariable String videoId, @AuthenticationPrincipal Jwt jwt,
             @RequestParam int stars) {
@@ -123,6 +127,7 @@ public class HistoryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token", content = @Content),
             @ApiResponse(responseCode = "404", description = "Video not found", content = @Content)
     })
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PutMapping("/{videoId}/comment")
     public ResponseEntity<HistoryEntry> commentVideo(@PathVariable String videoId, @AuthenticationPrincipal Jwt jwt,
             @RequestParam String text) {

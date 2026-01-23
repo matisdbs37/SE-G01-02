@@ -2,9 +2,12 @@ package com.unizg.fer.stats;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.unizg.fer.plan.PlanManager;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,9 +28,9 @@ public class StatsController {
             @ApiResponse(responseCode = "404", description = "User not found or no statistics available", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @RequestMapping("/{userId}")
     public ResponseEntity<Stats> getStats(@PathVariable String userId) {
         return ResponseEntity.ok(service.getStatsByUserId(userId));
     }
-
 }

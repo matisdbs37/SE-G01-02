@@ -1,51 +1,165 @@
 package com.unizg.fer.content;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import com.unizg.fer.categories.Categories;
+import com.unizg.fer.config.ResourceNotFoundException;
+import com.unizg.fer.history.HistoryEntry;
+import com.unizg.fer.history.HistoryService;
+
+import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/v2/content")
-@Tag(name = "Content", description = "APIs for retrieving content")
-
+@Tag(name = "Content Management", description = "Endpoints for managing and retrieving Audio and Video content")
 public class ContentController {
 
     @Autowired
-    ContentService service;
+    private ContentService service;
 
-    @Operation(summary = "Get content by type", description = "Retrieves all content filtered by type (e.g., VIDEO, ARTICLE, COURSE)")
+    @Autowired
+    private HistoryService history;
+
+    @Operation(summary = "Get content by type", description = "Retrieves a list of content filtered by type. Supported values: AUDIO, VIDEO (Case-insensitive).")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Content retrieved successfully", content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json", schema = @Schema(implementation = Content.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid content type", content = @io.swagger.v3.oas.annotations.media.Content),
-            @ApiResponse(responseCode = "404", description = "No content found for this type", content = @io.swagger.v3.oas.annotations.media.Content)
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = com.unizg.fer.content.Content.class)))),
+            @ApiResponse(responseCode = "400", description = "Invalid type provided"),
+            @ApiResponse(responseCode = "404", description = "No content found for this type")
     })
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/type/{text}")
-    public ResponseEntity<List<Content>> getContentByType(@PathVariable String text) {
+    public ResponseEntity<List<com.unizg.fer.content.Content>> getContentByType(@PathVariable String text) {
+        // Service handles case-insensitivity
         var type = ContentType.getType(text);
-        var contents = service.findAllByType(type);
-        return ResponseEntity.ok(contents);
+        return ResponseEntity.ok(service.findAllByType(type));
     }
 
-    @Operation(summary = "Get content by title", description = "Retrieves a specific content item by its title")
+    @Operation(summary = "Get content by title", description = "Retrieves the details of a specific content item using its title.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Content found successfully", content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json", schema = @Schema(implementation = Content.class))),
-            @ApiResponse(responseCode = "404", description = "Content not found", content = @io.swagger.v3.oas.annotations.media.Content)
+            @ApiResponse(responseCode = "200", description = "Content found", content = @Content(schema = @Schema(implementation = com.unizg.fer.content.Content.class))),
+            @ApiResponse(responseCode = "404", description = "Content not found")
     })
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/{title}")
-    public ResponseEntity<Content> getContentById(@PathVariable String title) {
-        var content = service.findByTitle(title);
-        return ResponseEntity.ok(content);
+    public ResponseEntity<com.unizg.fer.content.Content> getContentById(@PathVariable String title) {
+        return ResponseEntity.ok(service.findByTitle(title));
     }
+
+    @Operation(summary = "List all content (Paginated)", description = "Retrieves a paginated list of all available media content.")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/all")
+    public ResponseEntity<Page<com.unizg.fer.content.Content>> getAllContent(
+            @Parameter(description = "Zero-based page index") @RequestParam(defaultValue = "0") int pages,
+            @Parameter(description = "The size of the page to be returned") @RequestParam(defaultValue = "20") int size) {
+        return ResponseEntity.ok(service.findAll(pages, size));
+    }
+
+    @Operation(summary = "Get categories", description = "Retrieves all associations between content items and categories.")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/categories")
+    public ResponseEntity<List<ContentCategories>> getAllCategories() {
+        return ResponseEntity.ok(service.findAllCategories());
+    }
+
+    @Operation(summary = "Add new content", description = "Creates a new content entry. Type must be AUDIO or VIDEO.")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping
+    public ResponseEntity<com.unizg.fer.content.Content> addContent(
+            @RequestBody com.unizg.fer.content.Content content) {
+        return ResponseEntity.ok(service.createContent(content));
+    }
+
+    @Operation(summary = "Update content", description = "Updates an existing content item's information.")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping("/{contentId}")
+    public ResponseEntity<com.unizg.fer.content.Content> updateContent(
+            @PathVariable String contentId,
+            @RequestBody com.unizg.fer.content.Content content) {
+        return ResponseEntity.ok(service.updateContent(contentId, content));
+    }
+
+    @Operation(summary = "Delete content", description = "Permanently removes a content item from the database.")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/{contentId}")
+    public ResponseEntity<Void> deleteContent(@PathVariable String contentId) {
+        service.deleteContent(contentId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Assign category", description = "Links a specific content item to a category.")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("/categories")
+    public ResponseEntity<ContentCategories> createContentCategories(@RequestBody ContentCategories contentCategories) {
+        return ResponseEntity.ok(service.createCategory(contentCategories));
+    }
+
+    @Operation(summary = "Update category link", description = "Updates an existing content-category association.")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping("/categories/{id}")
+    public ResponseEntity<ContentCategories> updateContentCategories(
+            @PathVariable String id,
+            @RequestBody ContentCategories contentCategories) {
+        return ResponseEntity.ok((ContentCategories) service.updateCategory(id, contentCategories));
+    }
+
+    @Operation(summary = "Remove category link", description = "Deletes a content-category association by its unique ID.")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/categories/{id}")
+    public ResponseEntity<Void> deleteContentCategoriesById(@PathVariable String id) {
+        service.deleteCategory(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Get all interactions for a specific content", description = "Retrieves all history records for a content. Throws 404 if the content ID does not exist in the database.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of interactions successfully retrieved", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = HistoryEntry.class)))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Valid JWT token required", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden - Requires ROLE_USER authority", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Content not found - The provided contentId does not exist", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+    })
+    @GetMapping("/interactions/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<List<HistoryEntry>> getAllContentInteraction(@PathVariable String id) {
+        return ResponseEntity.ok(history.getAllContentInteraction(id));
+    }
+
+    @Tag(name = "Rating", description = "Endpoints for content evaluation and statistics")
+    @Operation(summary = "Get mean rating for a specific content", description = "Calculates the average rating from all user history entries for the given content. Returns -1.0 if no ratings exist.", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Average rating successfully calculated, if -1 then no one rated this content", content = @Content(mediaType = "application/json", schema = @Schema(type = "number", format = "double", example = "8.5"))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Valid JWT token required", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden - Requires ROLE_USER authority", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Content not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+    })
+    @GetMapping("/rating/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<Double> getContentMeanRating(@PathVariable String id) {
+        return ResponseEntity.ok(history.getRating(id));
+    }
+
+
+    @Operation(summary = "Get categories of a content", description = "Retrieves all associations between content items and categories.")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/categories/{id}")
+    public ResponseEntity<List<Categories>> getAllCategories(@PathVariable String id) {
+        return ResponseEntity.ok(service.findAllCategoriesByContentId(id));
+    }
+
 
 }

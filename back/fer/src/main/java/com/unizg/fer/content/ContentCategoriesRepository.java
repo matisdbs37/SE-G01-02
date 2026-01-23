@@ -7,5 +7,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface ContentCategoriesRepository extends MongoRepository<ContentCategories, String> {
     
     List<ContentCategories> findByCategoryId(String categoryId);
+
+    List<ContentCategories> findAllByContentId(String contentId);
+
+    void deleteById(String id);
+
+    
     
 }

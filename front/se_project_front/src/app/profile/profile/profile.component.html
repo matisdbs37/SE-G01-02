@@ -1,26 +1,31 @@
+<!-- Loading screen while profile data is fetched -->
 <div *ngIf="loading; else profileContent" class="loading-screen">
   <div class="loader"></div>
   <p>Loading your profile…</p>
 </div>
 
+<!-- Main profile content -->
 <ng-template #profileContent>
   <div class="profile-layout">
 
+    <!-- Sidebar for navigation -->
     <aside class="sidebar">
-      <button class="back" (click)="back()">← Back to home</button>
-
+      <button class="back" (click)="back()">← Back</button>
       <h3>My Space</h3>
 
-      <button (click)="setSection('dashboard')">Dashboard</button>
-      <button (click)="setSection('history')">My History</button>
-      <button (click)="setSection('account')">Account details</button>
-      <button class="danger" (click)="setSection('delete')">Delete account</button>
+      <button [class.active]="activeSection == 'dashboard'" (click)="setSection('dashboard')">Dashboard</button>
+      <button [class.active]="activeSection == 'history'" (click)="setSection('history')">History</button>
+      <button [class.active]="activeSection == 'plan'" (click)="setSection('plan')">Plan</button>
+      <button [class.active]="activeSection == 'account'" (click)="setSection('account')">Account</button>
+      <button class="danger" (click)="setSection('delete')">Delete</button>
 
       <button class="logout" (click)="logout()">Logout</button>
     </aside>
 
+    <!-- Main content area -->
     <main class="content">
 
+      <!-- Dashboard section -->
       <section *ngIf="activeSection == 'dashboard'">
         <div class="dashboard-header">
           <h2>Dashboard</h2>
@@ -29,99 +34,83 @@
         <p>Welcome back {{ user.firstName }}</p>
 
         <div class="metrics-grid">
-
+          <!-- Mental health card -->
           <div class="metric-card">
             <h3>Mental health</h3>
-            <div class="metric-value"
-                [style.color]="getMetricColor(user.mental)">
+            <div class="metric-value" [style.color]="getMetricColor(user.mental)">
               {{ user.mental }}/10
             </div>
             <div class="metric-bar">
-              <div class="metric-fill"
-                  [style.width.%]="user.mental * 10"
-                  [style.background]="getMetricColor(user.mental)">
-              </div>
+              <div class="metric-fill" [style.width.%]="user.mental * 10" [style.background]="getMetricColor(user.mental)"></div>
             </div>
           </div>
 
+          <!-- Sleep quality card -->
           <div class="metric-card">
             <h3>Sleep quality</h3>
-            <div class="metric-value"
-                [style.color]="getMetricColor(user.sleep)">
+            <div class="metric-value" [style.color]="getMetricColor(user.sleep)">
               {{ user.sleep }}/10
             </div>
             <div class="metric-bar">
-              <div class="metric-fill"
-                  [style.width.%]="user.sleep * 10"
-                  [style.background]="getMetricColor(user.sleep)">
-              </div>
+              <div class="metric-fill" [style.width.%]="user.sleep * 10" [style.background]="getMetricColor(user.sleep)"></div>
             </div>
           </div>
 
+          <!-- Stress level card -->
           <div class="metric-card">
             <h3>Stress level</h3>
-
-            <div class="metric-value"
-                [style.color]="getStressColor(user.stress)">
+            <div class="metric-value" [style.color]="getStressColor(user.stress)">
               {{ user.stress }}/10
             </div>
-
             <div class="metric-bar">
-              <div class="metric-fill"
-                  [style.width.%]="user.stress * 10"
-                  [style.background]="getStressColor(user.stress)">
-              </div>
+              <div class="metric-fill" [style.width.%]="user.stress * 10" [style.background]="getStressColor(user.stress)"></div>
             </div>
           </div>
 
+          <!-- Meditation experience card -->
           <div class="metric-card">
             <h3>Meditation experience</h3>
-            <div class="metric-value"
-                [style.color]="getMetricColor(user.meditation)">
+            <div class="metric-value" [style.color]="getMetricColor(user.meditation)">
               {{ user.meditation }}/10
             </div>
             <div class="metric-bar">
-              <div class="metric-fill"
-                  [style.width.%]="user.meditation * 10"
-                  [style.background]="getMetricColor(user.meditation)">
-              </div>
+              <div class="metric-fill" [style.width.%]="user.meditation * 10" [style.background]="getMetricColor(user.meditation)"></div>
             </div>
           </div>
-
         </div>
       </section>
 
+      <!-- History section -->
       <section *ngIf="activeSection == 'history'">
         <h2>Viewing History</h2>
-        
+
         <div *ngIf="historyLoading && userHistory.length === 0" class="small-loader">Loading history...</div>
 
+        <!-- Empty state when history is loaded but empty -->
         <div *ngIf="!historyLoading && userHistory.length === 0" class="empty-state">
           <p>You haven't watched any sessions yet.</p>
         </div>
 
         <div class="history-list" *ngIf="userHistory.length > 0">
-          
           <div class="history-item" *ngFor="let item of userHistory">
+            <!-- History item details -->
             <div class="history-info">
-              <span class="video-name">
-                {{ videoCatalogue.get(item.videoId) || 'Loading title...' }}
-              </span>
+              <span class="video-name">{{ videoCatalogue.get(item.contentId) || 'Content deleted...' }}</span>
               <span class="history-date">{{ item.updatedAt | date:'medium' }}</span>
             </div>
-            
+
+            <!-- History item rating and progress -->
             <div class="history-details">
               <span class="history-rating">
                 <ng-container *ngFor="let type of getStarsArray(item.rating)">
-                  <i class="star-icon" [ngClass]="type">
-                    {{ type === 'half' ? '⯪' : '★' }}
-                  </i>
+                  <i class="star-icon" [ngClass]="type">{{ type === 'half' ? '⯪' : '★' }}</i>
                 </ng-container>
                 <span class="rating-text" *ngIf="item.rating">({{ item.rating / 2 }}/5)</span>
               </span>
-              <span class="history-progress">Watched: {{ item.watchedDuration }}s</span>
+              <span class="history-progress">Watched: {{ formatWatchTime(item.watchedDuration) }}</span>
             </div>
 
+            <!-- History item comments -->
             <div class="history-comments" *ngIf="item.comments && item.comments.length > 0">
               <p class="comment-preview" *ngFor="let comm of item.comments">
                 "{{ comm.text }}" <small>({{ comm.postedAt | date:'shortDate' }})</small>
@@ -129,66 +118,94 @@
             </div>
           </div>
 
+          <!-- Load more of history -->
           <div class="load-more-container" *ngIf="!isLastPage">
             <button class="load-more-btn" (click)="loadMore()" [disabled]="historyLoading">
               {{ historyLoading ? 'Loading more...' : 'Show older sessions' }}
             </button>
           </div>
 
+          <!-- End of history -->
           <p class="end-of-list" *ngIf="isLastPage && userHistory.length > 0">
             You've reached the end of your history.
           </p>
-
         </div>
       </section>
 
-      <section *ngIf="activeSection == 'account'">
-        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-        <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
-        <div class="header-row">
-          <h2>Account details</h2>
-          <button (click)="toggleEdit()">
-            {{ isEditing ? 'Save' : 'Edit' }}
-          </button>
+      <!-- Plan section -->
+      <section *ngIf="activeSection == 'plan'">
+        <div class="dashboard-header">
+          <h2>My Plan</h2>
         </div>
 
+        <div *ngIf="planLoading" class="small-loader">Analyzing your profile...</div>
+
+        <!-- No plan generated yet -->
+        <div *ngIf="!planLoading && !userPlan" class="empty-state">
+          <p>You haven't generated a plan yet.</p>
+          <button class="mood-button" (click)="goToMoodCheckIn()">Start Check-in</button>
+        </div>
+
+        <div *ngIf="userPlan" class="plan-wrapper">
+          <!-- Plan status bar -->
+          <div class="plan-status-bar">
+            <span class="plan-badge" [attr.data-level]="userPlan.level">Level: {{ userPlan.level }}</span>
+            <span class="plan-date">Generated on {{ userPlan.createdAt | date:'mediumDate' }}</span>
+          </div>
+
+          <!-- All videos and audios in the plan with their details -->
+          <div class="plan-grid">
+            <div class="content-card clickable-card" *ngFor="let item of planContent; let i = index" (click)="openContent(item)">
+              <div class="notified-tag" *ngIf="item.notified"><span class="icon">🔔</span> Today's Goal</div>
+              <div class="card-step">Step {{ i + 1 }}</div>
+              <div class="card-main">
+                <h4>{{ item.title || 'Unknown Title' }}</h4>
+                <p class="card-meta"><span class="type-tag">{{ item.type }}</span> • <span>{{ item.durationMin }} min</span></p>
+              </div>
+              <div class="card-footer"><span>Click to start →</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Account section -->
+      <section *ngIf="activeSection == 'account'">
+
+        <!-- Error / Success messages -->
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+        <div class="header-row">
+          <h2>Account details</h2>
+
+          <!-- Button to toggle edit mode -->
+          <button (click)="toggleEdit()">{{ isEditing ? 'Save' : 'Edit' }}</button>
+        </div>
+
+        <!-- All form fields -->
         <form class="form-grid">
           <div class="form-group">
             <label>First name</label>
-            <input [(ngModel)]="editableUser.firstName"
-                  name="firstName"
-                  [disabled]="!isEditing">
+            <input [(ngModel)]="editableUser.firstName" name="firstName" [disabled]="!isEditing">
           </div>
-
           <div class="form-group">
             <label>Last name</label>
-            <input [(ngModel)]="editableUser.lastName"
-                  name="lastName"
-                  [disabled]="!isEditing">
+            <input [(ngModel)]="editableUser.lastName" name="lastName" [disabled]="!isEditing">
           </div>
-
           <div class="form-group">
             <label>Email</label>
-            <input
-              [(ngModel)]="editableUser.email"
-              name="email"
-              disabled>
+            <input [(ngModel)]="editableUser.email" name="email" disabled>
           </div>
-
           <div class="form-group">
-          <label>Country</label>
+            <label>Country</label>
             <select [(ngModel)]="editableUser.locale" name="country" [disabled]="!isEditing">
               <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
             </select>
           </div>
-
           <div class="form-group">
             <label>City</label>
-            <input [(ngModel)]="editableUser.city"
-                  name="city"
-                  [disabled]="!isEditing">
+            <input [(ngModel)]="editableUser.city" name="city" [disabled]="!isEditing">
           </div>
-
           <div class="form-group">
             <label>Notifications</label>
             <select [(ngModel)]="editableUser.preferences" name="notifications" [disabled]="!isEditing">
@@ -198,6 +215,7 @@
         </form>
       </section>
 
+      <!-- Delete account section -->
       <section *ngIf="activeSection == 'delete'">
         <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
         <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>

@@ -10,6 +10,7 @@ export class SafeUrlPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
   transform(url: string): SafeResourceUrl {
+    // Bypass Angular security to safely embed external URLs (like YouTube)
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 

@@ -181,3 +181,23 @@ button:hover {
   font-size: 14px;
   margin-top: 10px;
 }
+
+@media (max-width: 480px) {
+  .question-box {
+    padding: 30px 0px;
+    margin-top: 40%;
+  }
+
+  .question-box h2 {
+    font-size: 1.2rem;
+  }
+
+  button {
+    width: 60%;
+  }
+
+  .yes-no-group {
+    flex-direction: column;
+    width: 40%;
+  }
+}

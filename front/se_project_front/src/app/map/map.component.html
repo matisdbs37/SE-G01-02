@@ -1,0 +1,69 @@
+<div class="map-page">
+
+  <div class="map-card">
+
+    <!-- BACK -->
+    <button class="back" routerLink="/home">
+      ← Back to home
+    </button>
+
+    <!-- TITLE -->
+    <h1>Find a psychologist</h1>
+    <p class="subtitle">
+      Professionals near you (OpenStreetMap)
+    </p>
+
+    <!-- MAP -->
+    <div id="map" class="map"></div>
+
+    <!-- RESULTS -->
+    <div class="results">
+
+      <!-- Length of psychologists list -->
+      <h2>
+        Results ({{ psychologists.length }})
+      </h2>
+
+      <div *ngIf="psychologists.length === 0" class="empty">
+        No psychologists found in this area.
+      </div>
+
+      <div
+        class="card"
+        *ngFor="let psy of psychologists"
+      >
+
+        <!-- NAME -->
+        <h3>
+          {{ psy.tags?.name || 'Psychologist' }}
+        </h3>
+
+        <!-- ADDRESS -->
+        <p class="address">
+          {{ psy.tags?.['addr:housenumber'] || '' }}
+          {{ psy.tags?.['addr:street'] || '' }} <br>
+
+          {{ psy.tags?.['addr:postcode'] || '' }}
+          {{ psy.tags?.['addr:city'] || '' }}
+        </p>
+
+        <!-- PHONE -->
+        <p *ngIf="psy.tags?.phone">
+          📞 {{ psy.tags.phone }}
+        </p>
+
+        <!-- WEBSITE -->
+        <p *ngIf="psy.tags?.website">
+          🌐
+          <a [href]="psy.tags.website" target="_blank">
+            {{ psy.tags.website }}
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

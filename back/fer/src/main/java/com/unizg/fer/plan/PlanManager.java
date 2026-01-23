@@ -37,9 +37,12 @@ public class PlanManager {
 
     @Autowired
     UserRepository userRepo;
-    private SystemMetricsAutoConfiguration systemMetricsAutoConfiguration;
+
     @Autowired
     private ContentService contentService;
+
+    @Autowired
+    private PlanEntriesRepository planEntriesRepository;
 
     /**
      * Create a new plan with the number of random content specified in the
@@ -48,25 +51,24 @@ public class PlanManager {
      * @param userId
      * @param level
      */
-    // FIXME : get rid of compilers null, complier still throws warnings with
-    // @NonNull (lombok)
     @SuppressWarnings("null")
     public void createPlan(String userId, PlanLevel level) {
         // create a list of plan entry from a random stream of video type of content
         var toWatch = contentService.findRandomByType(level.getValue(), "video").stream()
-                .map(content -> PlanEntry.builder()
-                        .content(new ObjectId(content.getId()))
-                        .notified(false)
-                        .build())
+                .map(content -> {
+                    var entry = PlanEntry.builder()
+                            .content(new ObjectId(content.getId()))
+                            .notified(false)
+                            .build();
+                    return planEntriesRepository.save(entry);
+                })
                 .toList();
-        System.out.println(toWatch);
         planRepo.save(Plan.builder()
                 .userId(userId)
                 .toWatch(toWatch)
                 .level(level)
                 .createdAt(LocalDateTime.now())
                 .build());
-
     }
 
     /***
@@ -109,7 +111,6 @@ public class PlanManager {
                 .findFirst()
                 .ifPresent(entry -> {
                     try {
-
                         var content = contentRepo
                                 .findById(String.valueOf(entry.getContent()))
                                 .get();

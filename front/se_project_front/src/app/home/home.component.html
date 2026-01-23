@@ -7,13 +7,16 @@
   <div class="home-page">
     <div class="home-card">
 
+      <!-- MAIN GREETING -->
       <h1>Welcome 🌿</h1>
 
+      <!-- PERSONALIZED GREETING -->
       <p class="subtitle" *ngIf="user">
         Hello {{ user.firstName }},
         are you ready for your next mindfulness session?
       </p>
 
+      <!-- PRIMARY ACTION BUTTONS -->
       <div class="actions">
         <button class="primary" (click)="goToVideos()">
           Start a session
@@ -22,8 +25,21 @@
         <button class="secondary" (click)="goToProfile()">
           My profile
         </button>
+
+        <button class="secondary" (click)="goToPsychologists()">
+          Find a psychologist
+        </button>
+
+        <!-- ADMIN PANEL ACCESS -->
+        <button
+          *ngIf="isAdmin"
+          class="secondary"
+          (click)="goToAdmin()">
+          Admin panel
+        </button>
       </div>
 
+      <!-- LOGOUT BUTTON -->
       <button class="logout" (click)="logout()">
         Logout
       </button>

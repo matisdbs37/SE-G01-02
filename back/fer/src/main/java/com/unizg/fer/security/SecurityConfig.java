@@ -8,7 +8,6 @@ import org.springframework.security.access.expression.method.DefaultMethodSecuri
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -53,19 +52,16 @@ public class SecurityConfig {
          */
         public SecurityFilterChain filterChain(HttpSecurity http)
                 throws Exception {
-
                 http
-                        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                        .csrf(csrf -> csrf.disable())
-                        .csrf(csrf -> csrf.disable())
-                        .authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated())
-                        .oauth2ResourceServer((oauth2) -> oauth2
-                                .jwt(Customizer.withDefaults()) // Utilise le convertisseur par défaut de Spring
-                        );
-
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                                .csrf(csrf -> csrf.disable())
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests((authorized) -> authorized.requestMatchers(PUBLIC_END_POINTS)
+                                                .permitAll()
+                                                .anyRequest()
+                                                .authenticated())
+                                .oauth2ResourceServer((oauth2) -> oauth2
+                                                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtRoleChecker())));
                 return http.build();
         }
 
