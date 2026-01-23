@@ -1,60 +1,50 @@
-# Software Engineering
+# Mind Craft - Mental Health Platform
 
-> The project name in the title aims to describe the purpose of the project and help generate initial interest by presenting the core goal of the project. It entirely depends on you!
-> 
-> Of course, no template is ideal for all projects because the needs and goals are different. Don’t hesitate to emphasize your goal on this project’s introductory page; we’ll support it, whether you focus more on technology or marketing.
-> 
-> Why This Document? 
-This document serves as both a template and a resource for tracking the progress and structure of your project. It is a de facto standard for ensuring clear documentation of key aspects of your work. By providing essential information, you make it easier to follow your development process and assess the quality of your project.
-> 
-> Maintaining a well-organized document reflects good project management practices and promotes transparency, collaboration, and accountability within your team. It simplifies the understanding of your project’s scope, goals, and challenges, benefiting not only your team but also anyone who reviews your work.
 
 ## Project Description
 
-This project is the result of teamwork as part of the project assignment for the [Software Engineering](https://www.fer.unizg.hr/predmet/proinz) course at the Faculty of Electrical Engineering and Computing, University of Zagreb.
+Mind Craft is a digital platform designed to support wellbeing through guided audio/video meditations, short mindfulness drills, and tools for tracking mood, sleep, stress, and other habits. After a brief onboarding, users receive a personalized practice plan aligned with their goals. The app offers a diverse content catalog including structured programs and educational material.
 
-Briefly describe the goal of your project. What motivated you? What problem are you solving?
+## Motivation
 
-> Since this is a part of course assigment, also mention what new things you want/have learned.
-> 
-> A well-written description allows you to showcase your work to other developers, as well as potential employers. Not only does the first impression on the description page often distinguish a good project from a bad one, but it also represents good practice that you must master.
+Mind Craft aims to offer a calm, simple, and intuitive experience. The motivation behind the project is to make mindfulness easy to access and effortless to practice, with a clean interface and straightforward features that help users stay consistent without feeling overwhelmed.
+
+## What we learn with this project
+
+- Building a full digital platform from design to deployment
+
+- Using modern web technologies and frameworks (Angular, Spring, MongoDB)
+
+- Managing authentication, security, and data handling
+
+- Working collaboratively with team members
+
+- Integrating external services (APIs, notifications, map, ...)
 
 ## Functional Requirements
 
 | ID  | Description                                                                                                                           | Priority Level (1 to 5) | Target role(s) : Users, Unauthenticated users, Admins |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------------- |
-| F1  | Allow new users to create an account by using OAuth 2.0 providers such as Google, Apple, and Microsoft                                | 5                       | Unauthenticated users                                 |
-| F2  | Allow users who already have an account to access it using OAuth 2.0 providers such as Google, Apple and Microsoft                    | 5                       | Unauthenticated users                                 |
+| F1  | Allow new users to create an account by using OAuth 2.0 providers such as Google                                                      | 5                       | Unauthenticated users                                 |
+| F2  | Allow users who already have an account to access it using OAuth 2.0 providers such as Google                                         | 5                       | Unauthenticated users                                 |
 | F3  | Allow users to delete their account and all associated data                                                                           | 3                       | Users                                                 |
 | F4  | Allow new users who just created their account to fill in a short onboarding questionnaire covering stress level, sleep quality, ...  | 5                       | Users                                                 |
-| F5  | Generate a personalized seven-day practice plan for new users based on their responses in the onboarding questionnaire (see F4)       | 3                       | Users                                                 |
+| F5  | Generate a personalized practice plan for new users based on their responses in the onboarding questionnaire (see F4)                 | 3                       | Users                                                 |
 | F6  | Allow users to update their personal information, preferences and account settings                                                    | 5                       | Users                                                 |
 | F7  | Allow users to participate in a meditation session by accessing guided audio or video content                                         | 5                       | Users                                                 |
 | F8  | Allow users to search content by keywords / search bar                                                                                | 4                       | Users                                                 |
 | F9  | Allow users to filter content by duration, category, ...                                                                              | 4                       | Users                                                 |
 | F10 | Provide a map of the nearest psychologists                                                                                            | 1                       | Users                                                 |
 | F11 | Allow users to rate the services (from 1 to 5) and provide a comment after each session                                               | 3                       | Users                                                 |
-| F12 | Moderate the inappropriate content                                                                                                    | 2                       | Admins                                                |
-| F13 | Allow users to use their own calendar like Google Calendar or other CalDAV-<br>compatible services                                    | 4                       | Users                                                 |
-| F14 | Manage roles/permissions with RBAC                                                                                                    | 5                       | Users/Admins                                          |
-| F15 | Recommendation system based on the user's goals, preferences, history, mood, and time of day.                                         | 3                       | Users                                                 |
-| F16 | Notifications for upcoming sessions                                                                                                   | 2                       | Users                                                 |
-| F17 | Log useful information about authentication and RBAC and users/admin actions                                                          | 4                       | Users/Admins                                          |
-| F18 | Store guided meditations in audio and video formats by fetching them using an API, with duration, language, difficulty level and tags | 4                       | Admins                                                |
-| F19 | Organize meditations by categories (focus, sleep, ...)                                                                                | 3                       | Admins                                                |
-| F20 | Allow users to do a daily challenge with a meditation and a short exercise                                                            | 4                       | Users                                                 |
-| F21 | Allow users to get badges if they do streaks for their daily challenges (see F17)                                                     | 2                       | Users                                                 |
-| F22 | Display average ratings and user reviews for each session                                                                             | 3                       | Admins                                                |
-| F23 | Allow users to perform daily mood check-ins with a 1–10 scale, emotion tags, and optional notes                                       | 4                       | Users                                                 |
-| F24 | Track habits such as sleep quality, stress, focus, caffeine/alcohol intake, and physical activity                                     | 3                       | Users                                                 |
-| F25 | Integrate with external sleep tracking services and display sleep score data (0–100)                                                  | 1                       | Users                                                 |
-| F26 | Allow trainers/therapists to publish training plans and track user progress with consent                                              | 2                       | Trainers                                              |
-| F27 | Display user progress and weekly summaries (mood trends, streaks, time spent)                                                         | 3                       | Users                                                 |
-| F28 | Ensure compliance with GDPR (user consent, right to deletion/export, data minimization)                                               | 4                       | Users/Admins                                          |
-| F29 | Send weekly motivational or progress emails/push notifications                                                                        | 2                       | Users                                                 |
-| F30 | Provide analytics dashboard to admins (active users, content engagement, ...)                                                         | 2                       | Admins                                                |
-| F31 | Allow users to mark content as favorite                                                                                               | 3                       | Users                                                 |
-| F32 | Display recently played sessions                                                                                                      | 2                       | Users                                                 |
+| F12 | Allow users to use their own calendar like Google Calendar or other CalDAV-<br>compatible services                                    | 4                       | Users                                                 |
+| F13 | Manage roles/permissions with RBAC                                                                                                    | 5                       | Users/Admins                                          |
+| F14 | Notifications for upcoming sessions                                                                                                   | 2                       | Users                                                 |
+| F15 | Store guided meditations in audio and video formats by fetching them using an API, with duration, language, difficulty level and tags | 4                       | Admins                                                |
+| F16 | Organize meditations by categories (focus, sleep, ...)                                                                                | 3                       | Admins                                                |
+| F17 | Allow users to do a daily challenge with a meditation and a short exercise if they have a plan                                        | 4                       | Users                                                 |
+| F18 | Display average ratings and user reviews for each session                                                                             | 3                       | Admins                                                |
+| F19 | Allow users to perform mood check-ins                                                                                                 | 4                       | Users                                                 |
+| F20 | Display recently played sessions                                                                                                      | 2                       | Users                                                 |
 
 ## Non-functional Requirements
 
@@ -69,32 +59,43 @@ Briefly describe the goal of your project. What motivated you? What problem are 
 | NF7  | Maintainability | Clear technical documentation should exist for API, deployment, etc. to facilitate future development                               |
 | NF8  | Compatibility   | The system must be compatible with all major browsers, such as Chrome, Firefox, ...                                                 |
 | NF9  | Reliability     | Notifications must be delivered with a maximum delay of 60 seconds                                                                  |
-| NF10 | Maintainability | The system must be designed using a modular architecture, allowing independents updates of components                               |
 
 ## Deployment
-This section provides information on how to access and evaluate the deployed demo version of the application, allowing users to interact with the app and test its functionality in a limited scope before running it locally.
 
-For a demonstration of the application's functionality, a demo version is available at *[link to deployment]*. This version allows users to explore key features and interact with the app in a limited scope.
+Link for the **deployed API** using **Render** : https://mindcraftapi.onrender.com/
 
-### Accessing the Test Application
-> - **Visit the Demo Link**: Navigate to the provided URL to access the live demo version of the application.
-> - **Test Features**: You can explore the core functionalities, such as [list key features].
-> - **Limited Scope?**: Please note that this demo version may have limited features or data for testing purposes.
-
-For detailed instructions on installation and running the application in a local environment, please refer to the documentation in the [link to Wiki].
+Link for the **deployed website** using **Vercel** : https://mindcraft-omega.vercel.app/
 
 ## Installation
 
-> - Provide clear instructions on how to install and run the project or [link to Wiki].
-> - Include dependencies (if any) and installation commands.
-> - Consider offering pre-built binaries or Docker images (if applicable).
+To run the project locally, you have to install **Java**, **Maven** and **Node.js / npm**.
+
+Once Node.js and npm are installed :
+
+`npm install -g @angular/cli`
+
+### To launch the API :
+
+- `cd back/fer`
+- `mvn clean install`
+- `mvn spring-boot:run`
+
+API runs at : **http://localhost:8080**
+
+### To launch the front :
+
+- `cd front/se_project_front`
+- `npm install`
+- `ng serve`
+
+Frontend runs at : **http://localhost:4200**
 
 ## Technologies
 
-- Backend / API : Spring
+- Backend / API : Java Spring
 - Frontend : Angular
-- SQL Database
-- Firebase for authentication and notifications
+- MongoDB Database
+- OAuth 2.0 for authentication
 
 ## Team Members
 
@@ -106,9 +107,14 @@ For detailed instructions on installation and running the application in a local
 - Melissa GHAOUI
 
 ## Contributions (Optional)
-> Rules depend on the team’s organization and are often outlined in `CONTRIBUTING.md`.
 
-
+- Functional and Non-functional Requirements : Everyone
+- Matis DUBOIS : design for the interface, frontend
+- Matthieu CHARTON : design for the interface, frontend
+- Evan LEMMONIER : use cases, backend
+- Martin NERON : use cases, backend
+- Lucas MAGRET : database model, MongoDB management
+- Melissa GHAOUI : database model, MongoDB management
 
 
 # 📝 Licence
